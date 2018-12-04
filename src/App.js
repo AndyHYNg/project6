@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import axios from 'axios';
+import RenderMovies from './components/Movies';
 
 
 class App extends Component {
@@ -48,9 +49,19 @@ class App extends Component {
 
   renderMovies = () => {
     return this.state.movies.map(movie => {
-      return movie.title;
+      console.log(movie);
+      return(
+        <div key={movie.id} className="movieCard clearfix">
+          <div className="imageContainer">
+            <img src={`http://image.tmdb.org/t/p/w300/${movie.poster_path}`} alt={movie.overview} />
+          </div>
+          <h2>{movie.title}</h2>
+          <p>{movie.release_date}</p>
+        </div>
+        )
     })
   }
+
 
   render() {
     return (
@@ -65,7 +76,11 @@ class App extends Component {
             type="text" />
           <input type="submit" />
         </form>
-        <div>{this.renderMovies()}</div> 
+        <div className="clearfix">
+          <RenderMovies 
+            renderMovies={this.renderMovies}
+          />
+        </div>
       </div>
 
     );
