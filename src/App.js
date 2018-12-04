@@ -17,15 +17,15 @@ class App extends Component {
   getMovies = () => {
     axios.get('https://api.themoviedb.org/3/search/movie', {
       params: {
-        api_key: ' 0613920bcfda4651982add49adcb7163',
+        api_key: '0613920bcfda4651982add49adcb7163',
         language: 'en-US',
         sort_by: 'popularity.desc',
         query: this.state.searchParam
       }
     }).then((res) => {
-      console.log(res);
+      console.log(res.data.results);
       this.setState({
-        movies: res.data.results,
+        movies: res.data.results
       });
     });
   }
@@ -38,20 +38,24 @@ class App extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.getMovies(e);
+    console.log('handleSubmit');
+    // clears the search term and THEN use a callback function to get the movies from the API
     this.setState({
-      searchParam: this.state.searchTerm
-    })
-    console.log(this.state.searchParam);
+      searchParam: this.state.searchTerm,
+      searchTerm: ""
+    }, () => {this.getMovies(e)})    
   };
 
-
+  renderMovies = () => {
+    return this.state.movies.map(movie => {
+      return movie.title;
+    })
+  }
 
   render() {
     return (
       <div className="App">
         <h1>Movies</h1>
-
         <form onSubmit={this.handleSubmit} action="">
           <label htmlFor="searchTerm">Search for a Movie!</label>
           <input
@@ -61,6 +65,7 @@ class App extends Component {
             type="text" />
           <input type="submit" />
         </form>
+        <div>{this.renderMovies()}</div> 
       </div>
 
     );
