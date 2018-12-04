@@ -24,9 +24,11 @@ class App extends Component {
         query: this.state.searchParam
       }
     }).then((res) => {
-      console.log(res.data.results);
+      const filteredResults = res.data.results.filter(movie =>
+        (movie.poster_path !== null) && (movie.genre_ids !== [])
+      )
       this.setState({
-        movies: res.data.results
+        movies: filteredResults
       });
     });
   }
@@ -44,13 +46,13 @@ class App extends Component {
     this.setState({
       searchParam: this.state.searchTerm,
       searchTerm: ""
-    }, () => {this.getMovies(e)})    
+    }, () => { this.getMovies(e) })
   };
 
   renderMovies = () => {
     return this.state.movies.map(movie => {
       console.log(movie);
-      return(
+      return (
         <div key={movie.id} className="movieCard clearfix">
           <div className="imageContainer">
             <img src={`http://image.tmdb.org/t/p/w300/${movie.poster_path}`} alt={movie.overview} />
@@ -58,7 +60,7 @@ class App extends Component {
           <h2>{movie.title}</h2>
           <p>{movie.release_date}</p>
         </div>
-        )
+      )
     })
   }
 
@@ -77,7 +79,7 @@ class App extends Component {
           <input type="submit" />
         </form>
         <div className="clearfix">
-          <RenderMovies 
+          <RenderMovies
             renderMovies={this.renderMovies}
           />
         </div>
