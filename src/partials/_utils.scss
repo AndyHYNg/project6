@@ -1,0 +1,21 @@
+// COLORS
+$mainBlue: #004ea8;
+$grey: #c5c5c5;
+$yellow: #f1c400;
+
+// FONTS
+$primaryFont: 'Montserrat', sans-serif;
+
+// MIXINS
+
+@mixin bodyText () {
+    font-weight: 400;
+    font-family: $primaryFont;
+}
+
+@mixin headingText($size) {
+    font-weight: 800;
+    font-size: $size;
+    text-transform: uppercase;
+    font-family: $primaryFont;
+}
