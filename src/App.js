@@ -11,7 +11,8 @@ class App extends Component {
     this.state = {
       movies: [],
       searchTerm: '',
-      searchParam: ""
+      searchParam: "",
+      genreId: []
     }
   }
 
@@ -29,8 +30,52 @@ class App extends Component {
       )
       this.setState({
         movies: filteredResults
+      }, () => {
+        this.getGenre();
       });
     });
+  }
+
+  getGenre = () => {
+    axios.get('https://api.themoviedb.org/3/genre/movie/list', {
+      params: {
+        api_key: '0613920bcfda4651982add49adcb7163',
+        language: 'en-US'
+      }
+    }).then(res => {
+      // console.log(res);
+      const genreId = res.data.genres;
+      // console.log(res.data.genres);
+      this.setState({
+        genreId
+      })
+      // go through each movie and assign it to the variable currentMovie
+      this.state.movies.forEach(movie => {
+        const currentMovie = movie;
+        
+        // go through the genre array in each movie and assign it to the variable currentGenre
+        movie.genre_ids.forEach(genre => {
+          // console.log(genre);
+          const currentGenre = genre;
+          // console.log(currentGenre);
+
+          // go through the list of genres from the axios call and check if the id matches the id of the currentGenre
+          this.state.genreId.forEach((genre) => {
+            if (genre.id === currentGenre) {
+              // console.log(currentMovie.genre_ids.indexOf(currentGenre));
+
+              // go back to the currentMovie object and get the indexOf the matching currentGenre of the list of genres 
+              const indexOfGenre = currentMovie.genre_ids.indexOf(currentGenre);
+              //reassign the genre_id number to its matching genre name
+              currentMovie.genre_ids[indexOfGenre] = genre.name;
+              console.log(currentMovie);
+              // return currentMovie.genre_ids.indexOf(currentGenre);
+            }
+          })
+
+        })
+      })
+    })
   }
 
   handleChange = e => {
@@ -41,7 +86,7 @@ class App extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    console.log('handleSubmit');
+    // console.log('handleSubmit');
     // clears the search term and THEN use a callback function to get the movies from the API
     this.setState({
       searchParam: this.state.searchTerm,
@@ -51,7 +96,7 @@ class App extends Component {
 
   renderMovies = () => {
     return this.state.movies.map(movie => {
-      console.log(movie);
+      // console.log(movie);
       return (
         <div key={movie.id} className="movieCard clearfix">
           <div className="imageContainer">
