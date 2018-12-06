@@ -9,7 +9,10 @@ const DashboardGroup = props => {
       {Object.entries(props.groups).map(group => {
         return (
           <div className="dashboardOption">
-            <Link to="/group" style={{ textDecoration: "none" }}>
+            <Link
+              to={`/group/${group[1].groupID}`}
+              style={{ textDecoration: "none" }}
+            >
               <h3>{group[1].name}</h3>
               <p>
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
