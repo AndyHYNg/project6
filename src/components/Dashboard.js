@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import firebase, { auth, provider } from "../firebase";
 import { Route, Link } from "react-router-dom";
 import swal from "sweetalert";
+import DashboardGroup from "./DashboardGroup";
 
 const uuidv4 = require("uuid/v4");
 
@@ -9,8 +10,29 @@ class Dashboard extends Component {
   constructor() {
     super();
     this.state = {
-      groups: {}
+      groups: {},
+      user: null
     };
+  }
+
+  componentDidMount() {
+    if (this.props.userState) {
+      this.setState(
+        {
+          user: this.props.userState
+        },
+        () => {
+          this.populateGroupDBRef = firebase
+            .database()
+            .ref(`uid/${this.state.user.uid}/groups`);
+          this.populateGroupDBRef.on("value", snapshot => {
+            this.setState({
+              groups: snapshot.val() || {}
+            });
+          });
+        }
+      );
+    }
   }
 
   handleClick = async e => {
@@ -58,69 +80,20 @@ class Dashboard extends Component {
     }
   };
 
+  // this.props.userState contains our user information after authentication
+
   render() {
     return (
       <section className="dashboard">
         <div className="wrapper">
           <h2>Welcome Bitches</h2>
-          <div className="dashboardContainer clearfix">
-            <div className="dashboardOption">
-              <Link to="/group" style={{ textDecoration: "none" }}>
-                <h3>Box 1</h3>
-                <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Tenetur impedit autem et doloribus explicabo quod temporibus
-                  eligendi quam commodi quis.
-                </p>
-              </Link>
-            </div>
-            <button onClick={this.handleClick} className="dashboardOption">
-              <h3>Add Group</h3>
-              <i class="fas fa-plus" />
-            </button>
-            <div className="dashboardOption">
-              <div className="dashboardOptionContent">
-                <h3>Box 3</h3>
-                <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Tenetur impedit autem et doloribus explicabo quod temporibus
-                  eligendi quam commodi quis.
-                </p>
-              </div>
-            </div>
-            <div className="dashboardOption">
-              <div className="dashboardOptionContent">
-                <h3>Box 4</h3>
-                <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Tenetur impedit autem et doloribus explicabo quod temporibus
-                  eligendi quam commodi quis.
-                </p>
-              </div>
-            </div>
-            <div className="dashboardOption">
-              <div className="dashboardOptionContent">
-                <h3>Box 5</h3>
-                <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Tenetur impedit autem et doloribus explicabo quod temporibus
-                  eligendi quam commodi quis.
-                </p>
-              </div>
-            </div>
-            <div className="dashboardOption">
-              <div className="dashboardOptionContent">
-                <h3>Box 6</h3>
-                <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Tenetur impedit autem et doloribus explicabo quod temporibus
-                  eligendi quam commodi quis.
-                </p>
-              </div>
-            </div>
-          </div>
+          <DashboardGroup groups={this.state.groups} />
+          <button onClick={this.handleClick} className="dashboardOption">
+            <h3>Add Group</h3>
+            <i class="fas fa-plus" />
+          </button>
+          <button onClick={this.props.logOut}>Logout</button>
         </div>
-        <button onClick={this.props.logOut}>Logout</button>
       </section>
     );
   }
