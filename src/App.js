@@ -1,12 +1,22 @@
+// REACT COMPONENTS
 import React, { Component } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
+
+// COMPONENTS
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
+import SearchMovies from "./components/SearchMovies";
+
+// STYLES
 import "./App.scss";
-import axios from "axios";
-import RenderMovies from "./components/Movies";
+
+// METHODS
 import firebase, { auth, provider } from "./firebase";
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
-import SearchMovies from './components/SearchMovies';
 
 class App extends Component {
   constructor() {
@@ -32,6 +42,9 @@ class App extends Component {
             });
           });
         });
+        return <Redirect to="/dashboard" />;
+      } else {
+        return <Redirect to="/" />;
       }
     });
   };
@@ -45,13 +58,25 @@ class App extends Component {
     }
   }
 
+  logInGuest = () => {
+    this.setState({
+      user: "guest"
+    });
+  };
+
+  // logOutGuest = () => {
+  //   this.setState({
+  //     user: null
+  //   });
+  // };
+
   logIn = () => {
     auth.signInWithPopup(provider).then(result => {
       // setState can take in a second argument that is a callback function after it finished set state
       this.setState({
         user: result.user
       });
-    })
+    });
   };
 
   logOut = () => {
@@ -60,43 +85,32 @@ class App extends Component {
         user: null
       });
     });
+    // return <Redirect to="/" />;
   };
-
 
   render() {
     return (
       <Router>
         <div className="App">
-          <div className="login">
-            <div className="wrapper">
-              <h1>Cinemacrew</h1>
-              {
-                this.state.user ? (
-                  <button onClick={this.logOut}>Logout</button>
-                ) : (
-                    <button onClick={this.logIn}>Login</button>
-                  )
-              }
-
-              <button>Guest</button>
+          <Login
+            logIn={this.logIn}
+            logInGuest={this.logInGuest}
+            userState={this.state.user}
+          />
+          {this.state.user ? (
+            <div>
+              <Route
+                path="/dashboard"
+                render={() => (
+                  <Dashboard logOut={this.logOut} userState={this.state.user} />
+                )}
+              />
+              <nav>
+                <Link to="/dashboard">Dashboard</Link>
+              </nav>
+              <SearchMovies />
             </div>
-          </div>
-          {
-            this.state.user ? (
-              <div>
-                <Route path="/dashboard" component={Dashboard} />
-                <nav>
-                  <Link to="/dashboard">Dashboard</Link>
-                </nav>
-                <SearchMovies />
-              </div>
-            )
-              :
-              (
-                null
-              )
-          }
-
+          ) : null}
         </div>
       </Router>
     );

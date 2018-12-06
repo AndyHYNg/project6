@@ -1,35 +1,33 @@
 import React, { Component } from "react";
-import firebase, { auth, provider } from "../firebase";
-import { Route, Link } from 'react-router-dom';
-import App from '../App';
+import { Redirect } from "react-router";
 
-class Login extends Component {
-    constructor() {
-        super();
-        this.state = {
-            user: null
-        }
-    }
+// note: it's possible we need to make this a stateful component with the user state in here so we can have the login persist under ComponentDidMount
 
-    logIn = () => {
-        auth.signInWithPopup(provider).then(result => {
-            // setState can take in a second argument that is a callback function after it finished set state
-            this.setState({
-                user: result.user
-            });
-        })
-    };
-
-    render() {
-        return (
-            <div>
-                <h1>Welcome to Bilbo dragon's drag n drop cinemacrew</h1>
-                <button onClick={this.logIn}>Login</button>
-                <Route path="/dashboard" component={App} />
-                <button>Guest</button>
-            </div>
-        )
-    }
-}
+const Login = props => {
+  // if user is already logged in...
+  return props.userState ? (
+    // redirect to (similar to Link, but it's automatic) dashboard
+    <Redirect to="/dashboard/" />
+  ) : (
+    // otherwise, render login page
+    <div className="login">
+      <div className="wrapper">
+        <h1>Cinemacrew</h1>
+        {props.userState ? (
+          // with the redirect happening at the top, this shouldn't be necessary and can be set to null, can be removed later
+          <React.Fragment>
+            <button onClick={props.logOut}>Logout</button>
+            <button onClick={props.logOutGuest}>Logout</button>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <button onClick={props.logIn}>Login</button>
+            <button onClick={props.logInGuest}>Guest</button>
+          </React.Fragment>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default Login;
