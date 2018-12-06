@@ -10,28 +10,40 @@ class Dashboard extends Component {
                     <h2>Welcome Bitches</h2>
                     <div className="dashboardContainer clearfix">
                         <div className="dashboardOption">
-                            <h3>Box 1</h3>
-                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur impedit autem et doloribus explicabo quod temporibus eligendi quam commodi quis.</p>
+                            <div className="dashboardOptionContent">
+                                <h3>Box 1</h3>
+                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur impedit autem et doloribus explicabo quod temporibus eligendi quam commodi quis.</p>
+                            </div>
                         </div>
                         <div className="dashboardOption">
-                            <h3>Box 2</h3>
-                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur impedit autem et doloribus explicabo quod temporibus eligendi quam commodi quis.</p>
+                            <div className="dashboardOptionContent">
+                                <h3>Box 2</h3>
+                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur impedit autem et doloribus explicabo quod temporibus eligendi quam commodi quis.</p>
+                            </div>
                         </div>
                         <div className="dashboardOption">
-                            <h3>Box 3</h3>
-                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur impedit autem et doloribus explicabo quod temporibus eligendi quam commodi quis.</p>
+                            <div className="dashboardOptionContent">
+                                <h3>Box 3</h3>
+                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur impedit autem et doloribus explicabo quod temporibus eligendi quam commodi quis.</p>
+                            </div>
                         </div>
                         <div className="dashboardOption">
-                            <h3>Box 4</h3>
-                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur impedit autem et doloribus explicabo quod temporibus eligendi quam commodi quis.</p>
+                            <div className="dashboardOptionContent">
+                                <h3>Box 4</h3>
+                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur impedit autem et doloribus explicabo quod temporibus eligendi quam commodi quis.</p>
+                            </div>
                         </div>
                         <div className="dashboardOption">
-                            <h3>Box 5</h3>
-                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur impedit autem et doloribus explicabo quod temporibus eligendi quam commodi quis.</p>
+                            <div className="dashboardOptionContent">
+                                <h3>Box 5</h3>
+                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur impedit autem et doloribus explicabo quod temporibus eligendi quam commodi quis.</p>
+                            </div>
                         </div>
                         <div className="dashboardOption">
-                            <h3>Box 6</h3>
-                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur impedit autem et doloribus explicabo quod temporibus eligendi quam commodi quis.</p>
+                            <div className="dashboardOptionContent">
+                                <h3>Box 6</h3>
+                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur impedit autem et doloribus explicabo quod temporibus eligendi quam commodi quis.</p>
+                            </div>
                         </div>
                     </div>
                 </div>

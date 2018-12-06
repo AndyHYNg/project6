@@ -11,7 +11,7 @@ $primaryFont: 'Montserrat', sans-serif;
 @mixin bodyText () {
     font-weight: 400;
     font-family: $primaryFont;
-    font-size: 2rem;
+    font-size: 1.8rem;
 }
 
 @mixin headingText($size) {
@@ -27,6 +27,7 @@ html {
 
 body {
     font-size: 1.6rem;
+    @include bodyText;
 }
 
 .wrapper {
@@ -34,4 +35,21 @@ body {
     width: 85%;
     margin: 0 auto;
     // border: 2px solid green;
+}
+
+h1, h2, h3, p {
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    @include headingText(10rem);
+}
+
+h2 {
+    @include headingText(5rem);
+}
+
+h3 {
+    @include headingText(2.5rem);
 }
