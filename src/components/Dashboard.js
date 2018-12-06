@@ -90,7 +90,7 @@ class Dashboard extends Component {
           <DashboardGroup groups={this.state.groups} />
           <button onClick={this.handleClick} className="dashboardOption">
             <h3>Add Group</h3>
-            <i class="fas fa-plus" />
+            <i className="fas fa-plus" />
           </button>
           <button onClick={this.props.logOut}>Logout</button>
         </div>

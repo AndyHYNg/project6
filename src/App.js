@@ -11,6 +11,7 @@ import {
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import SearchMovies from "./components/SearchMovies";
+import Group from "./components/Group";
 
 // STYLES
 import "./App.scss";
@@ -105,7 +106,11 @@ class App extends Component {
                   <Dashboard logOut={this.logOut} userState={this.state.user} />
                 )}
               />
-              <Route path="/group/" render={() => <SearchMovies />} />
+              <Route
+                path="/group/:group_id/search"
+                render={() => <SearchMovies />}
+              />
+              <Route path="/group/:group_id" render={() => <Group />} />
               <nav>
                 <Link to="/dashboard">Dashboard</Link>
               </nav>
