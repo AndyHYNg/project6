@@ -28,7 +28,8 @@ class SearchMovies extends Component {
     this.setState(
       {
         searchParam: this.state.searchTerm,
-        searchTerm: ""
+        searchTerm: "",
+        movies: []
       },
       () => {
         this.getMovies(e);
@@ -170,7 +171,7 @@ class SearchMovies extends Component {
           const thisMovie = results.data;
           movieIdArray.push(thisMovie);
           this.setState({
-            movies: movieIdArray
+            movies: movieIdArray,
           });
           console.log(this.state.movies);
           // console.log(movieIdArray);
