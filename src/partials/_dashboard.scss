@@ -1,0 +1,31 @@
+.dashboard {
+    min-height: 100vh;
+    // border: 2px solid red;
+}
+
+.dashboardContainer {
+    width: 100%;
+}
+
+.dashboardOption {
+    width: calc((100% - 80px) / 3);
+    float: left;
+    // border: 2px solid purple;
+    margin-right: 40px;
+}
+
+.dashboardContainer:nth-child(3) {
+    margin-right: 0;
+    // background: blue;
+}
+
+
+// .imageGallery img {
+//     float: left;
+//     width: calc((100% - 80px) / 3);
+//     margin-right: 40px;
+// }
+
+// .imageContainer img:nth-child(3) {
+//     margin-right: 0;
+// }

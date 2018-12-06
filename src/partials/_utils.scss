@@ -11,6 +11,7 @@ $primaryFont: 'Montserrat', sans-serif;
 @mixin bodyText () {
     font-weight: 400;
     font-family: $primaryFont;
+    font-size: 2rem;
 }
 
 @mixin headingText($size) {
@@ -18,4 +19,19 @@ $primaryFont: 'Montserrat', sans-serif;
     font-size: $size;
     text-transform: uppercase;
     font-family: $primaryFont;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+}
+
+.wrapper {
+    max-width: 1280px;
+    width: 85%;
+    margin: 0 auto;
+    // border: 2px solid green;
 }
