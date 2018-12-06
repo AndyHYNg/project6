@@ -67,17 +67,19 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <div>
-            <h1>Welcome to Bilbo dragon's drag n drop cinemacrew</h1>
-            {
-              this.state.user ? (
-                <button onClick={this.logOut}>Logout</button>
-              ) : (
-                  <button onClick={this.logIn}>Login</button>
-                )
-            }
+          <div className="login">
+            <div className="wrapper">
+              <h1>Cinemacrew</h1>
+              {
+                this.state.user ? (
+                  <button onClick={this.logOut}>Logout</button>
+                ) : (
+                    <button onClick={this.logIn}>Login</button>
+                  )
+              }
 
-            <button>Guest</button>
+              <button>Guest</button>
+            </div>
           </div>
           {
             this.state.user ? (
