@@ -3,6 +3,8 @@ import firebase, { auth, provider } from "../firebase";
 import { Route, Link } from "react-router-dom";
 import swal from "sweetalert";
 
+const uuidv4 = require("uuid/v4");
+
 class Dashboard extends Component {
   constructor() {
     super();
@@ -23,6 +25,36 @@ class Dashboard extends Component {
 
     if (value !== null && value !== "") {
       swal(`Group name: ${value}`);
+      const newKey = uuidv4();
+      const userDBRef = firebase
+        .database()
+        .ref(`uid/${this.props.userState.uid}/groups/`);
+      const newGroupObject = {
+        name: value,
+        groupID: newKey
+      };
+
+      // this.props.userState.displayName: this.props.userState.uid
+      const newUserGroupObject = {
+        name: value,
+        movies: [],
+        users: [],
+        groupID: newKey
+      };
+      const userObject = {};
+      userObject[this.props.userState.displayName] = this.props.userState.uid;
+      newUserGroupObject.users.push(userObject);
+      console.log(newUserGroupObject);
+      //   console.log(userDBRef);
+      //   userDBRef.on("value", snapshot => {
+      //     console.log(snapshot.val());
+      //   });
+      userDBRef.push(newGroupObject);
+      const userGroupDBRef = firebase.database().ref(`userGroups/`);
+      userGroupDBRef.push(newUserGroupObject);
+
+      //   const newKey = userDBRef.push(value).key;
+      //   userGroupDBRef.child(newKey);
     }
   };
 
