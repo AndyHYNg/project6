@@ -51,10 +51,16 @@ class SearchMovies extends Component {
                 const filteredResults = res.data.results.filter(
                     movie => movie.poster_path !== null && movie.genre_ids !== []
                 );
+
+                const idArray = filteredResults.map(id => {
+                    return id;
+                })
+
                 // this.setState({
                 //     movies: filteredResults
                 // })
-                return filteredResults
+                // console.log(filteredResults);
+                return idArray;
                 // this.getMovieId(filteredResults);
                 // console.log(filteredResults);
                 // const filteredMovieIds = this.getMovieId(filteredResults);
@@ -65,13 +71,95 @@ class SearchMovies extends Component {
                 //         movies: filteredMovieIds
                 //     }
                 // );
-            }).then(filteredResults => this.getMovieId(filteredResults));
+                // console.log(filteredResults);
+            }).then(idArray => {
+                console.log(idArray);
+                this.getMovieId(idArray)
+            });
     };
 
 
+    movieIdCall = (id) => {
+        return axios
+            .get(`https://api.themoviedb.org/3/movie/${id}`, {
+                params: {
+                    api_key: "0613920bcfda4651982add49adcb7163",
+                    language: "en-US"
+                }
+            })
+    }
+
     getMovieId = (array) => {
-        console.log(array);
-        const movieIdArray = array.map((movie) => {
+        // console.log(array);
+        // // const movieIdArray = [];
+
+        // var moviePromise = new Promise((resolve, reject) => {
+        //     const movieVals = array.map(this.movieIdCall);
+        // console.log(movieVals);
+        // resolve('done')
+        // console.log(...movieVals);
+        // resolve(movieVals);
+        // return movieVals;
+        // const movieArray = array.map((movie) => {
+        //     axios
+        //         .get(`https://api.themoviedb.org/3/movie/${movie.id}`, {
+        //             params: {
+        //                 api_key: "0613920bcfda4651982add49adcb7163",
+        //                 language: "en-US"
+        //             }
+        //         }).then((results) => {
+        //             // console.log(results.data);
+        //             // console.log(results.data);
+        //             const thisMovie = results.data;
+        //             console.log(thisMovie);
+        //             // console.log(movieIdArray);
+        //             return thisMovie;
+        //         })
+        // })
+        // // console.log(allMovies);
+        // resolve(movieArray);
+        //     })
+
+        //     moviePromise.then((res) => {
+        //         return res
+        //         // console.log(res[0].data);
+        //         // return res;
+        //         // this.setState({
+        //         //     movies: res
+        //         // })
+        //     }).then(data => {
+        //         console.log(data);
+        //     })
+
+
+        // }
+
+
+        // const moviePromise = new Promise((resolve, reject) => {
+        //     const movieVals = array.map(movieIdCall);
+        //     resolve(movieVals);
+        //     const movieArray = array.map((movie) => {
+        //         axios
+        //             .get(`https://api.themoviedb.org/3/movie/${movie.id}`, {
+        //                 params: {
+        //                     api_key: "0613920bcfda4651982add49adcb7163",
+        //                     language: "en-US"
+        //                 }
+        //             }).then((results) => {
+        //                 // console.log(results.data);
+        //                 // console.log(results.data);
+        //                 const thisMovie = results.data;
+        //                 console.log(thisMovie);
+        //                 // console.log(movieIdArray);
+        //                 return thisMovie;
+        //             })
+        //     })
+        //     // console.log(allMovies);
+        //     resolve(movieArray);
+        // })
+
+        // Working version (not great)
+        array.forEach((movie) => {
             axios
                 .get(`https://api.themoviedb.org/3/movie/${movie.id}`, {
                     params: {
@@ -80,19 +168,27 @@ class SearchMovies extends Component {
                     }
                 }).then((results) => {
                     // console.log(results.data);
-                    // thisMovie = results.data;
+                    // console.log(results.data);
+                    const movieIdArray = this.state.movies;
+                    const thisMovie = results.data;
+                    movieIdArray.push(thisMovie);
+                    this.setState({
+                        movies: movieIdArray
+                    })
+                    console.log(this.state.movies);
                     // console.log(movieIdArray);
-                    return results.data;
+                    // return results.data;
                 })
         })
-        // console.log(movieIdArray);
-        this.setState({
-            movies: movieIdArray
-        })
-        // console.log(this.state.movies);
+        console.log(this.state.movies);
+        // this.setState({
+        //     movies: movieIdArray
+        // })
+        console.log(this.state.movies);
         // return movieIdArray;
-        // console.log(this.state.movies)
+        console.log(this.state.movies)
     }
+
 
     render() {
         return (
@@ -108,8 +204,8 @@ class SearchMovies extends Component {
                     />
                     <input type="submit" />
                 </form>
-                {/* <RenderMovies movies={this.state.movies} /> */}
-            </div>
+                <RenderMovies movies={this.state.movies} />
+            </div >
         )
     }
 }
