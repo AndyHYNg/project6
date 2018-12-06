@@ -105,10 +105,11 @@ class App extends Component {
                   <Dashboard logOut={this.logOut} userState={this.state.user} />
                 )}
               />
+              <Route path="/group/" render={() => <SearchMovies />} />
               <nav>
                 <Link to="/dashboard">Dashboard</Link>
               </nav>
-              <SearchMovies />
+              {/* <SearchMovies /> */}
             </div>
           ) : null}
         </div>
