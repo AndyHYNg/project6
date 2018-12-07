@@ -56,10 +56,10 @@ class Dashboard extends Component {
     }
   }
 
-  handleClick = async e => {
+  createRoom = async e => {
     // ES7's async, page will wait until user has performed any action by the sweet alert prompt before proceeding
     e.preventDefault();
-    const value = await swal("Type the group name:", {
+    const value = await swal("Type the group name you want to create:", {
       content: "input",
       buttons: {
         cancel: true,
@@ -103,6 +103,40 @@ class Dashboard extends Component {
     }
   };
 
+  joinRoom = async e => {
+    // ES7's async, page will wait until user has performed any action by the sweet alert prompt before proceeding
+    e.preventDefault();
+    const value = await swal("Type the group name you want to join:", {
+      content: "input",
+      buttons: {
+        cancel: true,
+        confirm: true
+      }
+    });
+
+    this.joinUserGroupDBRef = firebase.database().ref(`/userGroups/`);
+
+    this.joinUserGroupDBRef.on("value", snapshot => {
+      // console.log(snapshot.val());
+      const groupDB = snapshot.val();
+      for (let group in groupDB) {
+        console.log(groupDB[group]);
+        if (value === groupDB[group].groupID) {
+          // console.log("YOU FOUND ME", this.state.user);
+          this.joinSpecificGroupDBRef = firebase
+            .database()
+            .ref(`/userGroups/${group}/users/`);
+          const joinUserObject = {};
+          joinUserObject[this.state.user.displayName] = this.state.user.uid;
+          this.joinSpecificGroupDBRef.push(joinUserObject);
+          return;
+        }
+      }
+    });
+
+    // this.joinSpecificRoomDBRef = firebase.database().ref(`userGroups/`)
+  };
+
   // this.props.userState contains our user information after authentication
 
   render() {
@@ -115,8 +149,12 @@ class Dashboard extends Component {
           {/* last box is a button that will allow user to create a new group */}
           {/* NOTE: will need to also be able to join user to an existing group created by a user */}
           {/* MOAR NOTE: upon removing a group, we only want to remove the user who chose to remove from their dashboard, need to test once the group has no members */}
-          <button onClick={this.handleClick} className="dashboardOption">
+          <button onClick={this.createRoom} className="dashboardOption">
             <h3>Add Group</h3>
+            <i className="fas fa-plus" />
+          </button>
+          <button onClick={this.joinRoom} className="dashboardOption">
+            <h3>Join Group</h3>
             <i className="fas fa-plus" />
           </button>
           <button onClick={this.props.logOut} className="logOutButton">
