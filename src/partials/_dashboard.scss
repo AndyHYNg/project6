@@ -61,8 +61,9 @@
     // top: -60px;
 // }
 
-.dashboardContainer div:nth-child(3n + 3) {
+.dashboard .dashboardOption:nth-child(2) {
     margin-right: 0;
+    background: red;
 }
 
 .dashboardOption::before {

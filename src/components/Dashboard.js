@@ -87,13 +87,11 @@ class Dashboard extends Component {
       <section className="dashboard">
         <div className="wrapper clearfix">
           <h2>Welcome {this.props.userState.displayName}</h2>
-          <div className="test">
-            <DashboardGroup groups={this.state.groups} />
-            <button onClick={this.handleClick} className="dashboardOption test">
-              <h3>Add Group</h3>
-              <i className="fas fa-plus" />
-            </button>
-          </div>
+          <DashboardGroup groups={this.state.groups} />
+          <button onClick={this.handleClick} className="dashboardOption">
+            <h3>Add Group</h3>
+            <i className="fas fa-plus" />
+          </button>
           <button onClick={this.props.logOut} className="logOutButton">Logout</button>
         </div>
       </section>
