@@ -4,7 +4,8 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
-  Redirect
+  Redirect,
+  Switch
 } from "react-router-dom";
 
 // COMPONENTS
@@ -30,11 +31,7 @@ class App extends Component {
   componentDidMount = () => {
     auth.onAuthStateChanged(user => {
       if (user) {
-        this.setState({ user }, () => {
-          return <Redirect to="/dashboard" />;
-        });
-      } else {
-        return <Redirect to="/" />;
+        this.setState({ user });
       }
     });
   };
@@ -53,7 +50,6 @@ class App extends Component {
 
   logIn = () => {
     auth.signInWithPopup(provider).then(result => {
-      // setState can take in a second argument that is a callback function after it finished set state
       this.setState({
         user: result.user
       });
@@ -73,30 +69,41 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Login
-            logIn={this.logIn}
-            logInGuest={this.logInGuest}
-            userState={this.state.user}
-          />
-          {this.state.user ? (
-            <div>
-              <Route
-                path="/dashboard"
-                render={() => (
-                  <Dashboard logOut={this.logOut} userState={this.state.user} />
-                )}
-              />
-              <Route
-                path="/group/:group_id/search"
-                render={() => <SearchMovies />}
-              />
-              <Route path="/group/:group_id" render={() => <Group />} />
-              <nav>
-                <Link to="/dashboard">Dashboard</Link>
-              </nav>
-              {/* <SearchMovies /> */}
-            </div>
-          ) : null}
+          {/* Switch manages and renders all Routes exclusively */}
+          <Switch>
+            {/* If user is logged in... */}
+            {this.state.user ? (
+              <React.Fragment>
+                {/* Automatically redirect to Dashboard render */}
+                <Redirect from="/" to="/dashboard" />
+                {/* All Routes inside the Switch and is active if user is logged in */}
+                <Route
+                  path="/dashboard"
+                  render={() => (
+                    <Dashboard
+                      logOut={this.logOut}
+                      userState={this.state.user}
+                    />
+                  )}
+                />
+                <Route
+                  path="/group/:group_id/search"
+                  render={() => <SearchMovies />}
+                />
+                <Route path="/group/:group_id" render={() => <Group />} />
+              </React.Fragment>
+            ) : (
+              // If user isn't logged in, redirect link back to root and render the Login component
+              <React.Fragment>
+                <Redirect to="/" />
+                <Login
+                  logIn={this.logIn}
+                  logInGuest={this.logInGuest}
+                  userState={this.state.user}
+                />
+              </React.Fragment>
+            )}
+          </Switch>
         </div>
       </Router>
     );

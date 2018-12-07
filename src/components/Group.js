@@ -14,7 +14,7 @@ class Group extends Component {
     return (
       <div>
         <h3>Group name</h3>
-        {console.log(this.props.groups)}
+        {/* {console.log(this.props.groups)} */}
         {/* <Link to="/">
           <i className="fas fa-search" />
         </Link> */}

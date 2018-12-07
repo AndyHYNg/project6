@@ -15,6 +15,7 @@ class Dashboard extends Component {
     };
   }
 
+  // populates a snapshot of the logged in user's group db
   componentDidMount() {
     if (this.props.userState) {
       this.setState(
@@ -39,6 +40,8 @@ class Dashboard extends Component {
     // this is called when a component leaves the page
     // in our single page app with one component, it will never be called
     // if we were rerouting to a different view, it would be called when the route changed.
+
+    // turn off all dbRefs called in this component after any sort of re-routing
     if (this.dbRef) {
       this.populateGroupDBRef.off();
       this.userGroupDBRef.off();
@@ -47,6 +50,7 @@ class Dashboard extends Component {
   }
 
   handleClick = async e => {
+    // ES7's async, page will wait until user has performed any action by the sweet alert prompt before proceeding
     e.preventDefault();
     const value = await swal("Type the group name:", {
       content: "input",
@@ -56,7 +60,9 @@ class Dashboard extends Component {
       }
     });
 
+    // if the input text of the sweet alert is NOT empty of null (created by pressing Cancel button)...
     if (value !== null && value !== "") {
+      // creates necessary db nodes (in user's db and usergroup db)
       swal(`Group name: ${value}`);
       const newKey = uuidv4();
       this.userDBRef = firebase
@@ -67,7 +73,6 @@ class Dashboard extends Component {
         groupID: newKey
       };
 
-      // this.props.userState.displayName: this.props.userState.uid
       const newUserGroupObject = {
         name: value,
         movies: [],
@@ -98,7 +103,10 @@ class Dashboard extends Component {
       <section className="dashboard">
         <div className="wrapper clearfix">
           <h2>Welcome {this.props.userState.displayName}</h2>
+          {/* Component render for all the user's groups  */}
           <DashboardGroup groups={this.state.groups} />
+          {/* last box is a button that will allow user to create a new group */}
+          {/* NOTE: will need to also be able to join user to an existing group created by a user */}
           <button onClick={this.handleClick} className="dashboardOption">
             <h3>Add Group</h3>
             <i className="fas fa-plus" />
