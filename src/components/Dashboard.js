@@ -85,14 +85,16 @@ class Dashboard extends Component {
   render() {
     return (
       <section className="dashboard">
-        <div className="wrapper">
-          <h2>Welcome Bitches</h2>
-          <DashboardGroup groups={this.state.groups} />
-          <button onClick={this.handleClick} className="dashboardOption">
-            <h3>Add Group</h3>
-            <i className="fas fa-plus" />
-          </button>
-          <button onClick={this.props.logOut}>Logout</button>
+        <div className="wrapper clearfix">
+          <h2>Welcome {this.props.userState.displayName}</h2>
+          <div className="test">
+            <DashboardGroup groups={this.state.groups} />
+            <button onClick={this.handleClick} className="dashboardOption test">
+              <h3>Add Group</h3>
+              <i className="fas fa-plus" />
+            </button>
+          </div>
+          <button onClick={this.props.logOut} className="logOutButton">Logout</button>
         </div>
       </section>
     );
