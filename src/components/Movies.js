@@ -15,6 +15,14 @@ const RenderMovies = props => {
             </div>
             <h2>{movie.title}</h2>
             <p>{movie.release_date}</p>
+            <div>
+              <button>
+                <i class="fas fa-star" />
+              </button>
+              <button>
+                <i class="fas fa-eye" />
+              </button>
+            </div>
           </div>
         );
       })}
