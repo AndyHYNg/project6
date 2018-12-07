@@ -23,6 +23,7 @@ $primaryFont: 'Montserrat', sans-serif;
 
 html {
     font-size: 62.5%;
+    position: relative;
 }
 
 body {
@@ -44,6 +45,8 @@ h1, h2, h3, p {
 
 h1 {
     @include headingText(10rem);
+    position: relative;
+    z-index: 10;
 }
 
 h2 {
@@ -52,4 +55,11 @@ h2 {
 
 h3 {
     @include headingText(2.5rem);
+}
+
+.particles {
+  position: absolute;
+  height: 90%;
+  width: 100%;
+  z-index: 1;
 }

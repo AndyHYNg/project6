@@ -14,5 +14,7 @@
         font-size: 3rem;
         margin: 0 20px;
         border-bottom: 4px solid $yellow;
+        z-index: 10;
+        position: relative;
     }
 }
