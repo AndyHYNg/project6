@@ -97,7 +97,7 @@ class App extends Component {
                 path="/group/:group_id/search"
                 render={() => <SearchMovies />}
               />
-              <Route path="/group/:group_id" render={() => <Group />} />
+              <Route exact path="/group/:group_id" render={() => <Group />} />
             </React.Fragment>
           ) : (
             // If user isn't logged in, redirect link back to root and render the Login component

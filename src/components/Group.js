@@ -48,11 +48,11 @@ class Group extends Component {
       <div>
         {/* {console.log(this.props.match.params.group_id)} */}
         <h3>Group name</h3>
-        <SearchMovies />
+        {/* <SearschMovies /> */}
         {/* {console.log(window.location.href)} */}
-        {/* <Link to={`/${}`}>
+        <Link to={`/group/${this.props.match.params.group_id}/search`}>
           <i className="fas fa-search" />
-        </Link> */}
+        </Link>
       </div>
     );
   }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 
 const RenderMovies = props => {
   return (
@@ -16,10 +16,13 @@ const RenderMovies = props => {
             <h2>{movie.title}</h2>
             <p>{movie.release_date}</p>
             <div>
-              <button>
+              <button
+                value="favourite"
+                onClick={() => props.favouriteMovie(movie)}
+              >
                 <i class="fas fa-star" />
               </button>
-              <button>
+              <button value="watchlist">
                 <i class="fas fa-eye" />
               </button>
             </div>
