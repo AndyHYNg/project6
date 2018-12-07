@@ -31,33 +31,13 @@ class App extends Component {
     auth.onAuthStateChanged(user => {
       if (user) {
         this.setState({ user }, () => {
-          // create reference specific to user
-          // this.dbRef creates the ref in the the constructor state (allowable since it still resides in setState)
-          this.dbRef = firebase.database().ref(`/${this.state.user.uid}`);
-
-          // attaching our event listener to firebase
-          this.dbRef.on("value", snapshot => {
-            this.setState({
-              // putting the empty object edge case in the entry point of getting snapshot is better than putting the edge cases later in the code
-              diaryEntries: snapshot.val() || {}
-            });
-          });
+          return <Redirect to="/dashboard" />;
         });
-        return <Redirect to="/dashboard" />;
       } else {
         return <Redirect to="/" />;
       }
     });
   };
-
-  componentWillUnmount() {
-    // this is called when a component leaves the page
-    // in our single page app with one component, it will never be called
-    // if we were rerouting to a different view, it would be called when the route changed.
-    if (this.dbRef) {
-      this.dbRef.off();
-    }
-  }
 
   logInGuest = () => {
     this.setState({

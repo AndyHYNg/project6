@@ -35,6 +35,17 @@ class Dashboard extends Component {
     }
   }
 
+  componentWillUnmount() {
+    // this is called when a component leaves the page
+    // in our single page app with one component, it will never be called
+    // if we were rerouting to a different view, it would be called when the route changed.
+    if (this.dbRef) {
+      this.populateGroupDBRef.off();
+      this.userGroupDBRef.off();
+      this.userDBRef.off();
+    }
+  }
+
   handleClick = async e => {
     e.preventDefault();
     const value = await swal("Type the group name:", {
@@ -48,7 +59,7 @@ class Dashboard extends Component {
     if (value !== null && value !== "") {
       swal(`Group name: ${value}`);
       const newKey = uuidv4();
-      const userDBRef = firebase
+      this.userDBRef = firebase
         .database()
         .ref(`uid/${this.props.userState.uid}/groups/`);
       const newGroupObject = {
@@ -71,9 +82,9 @@ class Dashboard extends Component {
       //   userDBRef.on("value", snapshot => {
       //     console.log(snapshot.val());
       //   });
-      userDBRef.push(newGroupObject);
-      const userGroupDBRef = firebase.database().ref(`userGroups/`);
-      userGroupDBRef.push(newUserGroupObject);
+      this.userDBRef.push(newGroupObject);
+      this.userGroupDBRef = firebase.database().ref(`userGroups/`);
+      this.userGroupDBRef.push(newUserGroupObject);
 
       //   const newKey = userDBRef.push(value).key;
       //   userGroupDBRef.child(newKey);
@@ -92,7 +103,9 @@ class Dashboard extends Component {
             <h3>Add Group</h3>
             <i className="fas fa-plus" />
           </button>
-          <button onClick={this.props.logOut} className="logOutButton">Logout</button>
+          <button onClick={this.props.logOut} className="logOutButton">
+            Logout
+          </button>
         </div>
       </section>
     );
