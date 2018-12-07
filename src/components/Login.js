@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Redirect } from "react-router";
 import Particles from "react-particles-js";
 
-// note: it's possible we need to make this a stateful component with the user state in here so we can have the login persist under ComponentDidMount
-
 const particleStyle = {
   particles: {
     number: {
@@ -36,36 +34,24 @@ const particleStyle = {
       out_mode: "out"
     }
   }
-}
+};
 
+// Login will only render if the user is not logged in, as depicted in App.js 's render method
 const Login = props => {
-  // if user is already logged in...
-  return props.userState ? (
-    // redirect to (similar to Link, but it's automatic) dashboard
-    <Redirect to="/dashboard/" />
-  ) : (
-      // otherwise, render login page
-      <div>
-        <div className="login">
-          <Particles className="particles" params={particleStyle} />
-          <div className="wrapper loginContainer">
-            <h1>Cinemacrew</h1>
-            {props.userState ? (
-              // with the redirect happening at the top, this shouldn't be necessary and can be set to null, can be removed later
-              <React.Fragment>
-                <button onClick={props.logOut}>Logout</button>
-                <button onClick={props.logOutGuest}>Logout</button>
-              </React.Fragment>
-            ) : (
-                <React.Fragment>
-                  <button onClick={props.logIn}>Login</button>
-                  <button onClick={props.logInGuest}>Guest</button>
-                </React.Fragment>
-              )}
-          </div>
+  return (
+    <div>
+      <div className="login">
+        <Particles className="particles" params={particleStyle} />
+        <div className="wrapper loginContainer">
+          <h1>Cinemacrew</h1>
+          <React.Fragment>
+            <button onClick={props.logIn}>Login</button>
+            <button onClick={props.logInGuest}>Guest</button>
+          </React.Fragment>
         </div>
       </div>
-    );
+    </div>
+  );
 };
 
 export default Login;
