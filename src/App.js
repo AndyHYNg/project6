@@ -68,43 +68,49 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
-          {/* Switch manages and renders all Routes exclusively */}
-          <Switch>
-            {/* If user is logged in... */}
-            {this.state.user ? (
-              <React.Fragment>
-                {/* Automatically redirect to Dashboard render */}
-                <Redirect from="/" to="/dashboard" />
-                {/* All Routes inside the Switch and is active if user is logged in */}
-                <Route
-                  path="/dashboard"
-                  render={() => (
-                    <Dashboard
-                      logOut={this.logOut}
-                      userState={this.state.user}
-                    />
-                  )}
-                />
-                <Route
-                  path="/group/:group_id/search"
-                  render={() => <SearchMovies />}
-                />
-                <Route path="/group/:group_id" render={() => <Group />} />
-              </React.Fragment>
-            ) : (
-              // If user isn't logged in, redirect link back to root and render the Login component
-              <React.Fragment>
-                <Redirect to="/" />
-                <Login
-                  logIn={this.logIn}
-                  logInGuest={this.logInGuest}
-                  userState={this.state.user}
-                />
-              </React.Fragment>
-            )}
-          </Switch>
-        </div>
+        {/* Switch manages and renders all Routes exclusively */}
+        <Switch>
+          {/* If user is logged in... */}
+          {this.state.user ? (
+            <React.Fragment>
+              {/* Automatically redirect to Dashboard render */}
+              <Redirect from="/" to="/dashboard" />
+              {/* All Routes inside the Switch and is active if user is logged in */}
+              {/* <Route
+                exact
+                path="/"
+                render={() => (
+                  <Login
+                    logIn={this.logIn}
+                    logInGuest={this.logInGuest}
+                    userState={this.state.user}
+                  />
+                )}
+              /> */}
+              <Route
+                path="/dashboard"
+                render={() => (
+                  <Dashboard logOut={this.logOut} userState={this.state.user} />
+                )}
+              />
+              <Route
+                path="/group/:group_id/search"
+                render={() => <SearchMovies />}
+              />
+              <Route path="/group/:group_id" render={() => <Group />} />
+            </React.Fragment>
+          ) : (
+            // If user isn't logged in, redirect link back to root and render the Login component
+            <React.Fragment>
+              <Redirect to="/" />
+              <Login
+                logIn={this.logIn}
+                logInGuest={this.logInGuest}
+                userState={this.state.user}
+              />
+            </React.Fragment>
+          )}
+        </Switch>
       </Router>
     );
   }

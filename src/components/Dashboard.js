@@ -107,6 +107,7 @@ class Dashboard extends Component {
           <DashboardGroup groups={this.state.groups} />
           {/* last box is a button that will allow user to create a new group */}
           {/* NOTE: will need to also be able to join user to an existing group created by a user */}
+          {/* MOAR NOTE: upon removing a group, we only want to remove the user who chose to remove from their dashboard, need to test once the group has no members */}
           <button onClick={this.handleClick} className="dashboardOption">
             <h3>Add Group</h3>
             <i className="fas fa-plus" />

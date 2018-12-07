@@ -14,8 +14,8 @@ class Group extends Component {
     return (
       <div>
         <h3>Group name</h3>
-        {/* {console.log(this.props.groups)} */}
-        {/* <Link to="/">
+        {console.log(window.location.href)}
+        {/* <Link to={`/${}`}>
           <i className="fas fa-search" />
         </Link> */}
       </div>
