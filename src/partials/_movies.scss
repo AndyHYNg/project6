@@ -1,16 +1,17 @@
 .movieCard {
-    border: 2px solid red;
-    width: calc(33.3% - 40px);
-    margin: 20px;
+  border: 2px solid red;
+  // width: calc(33.3% - 40px);
+  width: 100%;
+  margin: 20px;
+  float: left;
+  height: 500px;
+  .imageContainer {
     float: left;
-    height: 500px;
-    .imageContainer {
-        float: left;
-        border: 2px blue solid;
-        min-height: 100%;
-        img {
-            display: block;
-            max-height: 100%;
-        }
+    border: 2px blue solid;
+    min-height: 100%;
+    img {
+      display: block;
+      max-height: 100%;
     }
+  }
 }

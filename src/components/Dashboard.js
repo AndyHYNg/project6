@@ -42,9 +42,16 @@ class Dashboard extends Component {
     // if we were rerouting to a different view, it would be called when the route changed.
 
     // turn off all dbRefs called in this component after any sort of re-routing
-    if (this.dbRef) {
+    // note: check this.dbRef
+    if (this.populateGroupDBRef) {
       this.populateGroupDBRef.off();
+    }
+
+    if (this.userGroupDBRef) {
       this.userGroupDBRef.off();
+    }
+
+    if (this.userDBRef) {
       this.userDBRef.off();
     }
   }

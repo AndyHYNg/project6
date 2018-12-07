@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import firebase, { auth, provider } from "../firebase";
-import { Route, Link } from "react-router-dom";
+import { Route, Link, withRouter } from "react-router-dom";
 import axios from "axios";
 import RenderMovies from "./Movies";
 
@@ -14,6 +14,51 @@ class SearchMovies extends Component {
       genreId: []
     };
   }
+
+  // this is necessary so we can do a check for running count here
+  componentDidMount() {
+    this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
+    this.populateGroupMoviesDBRef.on("value", snapshot => {
+      console.log(this.props.match.params.group_id);
+      Object.entries(snapshot.val()).map(group => {
+        if (group[1].groupID === this.props.match.params.group_id) {
+          this.firebaseKey = group[0];
+          this.setState({
+            group: group[1]
+          });
+        }
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    // this is called when a component leaves the page
+    // in our single page app with one component, it will never be called
+    // if we were rerouting to a different view, it would be called when the route changed.
+
+    // turn off all dbRefs called in this component after any sort of re-routing
+    if (this.populateGroupMoviesDBRef) {
+      this.populateGroupMoviesDBRef.off();
+    }
+    if (this.specificGroup) {
+      this.specificGroup.off();
+    }
+  }
+
+  // this handle click manages firebase db event listeners
+  // handleClick = e => {
+  //   // console.log(e.target.value);
+  //   if (e.target.value === "favourite") {
+
+  //   }
+  // };
+
+  favouriteMovie = movieObject => {
+    this.specificGroup = firebase
+      .database()
+      .ref(`userGroups/${this.firebaseKey}/movies`);
+    this.specificGroup.push(movieObject);
+  };
 
   handleChange = e => {
     this.setState({
@@ -171,7 +216,7 @@ class SearchMovies extends Component {
           const thisMovie = results.data;
           movieIdArray.push(thisMovie);
           this.setState({
-            movies: movieIdArray,
+            movies: movieIdArray
           });
           console.log(this.state.movies);
           // console.log(movieIdArray);
@@ -201,13 +246,17 @@ class SearchMovies extends Component {
           />
           <input type="submit" />
         </form>
-        <RenderMovies movies={this.state.movies} />
+        <RenderMovies
+          // handleClick={this.handleClick}
+          favouriteMovie={this.favouriteMovie}
+          movies={this.state.movies}
+        />
       </div>
     );
   }
 }
 
-export default SearchMovies;
+export default withRouter(SearchMovies);
 
 // getGenre = () => {
 //     axios
