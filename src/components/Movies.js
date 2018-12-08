@@ -20,10 +20,10 @@ const RenderMovies = props => {
                 value="favourite"
                 onClick={() => props.favouriteMovie(movie)}
               >
-                <i class="fas fa-star" />
+                <i className="fas fa-star" />
               </button>
               <button value="watchlist">
-                <i class="fas fa-eye" />
+                <i className="fas fa-eye" />
               </button>
             </div>
           </div>

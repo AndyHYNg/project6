@@ -46,10 +46,13 @@ class Group extends Component {
   render() {
     return (
       <div>
+        {/* {console.log(this.state.group.movies)} */}
         {/* {console.log(this.props.match.params.group_id)} */}
-        <h3>Group name</h3>
-        {/* <SearschMovies /> */}
-        {/* {console.log(window.location.href)} */}
+        <h3>{this.state.group.name}</h3>
+        {Object.entries(this.state.group.movies || {}).map(movie => {
+          const movieArray = [movie[1]];
+          return <RenderMovies key={movie[0]} movies={movieArray} />;
+        })}
         <Link to={`/group/${this.props.match.params.group_id}/search`}>
           <i className="fas fa-search" />
         </Link>

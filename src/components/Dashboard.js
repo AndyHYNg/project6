@@ -11,6 +11,7 @@ class Dashboard extends Component {
     super();
     this.state = {
       groups: {},
+      // joinGroupFirebaseKey: "",
       user: null
     };
   }
@@ -54,12 +55,16 @@ class Dashboard extends Component {
     if (this.userDBRef) {
       this.userDBRef.off();
     }
+
+    if (this.joinSpecificGroupDBRef) {
+      this.joinSpecificGroupDBRef.off();
+    }
   }
 
-  handleClick = async e => {
+  createRoom = async e => {
     // ES7's async, page will wait until user has performed any action by the sweet alert prompt before proceeding
     e.preventDefault();
-    const value = await swal("Type the group name:", {
+    const value = await swal("Type the group name you want to create:", {
       content: "input",
       buttons: {
         cancel: true,
@@ -83,13 +88,17 @@ class Dashboard extends Component {
       const newUserGroupObject = {
         name: value,
         movies: [],
-        users: [],
+        users: {},
         groupID: newKey
       };
-      const userObject = {};
-      userObject[this.props.userState.displayName] = this.props.userState.uid;
-      newUserGroupObject.users.push(userObject);
-      console.log(newUserGroupObject);
+      // const userObject = {};
+      // userObject[this.props.userState.displayName] = this.props.userState.uid;
+
+      // we need to edit this to have a firebase key alongside with it
+      newUserGroupObject.users[
+        this.props.userState.uid
+      ] = this.props.userState.displayName;
+      // console.log(newUserGroupObject);
       //   console.log(userDBRef);
       //   userDBRef.on("value", snapshot => {
       //     console.log(snapshot.val());
@@ -101,6 +110,43 @@ class Dashboard extends Component {
       //   const newKey = userDBRef.push(value).key;
       //   userGroupDBRef.child(newKey);
     }
+  };
+
+  joinRoom = async e => {
+    // ES7's async, page will wait until user has performed any action by the sweet alert prompt before proceeding
+    e.preventDefault();
+    this.roomID = await swal("Type the group name you want to join:", {
+      content: "input",
+      buttons: {
+        cancel: true,
+        confirm: true
+      }
+    });
+
+    if (this.roomID !== null && this.roomID !== "") {
+      this.groupFirebaseKey = "";
+
+      this.joinUserGroupDBRef = firebase.database().ref(`/userGroups/`);
+
+      // we use .once to read the snapshot data once, otherwise it will result in infinite loop for the for...in + if statement below
+      this.joinUserGroupDBRef.once("value", snapshot => {
+        // console.log(snapshot.val());
+        const groupDB = snapshot.val();
+        for (let group in groupDB) {
+          if (this.roomID === groupDB[group].groupID) {
+            this.joinSpecificGroupDBRef = firebase
+              .database()
+              .ref(`/userGroups/${group}/users/`);
+            const joinUserObject = {};
+            joinUserObject[this.state.user.uid] = this.state.user.displayName;
+            this.joinSpecificGroupDBRef.push(joinUserObject);
+            this.joinSpecificGroupDBRef.off();
+          }
+        }
+      });
+    }
+
+    // this.joinSpecificRoomDBRef = firebase.database().ref(`userGroups/`)
   };
 
   // this.props.userState contains our user information after authentication
@@ -115,8 +161,12 @@ class Dashboard extends Component {
           {/* last box is a button that will allow user to create a new group */}
           {/* NOTE: will need to also be able to join user to an existing group created by a user */}
           {/* MOAR NOTE: upon removing a group, we only want to remove the user who chose to remove from their dashboard, need to test once the group has no members */}
-          <button onClick={this.handleClick} className="dashboardOption">
+          <button onClick={this.createRoom} className="dashboardOption">
             <h3>Add Group</h3>
+            <i className="fas fa-plus" />
+          </button>
+          <button onClick={this.joinRoom} className="dashboardOption">
+            <h3>Join Group</h3>
             <i className="fas fa-plus" />
           </button>
           <button onClick={this.props.logOut} className="logOutButton">
