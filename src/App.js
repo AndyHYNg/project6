@@ -13,6 +13,7 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import SearchMovies from "./components/SearchMovies";
 import Group from "./components/Group";
+import MovieDetails from "./components/MovieDetails";
 
 // STYLES
 import "./App.scss";
@@ -98,6 +99,11 @@ class App extends Component {
                 render={() => <SearchMovies />}
               />
               <Route exact path="/group/:group_id" render={() => <Group />} />
+              <Route
+                exact
+                path="/group/:group_id/movie/:movie_id"
+                render={() => <MovieDetails />}
+              />
             </React.Fragment>
           ) : (
             // If user isn't logged in, redirect link back to root and render the Login component

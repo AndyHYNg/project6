@@ -1,36 +1,54 @@
 import React, { Component } from "react";
+import { Route, Link, withRouter } from "react-router-dom";
 
-const RenderMovies = props => {
-  return (
-    <div className="clearfix">
-      {props.movies.map(movie => {
-        // console.log(movie);
-        return (
-          <div key={movie.id} className="movieCard clearfix">
-            <div className="imageContainer">
-              <img
-                src={`http://image.tmdb.org/t/p/w300/${movie.poster_path}`}
-                alt={movie.overview}
-              />
-            </div>
-            <h2>{movie.title}</h2>
-            <p>{movie.release_date}</p>
-            <div>
-              <button
-                value="favourite"
-                onClick={() => props.favouriteMovie(movie)}
-              >
-                <i className="fas fa-star" />
-              </button>
-              <button value="watchlist">
-                <i className="fas fa-eye" />
-              </button>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-};
+class RenderMovies extends Component {
+  constructor() {
+    super();
+    this.state = {
+      movies: []
+    };
+  }
 
-export default RenderMovies;
+  componentDidMount() {
+    this.setState({
+      movies: this.props.movies
+    });
+  }
+
+  render() {
+    return (
+      <div className="clearfix">
+        {this.props.movies.map(movie => {
+          // console.log(movie);
+          return (
+            <div key={movie.id} className="movieCard clearfix">
+              <div className="imageContainer">
+                <Link
+                  to={`/group/${this.props.match.params.group_id}/movie/${
+                    movie.id
+                  }`}
+                >
+                  <img
+                    src={`http://image.tmdb.org/t/p/w300/${movie.poster_path}`}
+                    alt={movie.overview}
+                  />
+                </Link>
+                <button
+                  value="favourite"
+                  onClick={() => this.props.favouriteMovie(movie)}
+                >
+                  <i className="fas fa-star" />
+                </button>
+                <button value="watchlist">
+                  <i className="fas fa-eye" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+}
+
+export default withRouter(RenderMovies);
