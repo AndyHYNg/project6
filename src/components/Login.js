@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router";
+import React from "react";
 import Particles from "react-particles-js";
 
 const particleStyle = {

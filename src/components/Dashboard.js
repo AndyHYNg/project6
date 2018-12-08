@@ -38,10 +38,6 @@ class Dashboard extends Component {
   }
 
   componentWillUnmount() {
-    // this is called when a component leaves the page
-    // in our single page app with one component, it will never be called
-    // if we were rerouting to a different view, it would be called when the route changed.
-
     // turn off all dbRefs called in this component after any sort of re-routing
     // note: check this.dbRef
     if (this.populateGroupDBRef) {
@@ -80,10 +76,14 @@ class Dashboard extends Component {
       this.userDBRef = firebase
         .database()
         .ref(`uid/${this.props.userState.uid}/groups/`);
+
       const newGroupObject = {
         name: value,
         groupID: newKey
       };
+
+      this.userDBRef.push(newGroupObject);
+      this.userDBRef.off();
 
       const newUserGroupObject = {
         name: value,
@@ -91,25 +91,28 @@ class Dashboard extends Component {
         users: {},
         groupID: newKey
       };
-      // const userObject = {};
-      // userObject[this.props.userState.displayName] = this.props.userState.uid;
 
-      // we need to edit this to have a firebase key alongside with it
-      newUserGroupObject.users[
+      this.userGroupDBRef = firebase.database().ref(`userGroups/`);
+      const userGroupDBKey = this.userGroupDBRef.push(newUserGroupObject).key;
+      this.userGroupDBRef.off();
+
+      this.specificGroupDBRef = firebase
+        .database()
+        .ref(`userGroups/${userGroupDBKey}/users`);
+      const joinUserObject = {};
+      joinUserObject[
         this.props.userState.uid
       ] = this.props.userState.displayName;
-      // console.log(newUserGroupObject);
-      //   console.log(userDBRef);
-      //   userDBRef.on("value", snapshot => {
-      //     console.log(snapshot.val());
-      //   });
-      this.userDBRef.push(newGroupObject);
-      this.userGroupDBRef = firebase.database().ref(`userGroups/`);
-      this.userGroupDBRef.push(newUserGroupObject);
-
-      //   const newKey = userDBRef.push(value).key;
-      //   userGroupDBRef.child(newKey);
+      this.specificGroupDBRef.push(joinUserObject);
+      this.specificGroupDBRef.off();
     }
+  };
+
+  // for refactoring purposes later on
+  joinUserInfotoGroupDB = firebaseDBRef => {
+    const joinUserObject = {};
+    joinUserObject[this.props.userState.uid] = this.props.userState.displayName;
+    firebaseDBRef.push(joinUserObject);
   };
 
   joinRoom = async e => {
@@ -141,6 +144,18 @@ class Dashboard extends Component {
             joinUserObject[this.state.user.uid] = this.state.user.displayName;
             this.joinSpecificGroupDBRef.push(joinUserObject);
             this.joinSpecificGroupDBRef.off();
+
+            this.userDBRef = firebase
+              .database()
+              .ref(`uid/${this.props.userState.uid}/groups/`);
+
+            const newGroupObject = {
+              name: groupDB[group].name,
+              groupID: this.roomID
+            };
+
+            this.userDBRef.push(newGroupObject);
+            this.userDBRef.off();
           }
         }
       });
