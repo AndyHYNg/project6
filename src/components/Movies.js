@@ -2,24 +2,10 @@ import React, { Component } from "react";
 import { Route, Link, withRouter } from "react-router-dom";
 
 class RenderMovies extends Component {
-  constructor() {
-    super();
-    this.state = {
-      movies: []
-    };
-  }
-
-  componentDidMount() {
-    this.setState({
-      movies: this.props.movies
-    });
-  }
-
   render() {
     return (
       <div className="clearfix">
         {this.props.movies.map(movie => {
-          // console.log(movie);
           return (
             <div key={movie.id} className="movieCard clearfix">
               <div className="imageContainer">

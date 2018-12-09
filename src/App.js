@@ -57,7 +57,10 @@ class App extends Component {
   logOut = () => {
     auth.signOut().then(() => {
       this.setState({
-        user: null
+        user: null,
+        joinedGroups: {},
+        currGroup: {},
+        currGroupMovies: []
       });
     });
     // return <Redirect to="/" />;
@@ -123,7 +126,7 @@ class App extends Component {
               />
               <Route
                 path="/group/:group_id/search"
-                render={() => <SearchMovies />}
+                render={() => <SearchMovies getCurrGroup={this.getCurrGroup} />}
               />
               <Route
                 exact
@@ -140,7 +143,9 @@ class App extends Component {
               <Route
                 exact
                 path="/group/:group_id/movie/:movie_id"
-                render={() => <MovieDetails />}
+                render={() => (
+                  <MovieDetails currGroupMovies={this.currGroupMovies} />
+                )}
               />
             </React.Fragment>
           ) : (

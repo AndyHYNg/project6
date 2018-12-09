@@ -166,8 +166,6 @@ class Dashboard extends Component {
           <h2>Welcome {this.props.userState.displayName}</h2>
           {/* Component render for all the user's groups  */}
           <DashboardGroup groups={this.props.joinedGroups} />
-          {/* last box is a button that will allow user to create a new group */}
-          {/* NOTE: will need to also be able to join user to an existing group created by a user */}
           {/* MOAR NOTE: upon removing a group, we only want to remove the user who chose to remove from their dashboard, need to test once the group has no members */}
           <button onClick={this.createRoom} className="dashboardOption">
             <h3>Add Group</h3>

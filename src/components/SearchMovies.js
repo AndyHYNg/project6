@@ -10,8 +10,8 @@ class SearchMovies extends Component {
     this.state = {
       movies: [],
       searchTerm: "",
-      searchParam: "",
-      genreId: []
+      searchParam: ""
+      // genreId: []
     };
   }
 
@@ -23,9 +23,7 @@ class SearchMovies extends Component {
       Object.entries(snapshot.val()).map(group => {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.firebaseKey = group[0];
-          this.setState({
-            group: group[1]
-          });
+          // this.props.getCurrGroup(group[1]);
         }
       });
     });
