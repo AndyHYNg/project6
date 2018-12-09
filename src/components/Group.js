@@ -30,11 +30,24 @@ class Group extends Component {
   render() {
     return (
       <div>
-        <h3>{this.props.currGroup.name}</h3>
+        <header className="pageHeader">
+          <div className="wrapper headerContent clearfix">
+            <h2>
+              <span className="underline">{this.props.currGroup.name}</span>
+            </h2>
+            {/* SF SAT moved link to header, added container and p class */}
+            <Link to={`/group/${this.props.match.params.group_id}/search`}>
+              <div className="searchLink clearfix">
+                <i className="fas fa-search" />
+                <p>Search for movies to add</p>
+              </div>
+            </Link>
+          </div>
+        </header>
         <RenderMovies movies={this.props.currGroupMovies} />
-        <Link to={`/group/${this.props.match.params.group_id}/search`}>
+        {/* <Link to={`/group/${this.props.match.params.group_id}/search`}>
           <i className="fas fa-search" />
-        </Link>
+        </Link> */}
       </div>
     );
   }

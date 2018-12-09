@@ -162,8 +162,16 @@ class Dashboard extends Component {
   render() {
     return (
       <section className="dashboard">
+        <header className="pageHeader">
+          <div className="wrapper headerContent">
+            <p>Welcome</p>
+            <h2 className="userName">
+              <span className="underline">{this.props.userState.displayName}</span>
+            </h2>
+            <p>Your personal movie dashboard</p>
+          </div>
+        </header>
         <div className="wrapper clearfix">
-          <h2>Welcome {this.props.userState.displayName}</h2>
           {/* Component render for all the user's groups  */}
           <DashboardGroup groups={this.props.joinedGroups} />
           {/* MOAR NOTE: upon removing a group, we only want to remove the user who chose to remove from their dashboard, need to test once the group has no members */}
@@ -179,7 +187,7 @@ class Dashboard extends Component {
             Logout
           </button>
         </div>
-      </section>
+      </section >
     );
   }
 }

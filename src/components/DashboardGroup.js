@@ -24,11 +24,13 @@ class DashboardGroup extends Component {
             >
               <div className="dashboardOption">
                 <h3>{group[1].name}</h3>
-                <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Tenetur impedit autem et doloribus explicabo quod temporibus
-                  eligendi quam commodi quis.
-                </p>
+                {/* SF SAT changes here */}
+                <h4>Collaborators</h4>
+                <ul>
+                  <li>Group member 1</li>
+                  <li>Group member 1</li>
+                </ul>
+                {/* SF SAT changes end */}
               </div>
             </Link>
           );
