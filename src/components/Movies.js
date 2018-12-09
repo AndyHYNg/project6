@@ -24,7 +24,7 @@ class RenderMovies extends Component {
                     />
                   </Link>
                 </div>
-                <button className="removeMovie">
+                <button onClick={() => this.props.removeMovie(movie)} className="removeMovie">
                   <i className="far fa-times-circle"></i>
                 </button>
                 {/* SF SAT put buttons in a container */}

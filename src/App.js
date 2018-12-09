@@ -30,7 +30,8 @@ class App extends Component {
       currGroup: {},
       currGroupMovies: [],
       currGroupMoviesCollection: [],
-      currGroupFilteredMovies: []
+      currGroupFilteredMovies: [],
+      groupFirebaseKey: ""
     };
   }
 
@@ -40,7 +41,22 @@ class App extends Component {
         this.setState({ user });
       }
     });
+    // this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
+    // this.populateGroupMoviesDBRef.on("value", snapshot => {
+    //   console.log(this.props.match.params.group_id);
+    //   Object.entries(snapshot.val()).map(group => {
+    //     if (group[1].groupID === this.props.match.params.group_id) {
+    //       this.firebaseKey = group[0];
+    //     }
+    //   });
+    // });
   };
+
+  getGroupFirebaseKey = (firebaseKey) => {
+    this.setState({
+      groupFirebaseKey: firebaseKey
+    })
+  }
 
   logInGuest = () => {
     this.setState({
@@ -152,6 +168,38 @@ class App extends Component {
   //   }
   // }
 
+  removeMovie = (movieObject) => {
+    this.specificGroup = firebase
+      .database()
+      .ref(`userGroups/${this.state.groupFirebaseKey}/movies`);
+    // console.log(movieObject);
+    // console.log(this.specificGroup);
+
+    this.state.currGroupMoviesCollection.forEach(movies => {
+      for (let movie in movies) {
+        if (movie === "id") {
+          const idArray = movies[movie];
+          if (idArray === movieObject.id) {
+            // console.log(true);
+            this.specificGroup.once("value", snapshot => {
+              console.log(snapshot.val());
+              const movieDB = snapshot.val();
+              // console.log("movieDB", movieDB);
+              //movie is the firebase key consisting of that specific movie object in firebase
+              for (let movie in movieDB) {
+                if (movieObject.id === movieDB[movie].id) {
+                  console.log('you found me!')
+                  this.removeSpecificMovieDBRef = firebase.database().ref(`userGroups/${this.state.groupFirebaseKey}/movies/${movie}`);
+                  this.removeSpecificMovieDBRef.remove();
+                }
+              }
+            })
+          }
+        }
+      }
+    })
+  };
+
   render() {
     return (
       <Router>
@@ -200,6 +248,9 @@ class App extends Component {
                     currGroupMovies={this.state.currGroupMovies}
                     getMovieArray={this.getMovieArray}
                     handleChange={this.handleChange}
+                    removeMovie={this.removeMovie}
+                    // groupFirebaseKey={this.groupFirebaseKey}
+                    getGroupFirebaseKey={this.getGroupFirebaseKey}
                   />
                 )}
               />
