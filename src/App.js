@@ -95,26 +95,32 @@ class App extends Component {
   };
 
   handleChange = e => {
-    let matchedGenresMovieArray = [];
-    this.state.currGroupMoviesCollection.forEach(movies => {
-      // console.log(movies);
-      for (let movie in movies) {
-        if (movie === "genres") {
-          // console.log(movies[movie]);
-          const genreArray = movies[movie];
-          // console.log(test);
-          genreArray.forEach(genre => {
-            // console.log(genre.name);
-            if (genre.name === e.target.value) {
-              matchedGenresMovieArray.push(movies);
-            }
-          })
+    if (e.target.value === "All") {
+      this.setState({
+        currGroupMovies: this.state.currGroupMoviesCollection
+      })
+    } else {
+      let matchedGenresMovieArray = [];
+      this.state.currGroupMoviesCollection.forEach(movies => {
+        // console.log(movies);
+        for (let movie in movies) {
+          if (movie === "genres") {
+            // console.log(movies[movie]);
+            const genreArray = movies[movie];
+            // console.log(test);
+            genreArray.forEach(genre => {
+              // console.log(genre.name);
+              if (genre.name === e.target.value) {
+                matchedGenresMovieArray.push(movies);
+              }
+            })
+          }
         }
-      }
-    })
-    this.setState({
-      currGroupMovies: matchedGenresMovieArray
-    })
+      })
+      this.setState({
+        currGroupMovies: matchedGenresMovieArray
+      })
+    }
   }
 
   render() {
