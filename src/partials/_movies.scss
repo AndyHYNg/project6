@@ -8,16 +8,20 @@
   // width: 100%;
   margin: 20px;
   float: left;
-  // max-height: 600px;
+  position: relative;
+  // height: 420px;
   .imageContainer {
-    float: left;
+    // float: left;
     // border: 2px blue solid;
-    max-height: 450px;
-    overflow-y: hidden;
+    // max-height: 450px;
+    // overflow-y: hidden;
+    
     img {
       display: block;
-      overflow-y: hidden;
-      width: 100%;
+      // overflow-y: hidden;
+      max-width: 100%;
+      // object-fit: contain;
+      // max-height: 100%;
     }
   }
 }
@@ -57,4 +61,15 @@
 
 .searchLink:hover {
   color: $yellow;
+}
+
+.removeMovie {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  z-index: 100;
+  background: none;
+  color: white;
+  border: none;
+  font-size: 2.5rem;
 }
