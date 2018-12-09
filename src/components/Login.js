@@ -42,7 +42,7 @@ const Login = props => {
       <div className="login">
         <Particles className="particles" params={particleStyle} />
         <div className="wrapper loginContainer">
-          <h1>Cinemacrew</h1>
+          <h1>Radflix</h1>
           <React.Fragment>
             <button onClick={props.logIn}>Login</button>
             <button onClick={props.logInGuest}>Guest</button>
