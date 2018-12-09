@@ -7,33 +7,24 @@ import DashboardGroup from "./DashboardGroup";
 const uuidv4 = require("uuid/v4");
 
 class Dashboard extends Component {
-  constructor() {
-    super();
-    this.state = {
-      groups: {},
-      // joinGroupFirebaseKey: "",
-      user: null
-    };
-  }
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     groups: {},
+  //     // joinGroupFirebaseKey: "",
+  //     user: null
+  //   };
+  // }
 
   // populates a snapshot of the logged in user's group db
   componentDidMount() {
     if (this.props.userState) {
-      this.setState(
-        {
-          user: this.props.userState
-        },
-        () => {
-          this.populateGroupDBRef = firebase
-            .database()
-            .ref(`uid/${this.state.user.uid}/groups`);
-          this.populateGroupDBRef.on("value", snapshot => {
-            this.setState({
-              groups: snapshot.val() || {}
-            });
-          });
-        }
-      );
+      this.populateGroupDBRef = firebase
+        .database()
+        .ref(`uid/${this.props.userState.uid}/groups`);
+      this.populateGroupDBRef.on("value", snapshot => {
+        this.props.getJoinedGroups(snapshot.val());
+      });
     }
   }
 
@@ -141,7 +132,9 @@ class Dashboard extends Component {
               .database()
               .ref(`/userGroups/${group}/users/`);
             const joinUserObject = {};
-            joinUserObject[this.state.user.uid] = this.state.user.displayName;
+            joinUserObject[
+              this.props.userState.uid
+            ] = this.props.userState.displayName;
             this.joinSpecificGroupDBRef.push(joinUserObject);
             this.joinSpecificGroupDBRef.off();
 
@@ -172,7 +165,7 @@ class Dashboard extends Component {
         <div className="wrapper clearfix">
           <h2>Welcome {this.props.userState.displayName}</h2>
           {/* Component render for all the user's groups  */}
-          <DashboardGroup groups={this.state.groups} />
+          <DashboardGroup groups={this.props.joinedGroups} />
           {/* last box is a button that will allow user to create a new group */}
           {/* NOTE: will need to also be able to join user to an existing group created by a user */}
           {/* MOAR NOTE: upon removing a group, we only want to remove the user who chose to remove from their dashboard, need to test once the group has no members */}

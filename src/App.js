@@ -25,7 +25,10 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      user: null
+      user: null,
+      joinedGroups: {},
+      currGroup: {},
+      currGroupMovies: []
     };
   }
 
@@ -43,12 +46,6 @@ class App extends Component {
     });
   };
 
-  // logOutGuest = () => {
-  //   this.setState({
-  //     user: null
-  //   });
-  // };
-
   logIn = () => {
     auth.signInWithPopup(provider).then(result => {
       this.setState({
@@ -64,6 +61,31 @@ class App extends Component {
       });
     });
     // return <Redirect to="/" />;
+  };
+
+  // RESTRUCTURE CHANGES START HERE
+
+  getJoinedGroups = dbRefSnapshotValue => {
+    this.setState({
+      joinedGroups: dbRefSnapshotValue || {}
+    });
+  };
+
+  getCurrGroup = group => {
+    this.setState({
+      currGroup: group
+    });
+  };
+
+  getMovieArray = currGroupMoviesFromDB => {
+    const movieArray = Object.entries(currGroupMoviesFromDB || {}).map(
+      movie => {
+        return movie[1];
+      }
+    );
+    this.setState({
+      currGroupMovies: movieArray
+    });
   };
 
   render() {
@@ -91,14 +113,30 @@ class App extends Component {
               <Route
                 path="/dashboard"
                 render={() => (
-                  <Dashboard logOut={this.logOut} userState={this.state.user} />
+                  <Dashboard
+                    logOut={this.logOut}
+                    userState={this.state.user}
+                    joinedGroups={this.state.joinedGroups}
+                    getJoinedGroups={this.getJoinedGroups}
+                  />
                 )}
               />
               <Route
                 path="/group/:group_id/search"
                 render={() => <SearchMovies />}
               />
-              <Route exact path="/group/:group_id" render={() => <Group />} />
+              <Route
+                exact
+                path="/group/:group_id"
+                render={() => (
+                  <Group
+                    getCurrGroup={this.getCurrGroup}
+                    currGroup={this.state.currGroup}
+                    currGroupMovies={this.state.currGroupMovies}
+                    getMovieArray={this.getMovieArray}
+                  />
+                )}
+              />
               <Route
                 exact
                 path="/group/:group_id/movie/:movie_id"
