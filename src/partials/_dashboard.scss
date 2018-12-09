@@ -2,24 +2,16 @@
     height: 100%;
     background: $grey;
     position: relative;
-    // border: 2px solid red;
-    h2 {
-        padding: 70px 0 50px 0;
-        text-align: center;
-        // border-left: 4px solid $mainBlue;
-    }
 }
 
-// .dashboard h2::before {
-//     content: '""';
-//     height: 100px;
-//     width: 100px;
-//     background: $mainBlue;
-//     color: white;
-// }
+.userName {
+    @include headingText(12rem);
+    margin-bottom: 50px;
+}
 
 .dashboardContainer {
     width: 100%;
+    margin-top: 100px;
 }
 
 .dashboardOption {
@@ -30,6 +22,7 @@
     margin: 20px 40px 20px 0;
     padding: 20px;
     transition: 0.2s all;
+    color: black;
     // transform: rotate(25deg);
     h3 {
         border-bottom: 4px solid $yellow;
@@ -61,10 +54,10 @@
     // top: -60px;
 // }
 
-.dashboard .dashboardOption:nth-child(2) {
-    margin-right: 0;
-    background: red;
-}
+// .dashboard .dashboardOption:nth-child(2) {
+//     margin-right: 0;
+//     background: red;
+// }
 
 .dashboardOption::before {
     content: '';

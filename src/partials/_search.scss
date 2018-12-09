@@ -1,0 +1,38 @@
+.searchBar {
+    padding: 100px 0;
+    background: $grey;
+}
+
+.searchForm {
+    text-align: center;
+    label {
+        float: left;
+        width: 100%;
+        @include headingText(4rem);
+        margin-bottom: 20px;
+    }
+    input {
+        margin: 0 auto;
+    }
+}
+
+.searchForm input[type=text] {
+    width: 50%;
+    padding: 10px 20px;
+    border: 2px solid $mainBlue;
+    font-size: 2.5rem;
+}
+
+.searchForm input[type=submit] {
+    background: $mainBlue;
+    border: none;
+    @include headingText(2.5rem);
+    color: white;
+    width: 25%;
+    padding: 12px 0;
+    transition: 0.2s all;
+    &:hover {
+        background: $yellow;
+        // border-color: $mainBlue;
+    }
+}

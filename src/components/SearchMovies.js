@@ -167,17 +167,32 @@ class SearchMovies extends Component {
   render() {
     return (
       <div>
-        <h1>Movies</h1>
-        <form onSubmit={this.handleSubmit} action="">
-          <label htmlFor="searchTerm">Search for a Movie!</label>
-          <input
-            value={this.state.searchTerm}
-            onChange={this.handleChange}
-            id="searchTerm"
-            type="text"
-          />
-          <input type="submit" />
-        </form>
+        {/* SF SAT changes start here */}
+        <header className="pageHeader">
+          <div className="wrapper headerContent">
+            <h2>
+              <span className="underline">Movies</span>
+            </h2>
+          </div>
+        </header>
+        {/* Header changes end */}
+        {/* SF SAT pu form in section w wrapper div */}
+        <section className="searchBar">
+          <div className="wrapper searchContainer">
+            <form onSubmit={this.handleSubmit} action="" className="searchForm clearfix">
+              <label htmlFor="searchTerm">Search for a Movie!</label>
+              <input
+                value={this.state.searchTerm}
+                onChange={this.handleChange}
+                id="searchTerm"
+                type="text"
+              />
+              <input type="submit" />
+            </form>
+          </div>
+        </section>
+
+
         <RenderMovies
           // handleClick={this.handleClick}
           favouriteMovie={this.favouriteMovie}
