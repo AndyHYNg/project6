@@ -8,12 +8,14 @@
   // width: 100%;
   margin: 20px;
   float: left;
+  position: relative;
   // max-height: 600px;
   .imageContainer {
     float: left;
     // border: 2px blue solid;
     max-height: 450px;
     overflow-y: hidden;
+    
     img {
       display: block;
       overflow-y: hidden;
@@ -57,4 +59,15 @@
 
 .searchLink:hover {
   color: $yellow;
+}
+
+.removeMovie {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  z-index: 100;
+  background: none;
+  color: white;
+  border: none;
+  font-size: 2.5rem;
 }

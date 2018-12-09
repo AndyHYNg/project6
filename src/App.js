@@ -28,7 +28,9 @@ class App extends Component {
       user: null,
       joinedGroups: {},
       currGroup: {},
-      currGroupMovies: []
+      currGroupMovies: [],
+      currGroupMoviesCollection: [],
+      currGroupFilteredMovies: []
     };
   }
 
@@ -87,9 +89,33 @@ class App extends Component {
       }
     );
     this.setState({
-      currGroupMovies: movieArray
+      currGroupMovies: movieArray,
+      currGroupMoviesCollection: movieArray
     });
   };
+
+  handleChange = e => {
+    let matchedGenresMovieArray = [];
+    this.state.currGroupMoviesCollection.forEach(movies => {
+      // console.log(movies);
+      for (let movie in movies) {
+        if (movie === "genres") {
+          // console.log(movies[movie]);
+          const genreArray = movies[movie];
+          // console.log(test);
+          genreArray.forEach(genre => {
+            // console.log(genre.name);
+            if (genre.name === e.target.value) {
+              matchedGenresMovieArray.push(movies);
+            }
+          })
+        }
+      }
+    })
+    this.setState({
+      currGroupMovies: matchedGenresMovieArray
+    })
+  }
 
   render() {
     return (
@@ -137,6 +163,7 @@ class App extends Component {
                     currGroup={this.state.currGroup}
                     currGroupMovies={this.state.currGroupMovies}
                     getMovieArray={this.getMovieArray}
+                    handleChange={this.handleChange}
                   />
                 )}
               />
@@ -144,21 +171,21 @@ class App extends Component {
                 exact
                 path="/group/:group_id/movie/:movie_id"
                 render={() => (
-                  <MovieDetails currGroupMovies={this.currGroupMovies} />
+                  <MovieDetails currGroupMovies={this.state.currGroupMovies} />
                 )}
               />
             </React.Fragment>
           ) : (
-            // If user isn't logged in, redirect link back to root and render the Login component
-            <React.Fragment>
-              <Redirect to="/" />
-              <Login
-                logIn={this.logIn}
-                logInGuest={this.logInGuest}
-                userState={this.state.user}
-              />
-            </React.Fragment>
-          )}
+              // If user isn't logged in, redirect link back to root and render the Login component
+              <React.Fragment>
+                <Redirect to="/" />
+                <Login
+                  logIn={this.logIn}
+                  logInGuest={this.logInGuest}
+                  userState={this.state.user}
+                />
+              </React.Fragment>
+            )}
         </Switch>
       </Router>
     );

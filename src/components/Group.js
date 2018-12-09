@@ -14,6 +14,7 @@ class Group extends Component {
       Object.entries(snapshot.val()).map(group => {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.props.getCurrGroup(group[1]);
+          // this.props.getMovieCollectionArray(group[1].movies);
           this.props.getMovieArray(group[1].movies);
         }
       });
@@ -44,6 +45,32 @@ class Group extends Component {
             </Link>
           </div>
         </header>
+        <section>
+          <form action="" onChange={this.props.handleChange}>
+            <select name="movieGenre" id="genres">
+              <option value="All">All</option>
+              <option value="Action">Action</option>
+              <option value="Adventure">Adventure</option>
+              <option value="Animation">Animation</option>
+              <option value="Comedy">Comedy</option>
+              <option value="Crime">Crime</option>
+              <option value="Documentary">Documentary</option>
+              <option value="Drama">Drama</option>
+              <option value="Family">Family</option>
+              <option value="Fantasy">Fantasy</option>
+              <option value="History">History</option>
+              <option value="Horror">Horror</option>
+              <option value="Music">Music</option>
+              <option value="Mystery">Mystery</option>
+              <option value="Romance">Romance</option>
+              <option value="Science Fiction">Science Fiction</option>
+              <option value="TV Movie">TV Movie</option>
+              <option value="Thriller">Thriller</option>
+              <option value="War">War</option>
+              <option value="Western">Western</option>
+            </select>
+          </form>
+        </section>
         <RenderMovies movies={this.props.currGroupMovies} />
         {/* <Link to={`/group/${this.props.match.params.group_id}/search`}>
           <i className="fas fa-search" />

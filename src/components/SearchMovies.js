@@ -142,26 +142,14 @@ class SearchMovies extends Component {
           }
         })
         .then(results => {
-          // console.log(results.data);
-          // console.log(results.data);
           const movieIdArray = this.state.movies;
           const thisMovie = results.data;
           movieIdArray.push(thisMovie);
           this.setState({
             movies: movieIdArray
           });
-          console.log(this.state.movies);
-          // console.log(movieIdArray);
-          // return results.data;
         });
     });
-    console.log(this.state.movies);
-    // this.setState({
-    //     movies: movieIdArray
-    // })
-    console.log(this.state.movies);
-    // return movieIdArray;
-    console.log(this.state.movies);
   };
 
   render() {
