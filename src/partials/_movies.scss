@@ -9,17 +9,19 @@
   margin: 20px;
   float: left;
   position: relative;
-  // max-height: 600px;
+  // height: 420px;
   .imageContainer {
-    float: left;
+    // float: left;
     // border: 2px blue solid;
-    max-height: 450px;
-    overflow-y: hidden;
+    // max-height: 450px;
+    // overflow-y: hidden;
     
     img {
       display: block;
-      overflow-y: hidden;
-      width: 100%;
+      // overflow-y: hidden;
+      max-width: 100%;
+      // object-fit: contain;
+      // max-height: 100%;
     }
   }
 }

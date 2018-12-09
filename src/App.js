@@ -123,6 +123,35 @@ class App extends Component {
     }
   }
 
+  // handleChange = e => {
+  //   if (e.target.value === "All") {
+  //     this.setState({
+  //       currGroupMovies: this.state.currGroupMoviesCollection
+  //     })
+  //   } else {
+  //     let matchedGenresMovieArray = [];
+  //     this.state.currGroupMoviesCollection.forEach(movies => {
+  //       // console.log(movies);
+  //       for (let movie in movies) {
+  //         if (movie === "genres") {
+  //           // console.log(movies[movie]);
+  //           const genreArray = movies[movie];
+  //           // console.log(test);
+  //           genreArray.forEach(genre => {
+  //             // console.log(genre.name);
+  //             if (genre.name === e.target.value) {
+  //               matchedGenresMovieArray.push(movies);
+  //             }
+  //           })
+  //         }
+  //       }
+  //     })
+  //     this.setState({
+  //       currGroupMovies: matchedGenresMovieArray
+  //     })
+  //   }
+  // }
+
   render() {
     return (
       <Router>
@@ -158,7 +187,8 @@ class App extends Component {
               />
               <Route
                 path="/group/:group_id/search"
-                render={() => <SearchMovies getCurrGroup={this.getCurrGroup} />}
+                render={() => <SearchMovies
+                  getCurrGroup={this.getCurrGroup} getMovieArray={this.getMovieArray} currGroupMoviesCollection={this.state.currGroupMoviesCollection} />}
               />
               <Route
                 exact

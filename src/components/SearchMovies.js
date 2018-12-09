@@ -23,6 +23,7 @@ class SearchMovies extends Component {
       Object.entries(snapshot.val()).map(group => {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.firebaseKey = group[0];
+          this.props.getMovieArray(group[1].movies);
           // this.props.getCurrGroup(group[1]);
         }
       });
@@ -51,11 +52,91 @@ class SearchMovies extends Component {
   //   }
   // };
 
+  // handleChange = e => {
+  //   if (e.target.value === "All") {
+  //     this.setState({
+  //       currGroupMovies: this.state.currGroupMoviesCollection
+  //     })
+  //   } else {
+  //     let matchedGenresMovieArray = [];
+  //     this.state.currGroupMoviesCollection.forEach(movies => {
+  //       // console.log(movies);
+  //       for (let movie in movies) {
+  //         if (movie === "id") {
+  //           // console.log(movies[movie]);
+  //           const idArray = movies[movie];
+  //           // console.log(test);
+  //           idArray.forEach(id => {
+  //             // console.log(genre.name);
+  //             if (id === movieObject.id) {
+  //               // matchedGenresMovieArray.push(movies);
+  //               console.log(true);
+  //             }
+  //           })
+  //         }
+  //       }
+  //     })
+  //     this.setState({
+  //       currGroupMovies: matchedGenresMovieArray
+  //     })
+  //   }
+  // }
+
   favouriteMovie = movieObject => {
+    let foundDuplicate = false;
+    // console.log(newMovieObject);
     this.specificGroup = firebase
       .database()
       .ref(`userGroups/${this.firebaseKey}/movies`);
-    this.specificGroup.push(movieObject);
+
+
+
+    this.props.currGroupMoviesCollection.forEach(movies => {
+      // console.log(movies);
+      for (let movie in movies) {
+        if (movie === "id") {
+          // console.log(movies[movie]);
+          const idArray = movies[movie];
+          // console.log(idArray);
+          // idArray.forEach(id => {
+          // console.log(genre.name);
+          if (idArray === movieObject.id) {
+            // matchedGenresMovieArray.push(movies);
+            console.log(true);
+            this.specificGroup.once("value", snapshot => {
+              const movieDB = snapshot.val();
+              //movie is the firebase key consisting of that specific movie object in firebase
+              for (let movie in movieDB) {
+                if (movieObject.id === movieDB[movie].id) {
+                  foundDuplicate = true;
+                  // console.log("It worked");
+                  this.countSpecificMovieDBRef = firebase.database().ref(`userGroups/${this.firebaseKey}/movies/${movie}/count`);
+                  // console.log(this.countSpecificMovieDBRef);
+                  this.countSpecificMovieDBRef.once("value", countSnapshot => {
+                    // console.log(countSnapshot.val());
+                    const count = countSnapshot.val();
+                    this.countSpecificMovieDBRef.set(count + 1);
+                    // return true;
+                  })
+                }
+                // console.log(movie);
+                // console.log(movieDB[movie]);
+
+              }
+
+            })
+          }
+          // })
+        }
+      }
+    })
+    if (foundDuplicate === false) {
+
+      let newMovieObject = movieObject;
+      newMovieObject.count = 1;
+      this.specificGroup.push(movieObject);
+    }
+
   };
 
   handleChange = e => {
