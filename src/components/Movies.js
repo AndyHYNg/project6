@@ -42,6 +42,7 @@ class RenderMovies extends Component {
                     onClick={() => this.props.removeMovie(movie)}
                     className="removeMovie"
                   >
+                    {console.log(movie.count)}
                     <i className="far fa-times-circle" />
                   </button>
                 )}

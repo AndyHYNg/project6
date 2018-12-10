@@ -205,82 +205,86 @@ class App extends Component {
       <Router>
         {/* Switch manages and renders all Routes exclusively */}
         <Switch>
-          {/* If user is logged in... */}
-          {this.state.user ? (
-            <React.Fragment>
-              {/* Automatically redirect to Dashboard render */}
-              <Redirect from="/" to="/dashboard" />
-              {/* All Routes inside the Switch and is active if user is logged in */}
-              {/* <Route
-                exact
-                path="/"
-                render={() => (
-                  <Login
-                    logIn={this.logIn}
-                    logInGuest={this.logInGuest}
-                    userState={this.state.user}
-                  />
-                )}
-              /> */}
-              <Route
-                path="/dashboard"
-                render={() => (
-                  <Dashboard
-                    logOut={this.logOut}
-                    userState={this.state.user}
-                    joinedGroups={this.state.joinedGroups}
-                    getJoinedGroups={this.getJoinedGroups}
-                    removeGroup={this.removeGroup}
-                  />
-                )}
-              />
-              <Route
-                path="/group/:group_id/search"
-                render={() => (
-                  <SearchMovies
-                    getCurrGroup={this.getCurrGroup}
-                    getMovieArray={this.getMovieArray}
-                    currGroupMoviesCollection={
-                      this.state.currGroupMoviesCollection
-                    }
-                  />
-                )}
-              />
-              <Route
-                exact
-                path="/group/:group_id"
-                render={() => (
-                  <Group
-                    getCurrGroup={this.getCurrGroup}
-                    currGroup={this.state.currGroup}
-                    currGroupMovies={this.state.currGroupMovies}
-                    getMovieArray={this.getMovieArray}
-                    handleChange={this.handleChange}
-                    removeMovie={this.removeMovie}
-                    // groupFirebaseKey={this.groupFirebaseKey}
-                    getGroupFirebaseKey={this.getGroupFirebaseKey}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path="/group/:group_id/movie/:movie_id"
-                render={() => (
-                  <MovieDetails currGroupMovies={this.state.currGroupMovies} />
-                )}
-              />
-            </React.Fragment>
-          ) : (
-            // If user isn't logged in, redirect link back to root and render the Login component
-            <React.Fragment>
-              <Redirect to="/" />
-              <Login
-                logIn={this.logIn}
-                logInGuest={this.logInGuest}
-                userState={this.state.user}
-              />
-            </React.Fragment>
-          )}
+          <Route
+            exact
+            path="/"
+            render={() =>
+              this.state.user ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <Login
+                  logIn={this.logIn}
+                  logInGuest={this.logInGuest}
+                  userState={this.state.user}
+                />
+              )
+            }
+          />
+
+          <Route
+            path="/dashboard"
+            render={() =>
+              this.state.user ? (
+                <Dashboard
+                  logOut={this.logOut}
+                  userState={this.state.user}
+                  joinedGroups={this.state.joinedGroups}
+                  getJoinedGroups={this.getJoinedGroups}
+                  removeGroup={this.removeGroup}
+                />
+              ) : (
+                <Redirect to="/" />
+              )
+            }
+          />
+
+          <Route
+            path="/group/:group_id/search"
+            render={() =>
+              this.state.user ? (
+                <SearchMovies
+                  getCurrGroup={this.getCurrGroup}
+                  getMovieArray={this.getMovieArray}
+                  currGroupMoviesCollection={
+                    this.state.currGroupMoviesCollection
+                  }
+                />
+              ) : (
+                <Redirect to="/" />
+              )
+            }
+          />
+
+          <Route
+            exact
+            path="/group/:group_id"
+            render={() =>
+              this.state.user ? (
+                <Group
+                  getCurrGroup={this.getCurrGroup}
+                  currGroup={this.state.currGroup}
+                  currGroupMovies={this.state.currGroupMovies}
+                  getMovieArray={this.getMovieArray}
+                  handleChange={this.handleChange}
+                  removeMovie={this.removeMovie}
+                  getGroupFirebaseKey={this.getGroupFirebaseKey}
+                />
+              ) : (
+                <Redirect to="/" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/group/:group_id/movie/:movie_id"
+            render={() =>
+              this.state.user ? (
+                <MovieDetails currGroupMovies={this.state.currGroupMovies} />
+              ) : (
+                <Redirect to="/" />
+              )
+            }
+          />
         </Switch>
       </Router>
     );
