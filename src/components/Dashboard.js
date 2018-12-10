@@ -157,7 +157,7 @@ class Dashboard extends Component {
             this.userDBRef.off();
           }
         }
-        // allows users to join multiple groups at the same time without having to refresh the page
+        // allows users to join multiple groups at the same time without having to refresh the page`
         this.populateGroupDBRef = firebase
           .database()
           .ref(`uid/${this.props.userState.uid}/groups`);
@@ -176,6 +176,9 @@ class Dashboard extends Component {
     return (
       <section className="dashboard">
         <header className="pageHeader">
+          <button onClick={this.props.logOut} className="logOutButton">
+            Logout
+          </button>
           <div className="wrapper headerContent">
             <p>Welcome</p>
             <h2 className="userName">
@@ -200,9 +203,6 @@ class Dashboard extends Component {
           <button onClick={this.joinRoom} className="dashboardOption">
             <h3>Join Group</h3>
             <i className="fas fa-plus" />
-          </button>
-          <button onClick={this.props.logOut} className="logOutButton">
-            Logout
           </button>
         </div>
       </section>
