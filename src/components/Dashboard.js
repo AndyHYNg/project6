@@ -95,6 +95,13 @@ class Dashboard extends Component {
       ] = this.props.userState.displayName;
       this.specificGroupDBRef.push(joinUserObject);
       this.specificGroupDBRef.off();
+
+      this.populateGroupDBRef = firebase
+        .database()
+        .ref(`uid/${this.props.userState.uid}/groups`);
+      this.populateGroupDBRef.once("value", snapshot => {
+        this.getJoinedGroups(snapshot.val());
+      });
     }
   };
 
