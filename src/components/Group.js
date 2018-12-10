@@ -16,6 +16,7 @@ class Group extends Component {
           this.props.getCurrGroup(group[1]);
           // this.props.getMovieCollectionArray(group[1].movies);
           this.props.getMovieArray(group[1].movies);
+          this.props.getGroupFirebaseKey(group[0]);
         }
       });
     });
@@ -71,7 +72,7 @@ class Group extends Component {
             </select>
           </form>
         </section>
-        <RenderMovies movies={this.props.currGroupMovies} />
+        <RenderMovies movies={this.props.currGroupMovies} removeMovie={this.props.removeMovie} />
         {/* <Link to={`/group/${this.props.match.params.group_id}/search`}>
           <i className="fas fa-search" />
         </Link> */}

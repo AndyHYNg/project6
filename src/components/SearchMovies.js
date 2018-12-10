@@ -44,64 +44,17 @@ class SearchMovies extends Component {
     }
   }
 
-  // this handle click manages firebase db event listeners
-  // handleClick = e => {
-  //   // console.log(e.target.value);
-  //   if (e.target.value === "favourite") {
-
-  //   }
-  // };
-
-  // handleChange = e => {
-  //   if (e.target.value === "All") {
-  //     this.setState({
-  //       currGroupMovies: this.state.currGroupMoviesCollection
-  //     })
-  //   } else {
-  //     let matchedGenresMovieArray = [];
-  //     this.state.currGroupMoviesCollection.forEach(movies => {
-  //       // console.log(movies);
-  //       for (let movie in movies) {
-  //         if (movie === "id") {
-  //           // console.log(movies[movie]);
-  //           const idArray = movies[movie];
-  //           // console.log(test);
-  //           idArray.forEach(id => {
-  //             // console.log(genre.name);
-  //             if (id === movieObject.id) {
-  //               // matchedGenresMovieArray.push(movies);
-  //               console.log(true);
-  //             }
-  //           })
-  //         }
-  //       }
-  //     })
-  //     this.setState({
-  //       currGroupMovies: matchedGenresMovieArray
-  //     })
-  //   }
-  // }
-
   favouriteMovie = movieObject => {
     let foundDuplicate = false;
-    // console.log(newMovieObject);
     this.specificGroup = firebase
       .database()
       .ref(`userGroups/${this.firebaseKey}/movies`);
 
-
-
     this.props.currGroupMoviesCollection.forEach(movies => {
-      // console.log(movies);
       for (let movie in movies) {
         if (movie === "id") {
-          // console.log(movies[movie]);
           const idArray = movies[movie];
-          // console.log(idArray);
-          // idArray.forEach(id => {
-          // console.log(genre.name);
           if (idArray === movieObject.id) {
-            // matchedGenresMovieArray.push(movies);
             console.log(true);
             this.specificGroup.once("value", snapshot => {
               const movieDB = snapshot.val();
@@ -109,34 +62,23 @@ class SearchMovies extends Component {
               for (let movie in movieDB) {
                 if (movieObject.id === movieDB[movie].id) {
                   foundDuplicate = true;
-                  // console.log("It worked");
                   this.countSpecificMovieDBRef = firebase.database().ref(`userGroups/${this.firebaseKey}/movies/${movie}/count`);
-                  // console.log(this.countSpecificMovieDBRef);
                   this.countSpecificMovieDBRef.once("value", countSnapshot => {
-                    // console.log(countSnapshot.val());
                     const count = countSnapshot.val();
                     this.countSpecificMovieDBRef.set(count + 1);
-                    // return true;
                   })
                 }
-                // console.log(movie);
-                // console.log(movieDB[movie]);
-
               }
-
             })
           }
-          // })
         }
       }
     })
     if (foundDuplicate === false) {
-
       let newMovieObject = movieObject;
       newMovieObject.count = 1;
       this.specificGroup.push(movieObject);
     }
-
   };
 
   handleChange = e => {
@@ -147,7 +89,6 @@ class SearchMovies extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    // console.log('handleSubmit');
     // clears the search term and THEN use a callback function to get the movies from the API
     this.setState(
       {

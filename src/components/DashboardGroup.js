@@ -17,22 +17,27 @@ class DashboardGroup extends Component {
         {Object.entries(this.props.groups).map(group => {
           return (
             // enclose each dashboard group render with a link that routes to the group page in Group.js
-            <Link
-              key={group[1].groupID}
-              to={`/group/${group[1].groupID}`}
-              style={{ textDecoration: "none" }}
-            >
+            <React.Fragment>
               <div className="dashboardOption">
-                <h3>{group[1].name}</h3>
-                {/* SF SAT changes here */}
-                <h4>Collaborators</h4>
-                <ul>
-                  <li>Group member 1</li>
-                  <li>Group member 1</li>
-                </ul>
-                {/* SF SAT changes end */}
+                <Link
+                  key={group[1].groupID}
+                  to={`/group/${group[1].groupID}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <h3>{group[1].name}</h3>
+                  {/* SF SAT changes here */}
+                  <h4>Collaborators</h4>
+                  <ul>
+                    <li>Group member 1</li>
+                    <li>Group member 1</li>
+                  </ul>
+                  {/* SF SAT changes end */}
+                </Link>
+                <button onClick={() => this.props.removeGroup(group)} className="removeMovie">
+                  <i className="far fa-times-circle"></i>
+                </button>
               </div>
-            </Link>
+            </React.Fragment>
           );
         })}
       </div>
