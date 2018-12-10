@@ -126,10 +126,9 @@ class MovieDetails extends Component {
               <MovieCast cast={this.state.cast} />
             </div>
 
-            {!this.state.video ? (
+            {(this.state.video.length === undefined) ? (
               <div className="hello">
                 <p>nothing to see here</p>
-                {console.log(this.state.video)}
               </div>
             ) : (
 
