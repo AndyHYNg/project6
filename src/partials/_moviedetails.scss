@@ -2,6 +2,11 @@
     margin-bottom: 50px;
 }
 
+.movieDetails h4 {
+    margin-top: 0;
+    text-transform: uppercase;
+}
+
 .movieContent {
     margin: 100px 0;
     .movieContentContainer {
@@ -23,12 +28,22 @@
 .additionalInfo {
     width: 60%;
     float: left;
-    h4 {
-        margin-top: 0;
-        text-transform: uppercase;
-        // color: white;
-    }
     p {
         margin-bottom: 20px;
+    }
+}
+
+.castName {
+    @include headingText(1.8rem);
+    text-transform: capitalize;
+}
+
+.trailerContainer {
+    clear: both;
+    padding-top: 50px;
+    text-align: center;
+    width: 100%;
+    .trailerVideo {
+        margin: 0 auto;
     }
 }

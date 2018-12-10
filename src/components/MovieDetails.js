@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
 import firebase, { auth, provider } from "../firebase";
+import MovieGenres from '../components/MovieGenres';
+import MovieCast from '../components/MovieCast';
+import ReactPlayer from 'react-player';
 
 class MovieDetails extends Component {
   // create a state to hold the response from the API
@@ -10,7 +13,7 @@ class MovieDetails extends Component {
     this.state = {
       movie: {},
       video: {},
-      cast: {}
+      cast: []
     };
   }
 
@@ -24,11 +27,6 @@ class MovieDetails extends Component {
       params: {
         api_key: `f012df5d63927931e82fe659a8aaa3ac`,
         language: `en-US`,
-        // sort_by: `popularity.desc`,
-        // include_adult: `false`,
-        // include_video: `false`,
-        // page: 1,
-        // primary_release_year: 2018
       }
     }).then(response => {
       const results = response.data;
@@ -66,11 +64,9 @@ class MovieDetails extends Component {
 
     this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
     this.populateGroupMoviesDBRef.on("value", snapshot => {
-      // console.log(this.props.match.params.group_id);
       Object.entries(snapshot.val()).map(group => {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.firebaseKey = group[0];
-          // this.props.getCurrGroup(group[1]);
         }
       });
     });
@@ -123,68 +119,26 @@ class MovieDetails extends Component {
               <p>{this.state.movie.overview}</p>
 
               <h4><span className="underline">Genres</span></h4>
-              <ul>
-                {console.log(this.state.movie.genres)}
-                {/* {this.state.movie.genres}.map(genre => {
-                  return (
-                    <p>{genre.name}</p>
-                )
-              } */}
-              </ul>
-              {/* <div className="genreContainer">
-              {
-
-              }
-              </div> */}
+              <MovieGenres movie={this.state.movie} />
 
               <h4><span className="underline">Cast</span></h4>
-              {/* <ul>{this.state.cast.map(person => {
-                return (
-                  <li>{person.name}</li>
-                )
-              })}</ul> */}
-
+              <MovieCast cast={this.state.cast} />
+            </div>
+            <div className="trailerContainer">
               <h4><span className="underline">Trailer</span></h4>
-              {/* <video>
-                <source src={`https://www.youtube.com/watch?v=${this.state.video}`} />
-              </video> */}
-              <div>
-                <a href={`https://www.youtube.com/watch?v=${this.state.video}`}>Watch trailer</a>
+              <div className="trailer">
+                <ReactPlayer className="trailerVideo" url={`https://www.youtube.com/watch?v=${this.state.video}`} />
+                {/* <a href={`https://www.youtube.com/watch?v=${this.state.video}`}>Watch trailer</a> */}
               </div>
-
-              <h4><span className="underline">Rent</span></h4>
             </div>
           </div>
+
+          {/* <h4><span className="underline">Rent</span></h4> */}
         </div>
+        {/* </div> */}
       </section >
     );
   }
 }
 
 export default withRouter(MovieDetails);
-
-// const MovieDetails = props => {
-//   return (
-//     <div className="movie-single__poster">
-//       {console.log(props)}
-//       <div className="movie-single__description">
-//         {/* print information about the movie in state to the page using object notation */}
-//         <header>
-//           <h1>YOU MADE IT</h1>
-//           {/* <h1>{props.movie.title}</h1>
-//           <h2>{props.movie.tagline}</h2>
-//           <p>{props.movie.overview}</p> */}
-//         </header>
-//       </div>
-//       <div className="movie-single__image">
-//         {/* we are using the url from the catalogue for the images */}
-//         {/* <img
-//           src={`http://image.tmdb.org/t/p/w500/${props.movie.poster_path}`}
-//           alt={`Movie poster for ${props.movie.title}`}
-//         /> */}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default withRouter(MovieDetails);
