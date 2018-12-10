@@ -1,44 +1,50 @@
 import React, { Component } from "react";
-import { Route, Link, withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 class RenderMovies extends Component {
   render() {
     return (
-      // SF SAT updated div to section
       <section className="movieContainer">
-        {/* SF SAT added wrapper class and moved clearfix here */}
         <div className="wrapper clearfix">
           {this.props.movies.map(movie => {
-            // console.log(movie);
             return (
               <div key={movie.id} className="movieCard clearfix">
                 <div className="imageContainer">
                   <Link
                     to={`/group/${this.props.match.params.group_id}/movie/${
                       movie.id
-                      }`}
+                    }`}
                   >
                     <img
-                      src={`http://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                      src={`http://image.tmdb.org/t/p/w500/${
+                        movie.poster_path
+                      }`}
                       alt={movie.overview}
                     />
                   </Link>
                 </div>
-                <button onClick={() => this.props.removeMovie(movie)} className="removeMovie">
-                  <i className="far fa-times-circle"></i>
-                </button>
-                {/* SF SAT put buttons in a container */}
-                <div className="buttonContainer">
+                {this.props.match.path.endsWith("search") ? (
+                  // if the url path ends with "search", render the favourite/watchlist buttons
+                  <div className="buttonContainer">
+                    <button
+                      value="favourite"
+                      onClick={() => this.props.favouriteMovie(movie)}
+                    >
+                      <i className="fas fa-star" />
+                    </button>
+                    <button value="watchlist">
+                      <i className="fas fa-eye" />
+                    </button>
+                  </div>
+                ) : (
+                  // otherwise, render the remove movie button
                   <button
-                    value="favourite"
-                    onClick={() => this.props.favouriteMovie(movie)}
+                    onClick={() => this.props.removeMovie(movie)}
+                    className="removeMovie"
                   >
-                    <i className="fas fa-star" />
+                    <i className="far fa-times-circle" />
                   </button>
-                  <button value="watchlist">
-                    <i className="fas fa-eye" />
-                  </button>
-                </div>
+                )}
               </div>
             );
           })}

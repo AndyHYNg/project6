@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import {
   BrowserRouter as Router,
   Route,
-  Link,
   Redirect,
   Switch
 } from "react-router-dom";
@@ -41,60 +40,7 @@ class App extends Component {
         this.setState({ user });
       }
     });
-    // if (this.state.user) {
-    //   this.populateGroupDBRef = firebase
-    //     .database()
-    //     .ref(`uid/${this.state.uid}/groups`);
-    //   this.populateGroupDBRef.on("value", snapshot => {
-    //     this.getJoinedGroups(snapshot.val());
-    //   });
-    // }
-    // this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
-    // this.populateGroupMoviesDBRef.on("value", snapshot => {
-    //   console.log(this.props.match.params.group_id);
-    //   Object.entries(snapshot.val()).map(group => {
-    //     if (group[1].groupID === this.props.match.params.group_id) {
-    //       this.firebaseKey = group[0];
-    //     }
-    //   });
-    // });
   };
-
-  removeGroup = (groupObject) => {
-    const currentUserGroupID = groupObject[0];
-    console.log(currentUserGroupID);
-    this.specificGroup = firebase
-      .database()
-      .ref(`userGroups/`);
-    this.specificGroup.once("value", snapshot => {
-      console.log(snapshot.val());
-      const groupsDB = snapshot.val();
-      // console.log("movieDB", movieDB);
-      //movie is the firebase key consisting of that specific movie object in firebase
-      for (let group in groupsDB) {
-        console.log(group)
-        if (groupObject[1].groupID === groupsDB[group].groupID) {
-          console.log('you found me!', group)
-          this.removeSpecificGroupDBRef = firebase.database().ref(`userGroups/${group}`);
-          this.removeSpecificGroupDBRef.remove();
-          this.removeSpecificUserGroupDBRef = firebase.database().ref(`uid/${this.state.user.uid}/groups/${currentUserGroupID}`);
-          this.removeSpecificUserGroupDBRef.remove();
-          this.populateGroupDBRef = firebase
-            .database()
-            .ref(`uid/${this.state.uid}/groups`);
-          this.populateGroupDBRef.on("value", snapshot => {
-            this.getJoinedGroups(snapshot.val());
-          });
-        }
-      }
-    })
-  }
-
-  getGroupFirebaseKey = (firebaseKey) => {
-    this.setState({
-      groupFirebaseKey: firebaseKey
-    })
-  }
 
   logInGuest = () => {
     this.setState({
@@ -119,10 +65,13 @@ class App extends Component {
         currGroupMovies: []
       });
     });
-    // return <Redirect to="/" />;
   };
 
-  // RESTRUCTURE CHANGES START HERE
+  getGroupFirebaseKey = firebaseKey => {
+    this.setState({
+      groupFirebaseKey: firebaseKey
+    });
+  };
 
   getJoinedGroups = dbRefSnapshotValue => {
     this.setState({
@@ -148,94 +97,107 @@ class App extends Component {
     });
   };
 
+  removeGroup = groupObject => {
+    const currentUserGroupID = groupObject[0];
+    console.log(currentUserGroupID);
+    this.specificGroup = firebase.database().ref(`userGroups/`);
+    this.specificGroup.once("value", snapshot => {
+      console.log(snapshot.val());
+      const groupsDB = snapshot.val();
+      // console.log("movieDB", movieDB);
+      //movie is the firebase key consisting of that specific movie object in firebase
+      for (let group in groupsDB) {
+        console.log(group);
+        if (groupObject[1].groupID === groupsDB[group].groupID) {
+          console.log("you found me!", group);
+          this.removeSpecificGroupDBRef = firebase
+            .database()
+            .ref(`userGroups/${group}`);
+          this.removeSpecificGroupDBRef.remove();
+          this.removeSpecificUserGroupDBRef = firebase
+            .database()
+            .ref(`uid/${this.state.user.uid}/groups/${currentUserGroupID}`);
+          this.removeSpecificUserGroupDBRef.remove();
+          this.populateGroupDBRef = firebase
+            .database()
+            .ref(`uid/${this.state.user.uid}/groups`);
+          this.populateGroupDBRef.on("value", snapshot => {
+            this.getJoinedGroups(snapshot.val());
+          });
+        }
+      }
+    });
+  };
+
+  // genre filter view method (used in Group component)
   handleChange = e => {
+    // if "All" is selected, set current movies to view to be all the movies added in that group
     if (e.target.value === "All") {
       this.setState({
         currGroupMovies: this.state.currGroupMoviesCollection
-      })
-    } else {
+      });
+    }
+    // otherwise, check all the movies added in that group and populate a new array that matches the selected genre
+    else {
       let matchedGenresMovieArray = [];
       this.state.currGroupMoviesCollection.forEach(movies => {
-        // console.log(movies);
+        // movies is an object with key-value pairs of properties about the movie
         for (let movie in movies) {
+          // if the property is genre...
           if (movie === "genres") {
-            // console.log(movies[movie]);
             const genreArray = movies[movie];
-            // console.log(test);
+            // because a movie has multiple genres, check if any of the genre matches the selected genre, if so, append to the new array results
             genreArray.forEach(genre => {
-              // console.log(genre.name);
               if (genre.name === e.target.value) {
                 matchedGenresMovieArray.push(movies);
               }
-            })
+            });
           }
         }
-      })
+      });
+      // set the current movies of that group to be displayed to the new array results
       this.setState({
         currGroupMovies: matchedGenresMovieArray
-      })
+      });
     }
-  }
+  };
 
-  // handleChange = e => {
-  //   if (e.target.value === "All") {
-  //     this.setState({
-  //       currGroupMovies: this.state.currGroupMoviesCollection
-  //     })
-  //   } else {
-  //     let matchedGenresMovieArray = [];
-  //     this.state.currGroupMoviesCollection.forEach(movies => {
-  //       // console.log(movies);
-  //       for (let movie in movies) {
-  //         if (movie === "genres") {
-  //           // console.log(movies[movie]);
-  //           const genreArray = movies[movie];
-  //           // console.log(test);
-  //           genreArray.forEach(genre => {
-  //             // console.log(genre.name);
-  //             if (genre.name === e.target.value) {
-  //               matchedGenresMovieArray.push(movies);
-  //             }
-  //           })
-  //         }
-  //       }
-  //     })
-  //     this.setState({
-  //       currGroupMovies: matchedGenresMovieArray
-  //     })
-  //   }
-  // }
-
-  removeMovie = (movieObject) => {
-    this.specificGroup = firebase
+  // remove movie method
+  removeMovie = movieObject => {
+    // open current group's movies from firebase db
+    this.groupDBMovies = firebase
       .database()
       .ref(`userGroups/${this.state.groupFirebaseKey}/movies`);
-    // console.log(movieObject);
-    // console.log(this.specificGroup);
-
+    // check current group's movies from App's state
     this.state.currGroupMoviesCollection.forEach(movies => {
       for (let movie in movies) {
+        // if the property of the movie matches "id"...
         if (movie === "id") {
           const idArray = movies[movie];
+          // if the id of the selected movie to be removed is the same as the movie in the App's movie collection state...
           if (idArray === movieObject.id) {
-            // console.log(true);
-            this.specificGroup.once("value", snapshot => {
-              console.log(snapshot.val());
+            // get the snapshot of the group movie's db once and search through all the movies in the firebase db...
+            this.groupDBMovies.once("value", snapshot => {
               const movieDB = snapshot.val();
-              // console.log("movieDB", movieDB);
-              //movie is the firebase key consisting of that specific movie object in firebase
-              for (let movie in movieDB) {
-                if (movieObject.id === movieDB[movie].id) {
-                  console.log('you found me!')
-                  this.removeSpecificMovieDBRef = firebase.database().ref(`userGroups/${this.state.groupFirebaseKey}/movies/${movie}`);
+              // movie is the firebase key consisting of that specific movie object in firebase
+              for (let movieNode in movieDB) {
+                // if movie id matches, remove the firebase entry of that movie node
+                if (movieObject.id === movieDB[movieNode].id) {
+                  this.removeSpecificMovieDBRef = firebase
+                    .database()
+                    .ref(
+                      `userGroups/${
+                        this.state.groupFirebaseKey
+                      }/movies/${movieNode}`
+                    );
                   this.removeSpecificMovieDBRef.remove();
                 }
               }
-            })
+            });
           }
         }
       }
-    })
+    });
   };
 
   render() {
@@ -274,8 +236,15 @@ class App extends Component {
               />
               <Route
                 path="/group/:group_id/search"
-                render={() => <SearchMovies
-                  getCurrGroup={this.getCurrGroup} getMovieArray={this.getMovieArray} currGroupMoviesCollection={this.state.currGroupMoviesCollection} />}
+                render={() => (
+                  <SearchMovies
+                    getCurrGroup={this.getCurrGroup}
+                    getMovieArray={this.getMovieArray}
+                    currGroupMoviesCollection={
+                      this.state.currGroupMoviesCollection
+                    }
+                  />
+                )}
               />
               <Route
                 exact
@@ -302,16 +271,16 @@ class App extends Component {
               />
             </React.Fragment>
           ) : (
-              // If user isn't logged in, redirect link back to root and render the Login component
-              <React.Fragment>
-                <Redirect to="/" />
-                <Login
-                  logIn={this.logIn}
-                  logInGuest={this.logInGuest}
-                  userState={this.state.user}
-                />
-              </React.Fragment>
-            )}
+            // If user isn't logged in, redirect link back to root and render the Login component
+            <React.Fragment>
+              <Redirect to="/" />
+              <Login
+                logIn={this.logIn}
+                logInGuest={this.logInGuest}
+                userState={this.state.user}
+              />
+            </React.Fragment>
+          )}
         </Switch>
       </Router>
     );

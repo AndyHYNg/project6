@@ -1,17 +1,14 @@
 import React, { Component } from "react";
-import firebase, { auth, provider } from "../firebase";
+import firebase from "../firebase";
 // withRouter is a higher-order component (component inside a component)
-import { Route, Link, withRouter } from "react-router-dom";
-import axios from "axios";
+import { Link, withRouter } from "react-router-dom";
 import RenderMovies from "./Movies";
-import SearchMovies from "./SearchMovies";
 
 class Group extends Component {
   componentDidMount() {
     this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
     this.populateGroupMoviesDBRef.on("value", snapshot => {
-      console.log(this.props.match.params.group_id);
-      Object.entries(snapshot.val()).map(group => {
+      Object.entries(snapshot.val()).forEach(group => {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.props.getCurrGroup(group[1]);
           // this.props.getMovieCollectionArray(group[1].movies);
@@ -72,7 +69,10 @@ class Group extends Component {
             </select>
           </form>
         </section>
-        <RenderMovies movies={this.props.currGroupMovies} removeMovie={this.props.removeMovie} />
+        <RenderMovies
+          movies={this.props.currGroupMovies}
+          removeMovie={this.props.removeMovie}
+        />
         {/* <Link to={`/group/${this.props.match.params.group_id}/search`}>
           <i className="fas fa-search" />
         </Link> */}
