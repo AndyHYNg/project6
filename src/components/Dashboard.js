@@ -157,6 +157,7 @@ class Dashboard extends Component {
             this.userDBRef.off();
           }
         }
+        // allows users to join multiple groups at the same time without having to refresh the page
         this.populateGroupDBRef = firebase
           .database()
           .ref(`uid/${this.props.userState.uid}/groups`);
