@@ -4,27 +4,17 @@
 
 .movieCard {
   border: 4px solid white;
-  width: calc(33.3% - 40px);
-  // width: 100%;
+  width: calc(33.33% - 40px);
   margin: 20px;
   float: left;
   position: relative;
-  // height: 420px;
-  .imageContainer {
-    // float: left;
-    // border: 2px blue solid;
-    // max-height: 450px;
-    // overflow-y: hidden;
-    
     img {
       display: block;
-      // overflow-y: hidden;
-      max-width: 100%;
-      // object-fit: contain;
-      // max-height: 100%;
+      width: 100%; 
+      height: 500px;
+      object-fit: cover;
     }
   }
-}
 
 .buttonContainer button {
   width: 50%;
