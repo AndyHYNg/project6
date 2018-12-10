@@ -100,7 +100,7 @@ class Dashboard extends Component {
         .database()
         .ref(`uid/${this.props.userState.uid}/groups`);
       this.populateGroupDBRef.once("value", snapshot => {
-        this.getJoinedGroups(snapshot.val());
+        this.props.getJoinedGroups(snapshot.val());
       });
     }
   };
@@ -157,6 +157,13 @@ class Dashboard extends Component {
             this.userDBRef.off();
           }
         }
+        // allows users to join multiple groups at the same time without having to refresh the page
+        this.populateGroupDBRef = firebase
+          .database()
+          .ref(`uid/${this.props.userState.uid}/groups`);
+        this.populateGroupDBRef.once("value", snapshot => {
+          this.props.getJoinedGroups(snapshot.val());
+        });
       });
     }
 
