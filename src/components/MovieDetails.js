@@ -46,6 +46,7 @@ class MovieDetails extends Component {
       }
     }).then(response => {
       const videoResponse = response.data.results[0].key;
+      // console.log(videoResponse);
       this.setState({ video: videoResponse });
     });
 
@@ -124,13 +125,32 @@ class MovieDetails extends Component {
               <h4><span className="underline">Cast</span></h4>
               <MovieCast cast={this.state.cast} />
             </div>
-            <div className="trailerContainer">
+
+            {!this.state.video ? (
+              <div className="hello">
+                <p>nothing to see here</p>
+                {console.log(this.state.video)}
+              </div>
+            ) : (
+
+                <div className="trailerContainer">
+                  <h4><span className="underline">Trailer</span></h4>
+                  <div className="trailer">
+                    <ReactPlayer className="trailerVideo" url={`https://www.youtube.com/watch?v=${this.state.video}`} />
+                  </div>
+                </div>
+              )
+            }
+
+
+
+
+            {/* <div className="trailerContainer">
               <h4><span className="underline">Trailer</span></h4>
               <div className="trailer">
-                <ReactPlayer className="trailerVideo" url={`https://www.youtube.com/watch?v=${this.state.video}`} />
-                {/* <a href={`https://www.youtube.com/watch?v=${this.state.video}`}>Watch trailer</a> */}
+                  <ReactPlayer className="trailerVideo" url={`https://www.youtube.com/watch?v=${this.state.video}`} />
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* <h4><span className="underline">Rent</span></h4> */}
