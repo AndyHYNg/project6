@@ -157,12 +157,12 @@ class Dashboard extends Component {
             this.userDBRef.off();
           }
         }
-      });
-      this.populateGroupDBRef = firebase
-        .database()
-        .ref(`uid/${this.props.userState.uid}/groups`);
-      this.populateGroupDBRef.once("value", snapshot => {
-        this.props.getJoinedGroups(snapshot.val());
+        this.populateGroupDBRef = firebase
+          .database()
+          .ref(`uid/${this.props.userState.uid}/groups`);
+        this.populateGroupDBRef.once("value", snapshot => {
+          this.props.getJoinedGroups(snapshot.val());
+        });
       });
     }
 
