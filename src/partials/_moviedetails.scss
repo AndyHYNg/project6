@@ -1,0 +1,34 @@
+.movieDetails h2 {
+    margin-bottom: 50px;
+}
+
+.movieContent {
+    margin: 100px 0;
+    .movieContentContainer {
+        border: 4px solid white;
+        padding: 50px;
+    }
+}
+
+.poster {
+    width: calc(40% - 50px);
+    float: left;
+    margin-right: 50px;
+    img {
+        display: block;
+        max-width: 100%;
+    }
+}
+
+.additionalInfo {
+    width: 60%;
+    float: left;
+    h4 {
+        margin-top: 0;
+        text-transform: uppercase;
+        // color: white;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+}

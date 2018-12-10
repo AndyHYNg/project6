@@ -8,7 +8,9 @@ class MovieDetails extends Component {
   constructor() {
     super();
     this.state = {
-      movie: {}
+      movie: {},
+      video: {},
+      cast: {}
     };
   }
 
@@ -18,21 +20,50 @@ class MovieDetails extends Component {
     axios({
       url: `https://api.themoviedb.org/3/movie/${
         this.props.match.params.movie_id
-      }`,
+        }`,
       params: {
         api_key: `f012df5d63927931e82fe659a8aaa3ac`,
         language: `en-US`,
         sort_by: `popularity.desc`,
         include_adult: `false`,
         include_video: `false`,
-        page: 1,
-        primary_release_year: 2018
+        // page: 1,
+        // primary_release_year: 2018
       }
     }).then(response => {
       const results = response.data;
-      console.log(results);
+      // console.log(results);
       // save the API data in state
       this.setState({ movie: results });
+    });
+
+    // Axios call to get trailer url
+    axios({
+      url: `https://api.themoviedb.org/3/movie/${
+        this.props.match.params.movie_id
+        }/videos`,
+      params: {
+        api_key: `f012df5d63927931e82fe659a8aaa3ac`,
+        language: `en-US`,
+      }
+    }).then(response => {
+      console.log(response.data);
+      const videoResponse = response.data.results;
+      this.setState({ video: videoResponse });
+    });
+
+    // Axios call to get movie cast
+    axios({
+      url: `https://api.themoviedb.org/3/movie/${
+        this.props.match.params.movie_id
+        }/credits`,
+      params: {
+        api_key: `f012df5d63927931e82fe659a8aaa3ac`
+      }
+    }).then(response => {
+      console.log(response.data.cast);
+      const castResults = response.data.cast;
+      this.setState({ cast: castResults });
     });
 
     this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
@@ -70,24 +101,49 @@ class MovieDetails extends Component {
 
   render() {
     return (
-      <div className="movie-single__poster">
-        <div className="movie-single__description" />
-        {/* print information about the movie in state to the page using object notation */}
-        <header>
-          <h1>{this.state.movie.title}</h1>
-          <h2>{this.state.movie.tagline}</h2>
-          <p>{this.state.movie.overview}</p>
-        </header>
-        <div className="movie-single__image">
-          {/* using the URL from the catalogue for the images */}
-          <img
-            src={`http://image.tmdb.org/t/p/w500/${
-              this.state.movie.poster_path
-            }`}
-            alt=""
-          />
+      <section className="movieDetails">
+        <div className="pageHeader">
+          <header className="wrapper headerContent">
+            <h2>
+              <span className="underline">{this.state.movie.title}</span>
+            </h2>
+            <h3>{this.state.movie.tagline}</h3>
+            {/* <p>{this.state.movie.overview}</p> */}
+          </header>
         </div>
-      </div>
+        <div className="movieContent">
+          <div className="wrapper clearfix movieContentContainer">
+            <div className="poster">
+              <img
+                src={`http://image.tmdb.org/t/p/w500/${
+                  this.state.movie.poster_path
+                  }`}
+                alt=""
+              />
+            </div>
+            <div className="additionalInfo">
+              <h4><span className="underline">Description</span></h4>
+              <p>{this.state.movie.overview}</p>
+              <h4><span className="underline">Genres</span></h4>
+              {/* <div>
+                {this.state.movie.genres}.map(genre => {
+                  return (
+                    <p>{genre.name}</p>
+                )
+              }
+              </div> */}
+              <h4><span className="underline">Cast</span></h4>
+              {/* <ul>{this.state.cast.map(person => {
+                return (
+                  <li>{person.name}</li>
+                )
+              })}</ul> */}
+              <h4><span className="underline">Trailer</span></h4>
+              <h4><span className="underline">Rent</span></h4>
+            </div>
+          </div>
+        </div>
+      </section>
     );
   }
 }
