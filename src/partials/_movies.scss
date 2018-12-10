@@ -8,13 +8,13 @@
   margin: 20px;
   float: left;
   position: relative;
-    img {
-      display: block;
-      width: 100%; 
-      height: 500px;
-      object-fit: cover;
-    }
+  img {
+    display: block;
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
   }
+}
 
 .buttonContainer button {
   width: 50%;
@@ -22,7 +22,7 @@
   background: $mainBlue;
   border: none;
   border-top: 4px solid white;
-  color:white;
+  color: white;
   transition: all 0.2s;
   &:hover {
     background: $yellow;
@@ -30,7 +30,7 @@
   }
 }
 
-.buttonContainer:nth-child(2){
+.buttonContainer:nth-child(2) {
   border-right: 4px solid right;
   color: red;
 }
@@ -62,4 +62,15 @@
   color: white;
   border: none;
   font-size: 2.5rem;
+}
+
+.runningCountContainer {
+  float: left;
+  width: 50%;
+  text-align: center;
+  padding: 10px 0;
+  background: $mainBlue;
+  border: none;
+  border-top: 4px solid white;
+  color: white;
 }

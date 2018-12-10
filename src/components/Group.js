@@ -26,14 +26,27 @@ class Group extends Component {
     }
   }
 
+  renderGroupMembers = usersObject => {
+    const usersArray = Object.entries(usersObject || {}).map(user => {
+      return Object.values(user[1]);
+    });
+    const flattenArray = usersArray.reduce((acc, val) => acc.concat(val), []);
+    return <p>{flattenArray.join(", ")}</p>;
+  };
+
   render() {
     return (
       <div>
         <header className="pageHeader">
           <div className="wrapper headerContent clearfix">
-            <h2>
+            <p>Group</p>
+            <h2 className="groupName">
               <span className="underline">{this.props.currGroup.name}</span>
             </h2>
+            <h3 className="groupDetails">Group ID:</h3>
+            <p>{this.props.match.params.group_id}</p>
+            <h3 className="groupDetails">Group Members:</h3>
+            {this.renderGroupMembers(this.props.currGroup.users)}
             {/* SF SAT moved link to header, added container and p class */}
             <Link to={`/group/${this.props.match.params.group_id}/search`}>
               <div className="searchLink clearfix">

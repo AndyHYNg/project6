@@ -38,13 +38,23 @@ class RenderMovies extends Component {
                   </div>
                 ) : (
                   // otherwise, render the remove movie button
-                  <button
-                    onClick={() => this.props.removeMovie(movie)}
-                    className="removeMovie"
-                  >
-                    {console.log(movie.count)}
-                    <i className="far fa-times-circle" />
-                  </button>
+                  <div className="buttonContainer">
+                    {/* <button
+                      value="favourite"
+                      onClick={() => this.props.favouriteMovie(movie)}
+                    >
+                      <i className="fas fa-star" />
+                    </button> */}
+                    <div className="runningCountContainer">
+                      <p>
+                        {movie.count} <i className="fas fa-thumbs-up" />
+                      </p>
+                    </div>
+                    <button onClick={() => this.props.removeMovie(movie)}>
+                      {console.log(movie.count)}
+                      <i className="far fa-times-circle" />
+                    </button>
+                  </div>
                 )}
               </div>
             );
