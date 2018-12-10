@@ -10,7 +10,6 @@ class Group extends Component {
   componentDidMount() {
     this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
     this.populateGroupMoviesDBRef.on("value", snapshot => {
-      console.log(this.props.match.params.group_id);
       Object.entries(snapshot.val()).map(group => {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.props.getCurrGroup(group[1]);
@@ -72,7 +71,10 @@ class Group extends Component {
             </select>
           </form>
         </section>
-        <RenderMovies movies={this.props.currGroupMovies} removeMovie={this.props.removeMovie} />
+        <RenderMovies
+          movies={this.props.currGroupMovies}
+          removeMovie={this.props.removeMovie}
+        />
         {/* <Link to={`/group/${this.props.match.params.group_id}/search`}>
           <i className="fas fa-search" />
         </Link> */}

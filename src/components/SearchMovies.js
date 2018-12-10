@@ -19,7 +19,6 @@ class SearchMovies extends Component {
   componentDidMount() {
     this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
     this.populateGroupMoviesDBRef.on("value", snapshot => {
-      console.log(this.props.match.params.group_id);
       Object.entries(snapshot.val()).map(group => {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.firebaseKey = group[0];
@@ -62,18 +61,22 @@ class SearchMovies extends Component {
               for (let movie in movieDB) {
                 if (movieObject.id === movieDB[movie].id) {
                   foundDuplicate = true;
-                  this.countSpecificMovieDBRef = firebase.database().ref(`userGroups/${this.firebaseKey}/movies/${movie}/count`);
+                  this.countSpecificMovieDBRef = firebase
+                    .database()
+                    .ref(
+                      `userGroups/${this.firebaseKey}/movies/${movie}/count`
+                    );
                   this.countSpecificMovieDBRef.once("value", countSnapshot => {
                     const count = countSnapshot.val();
                     this.countSpecificMovieDBRef.set(count + 1);
-                  })
+                  });
                 }
               }
-            })
+            });
           }
         }
       }
-    })
+    });
     if (foundDuplicate === false) {
       let newMovieObject = movieObject;
       newMovieObject.count = 1;
@@ -116,30 +119,13 @@ class SearchMovies extends Component {
         const filteredResults = res.data.results.filter(
           movie => movie.poster_path !== null && movie.genre_ids !== []
         );
-
         const idArray = filteredResults.map(id => {
           return id;
         });
-
-        // this.setState({
-        //     movies: filteredResults
-        // })
-        // console.log(filteredResults);
         return idArray;
-        // this.getMovieId(filteredResults);
-        // console.log(filteredResults);
-        // const filteredMovieIds = this.getMovieId(filteredResults);
-        // console.log(filteredMovieIds);
-
-        // this.setState(
-        //     {
-        //         movies: filteredMovieIds
-        //     }
-        // );
-        // console.log(filteredResults);
       })
       .then(idArray => {
-        console.log(idArray);
+        // console.log(idArray);
         this.getMovieId(idArray);
       });
   };
@@ -189,7 +175,11 @@ class SearchMovies extends Component {
         {/* SF SAT pu form in section w wrapper div */}
         <section className="searchBar">
           <div className="wrapper searchContainer">
-            <form onSubmit={this.handleSubmit} action="" className="searchForm clearfix">
+            <form
+              onSubmit={this.handleSubmit}
+              action=""
+              className="searchForm clearfix"
+            >
               <label htmlFor="searchTerm">Search for a Movie!</label>
               <input
                 value={this.state.searchTerm}
@@ -201,7 +191,6 @@ class SearchMovies extends Component {
             </form>
           </div>
         </section>
-
 
         <RenderMovies
           // handleClick={this.handleClick}
