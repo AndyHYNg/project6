@@ -2,13 +2,18 @@ import React, { Component } from "react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
 import firebase, { auth, provider } from "../firebase";
+import MovieGenres from '../components/MovieGenres';
+import MovieCast from '../components/MovieCast';
+import ReactPlayer from 'react-player';
 
 class MovieDetails extends Component {
   // create a state to hold the response from the API
   constructor() {
     super();
     this.state = {
-      movie: {}
+      movie: {},
+      video: {},
+      cast: []
     };
   }
 
@@ -18,30 +23,51 @@ class MovieDetails extends Component {
     axios({
       url: `https://api.themoviedb.org/3/movie/${
         this.props.match.params.movie_id
-      }`,
+        }`,
       params: {
         api_key: `f012df5d63927931e82fe659a8aaa3ac`,
         language: `en-US`,
-        sort_by: `popularity.desc`,
-        include_adult: `false`,
-        include_video: `false`,
-        page: 1,
-        primary_release_year: 2018
       }
     }).then(response => {
       const results = response.data;
-      console.log(results);
+      // console.log(results);
       // save the API data in state
       this.setState({ movie: results });
     });
 
+    // Axios call to get trailer url
+    axios({
+      url: `https://api.themoviedb.org/3/movie/${
+        this.props.match.params.movie_id
+        }/videos`,
+      params: {
+        api_key: `f012df5d63927931e82fe659a8aaa3ac`,
+        language: `en-US`,
+      }
+    }).then(response => {
+      const videoResponse = response.data.results[0].key;
+      // console.log(videoResponse);
+      this.setState({ video: videoResponse });
+    });
+
+    // Axios call to get movie cast
+    axios({
+      url: `https://api.themoviedb.org/3/movie/${
+        this.props.match.params.movie_id
+        }/credits`,
+      params: {
+        api_key: `f012df5d63927931e82fe659a8aaa3ac`
+      }
+    }).then(response => {
+      const castResults = response.data.cast;
+      this.setState({ cast: castResults });
+    });
+
     this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
     this.populateGroupMoviesDBRef.on("value", snapshot => {
-      console.log(this.props.match.params.group_id);
       Object.entries(snapshot.val()).map(group => {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.firebaseKey = group[0];
-          // this.props.getCurrGroup(group[1]);
         }
       });
     });
@@ -70,52 +96,69 @@ class MovieDetails extends Component {
 
   render() {
     return (
-      <div className="movie-single__poster">
-        <div className="movie-single__description" />
-        {/* print information about the movie in state to the page using object notation */}
-        <header>
-          <h1>{this.state.movie.title}</h1>
-          <h2>{this.state.movie.tagline}</h2>
-          <p>{this.state.movie.overview}</p>
-        </header>
-        <div className="movie-single__image">
-          {/* using the URL from the catalogue for the images */}
-          <img
-            src={`http://image.tmdb.org/t/p/w500/${
-              this.state.movie.poster_path
-            }`}
-            alt=""
-          />
+      <section className="movieDetails">
+        <div className="pageHeader">
+          <header className="wrapper headerContent">
+            <h2>
+              <span className="underline">{this.state.movie.title}</span>
+            </h2>
+            <h3>{this.state.movie.tagline}</h3>
+          </header>
         </div>
-      </div>
+        <div className="movieContent">
+          <div className="wrapper clearfix movieContentContainer">
+            <div className="poster">
+              <img
+                src={`http://image.tmdb.org/t/p/w500/${
+                  this.state.movie.poster_path
+                  }`}
+                alt=""
+              />
+            </div>
+            <div className="additionalInfo">
+              <h4><span className="underline">Description</span></h4>
+              <p>{this.state.movie.overview}</p>
+
+              <h4><span className="underline">Genres</span></h4>
+              <MovieGenres movie={this.state.movie} />
+
+              <h4><span className="underline">Cast</span></h4>
+              <MovieCast cast={this.state.cast} />
+            </div>
+
+            {!this.state.video ? (
+              <div className="hello">
+                <p>nothing to see here</p>
+                {console.log(this.state.video)}
+              </div>
+            ) : (
+
+                <div className="trailerContainer">
+                  <h4><span className="underline">Trailer</span></h4>
+                  <div className="trailer">
+                    <ReactPlayer className="trailerVideo" url={`https://www.youtube.com/watch?v=${this.state.video}`} />
+                  </div>
+                </div>
+              )
+            }
+
+
+
+
+            {/* <div className="trailerContainer">
+              <h4><span className="underline">Trailer</span></h4>
+              <div className="trailer">
+                  <ReactPlayer className="trailerVideo" url={`https://www.youtube.com/watch?v=${this.state.video}`} />
+              </div>
+            </div> */}
+          </div>
+
+          {/* <h4><span className="underline">Rent</span></h4> */}
+        </div>
+        {/* </div> */}
+      </section >
     );
   }
 }
 
 export default withRouter(MovieDetails);
-
-// const MovieDetails = props => {
-//   return (
-//     <div className="movie-single__poster">
-//       {console.log(props)}
-//       <div className="movie-single__description">
-//         {/* print information about the movie in state to the page using object notation */}
-//         <header>
-//           <h1>YOU MADE IT</h1>
-//           {/* <h1>{props.movie.title}</h1>
-//           <h2>{props.movie.tagline}</h2>
-//           <p>{props.movie.overview}</p> */}
-//         </header>
-//       </div>
-//       <div className="movie-single__image">
-//         {/* we are using the url from the catalogue for the images */}
-//         {/* <img
-//           src={`http://image.tmdb.org/t/p/w500/${props.movie.poster_path}`}
-//           alt={`Movie poster for ${props.movie.title}`}
-//         /> */}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default withRouter(MovieDetails);
