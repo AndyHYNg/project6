@@ -187,7 +187,7 @@ class SearchMovies extends Component {
                 id="searchTerm"
                 type="text"
               />
-              <input type="submit" />
+              <input type="submit" value="search" />
             </form>
           </div>
         </section>
