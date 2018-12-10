@@ -24,9 +24,9 @@ class MovieDetails extends Component {
       params: {
         api_key: `f012df5d63927931e82fe659a8aaa3ac`,
         language: `en-US`,
-        sort_by: `popularity.desc`,
-        include_adult: `false`,
-        include_video: `false`,
+        // sort_by: `popularity.desc`,
+        // include_adult: `false`,
+        // include_video: `false`,
         // page: 1,
         // primary_release_year: 2018
       }
@@ -47,8 +47,7 @@ class MovieDetails extends Component {
         language: `en-US`,
       }
     }).then(response => {
-      console.log(response.data);
-      const videoResponse = response.data.results;
+      const videoResponse = response.data.results[0].key;
       this.setState({ video: videoResponse });
     });
 
@@ -61,14 +60,13 @@ class MovieDetails extends Component {
         api_key: `f012df5d63927931e82fe659a8aaa3ac`
       }
     }).then(response => {
-      console.log(response.data.cast);
       const castResults = response.data.cast;
       this.setState({ cast: castResults });
     });
 
     this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
     this.populateGroupMoviesDBRef.on("value", snapshot => {
-      console.log(this.props.match.params.group_id);
+      // console.log(this.props.match.params.group_id);
       Object.entries(snapshot.val()).map(group => {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.firebaseKey = group[0];
@@ -108,7 +106,6 @@ class MovieDetails extends Component {
               <span className="underline">{this.state.movie.title}</span>
             </h2>
             <h3>{this.state.movie.tagline}</h3>
-            {/* <p>{this.state.movie.overview}</p> */}
           </header>
         </div>
         <div className="movieContent">
@@ -124,26 +121,42 @@ class MovieDetails extends Component {
             <div className="additionalInfo">
               <h4><span className="underline">Description</span></h4>
               <p>{this.state.movie.overview}</p>
+
               <h4><span className="underline">Genres</span></h4>
-              {/* <div>
-                {this.state.movie.genres}.map(genre => {
+              <ul>
+                {console.log(this.state.movie.genres)}
+                {/* {this.state.movie.genres}.map(genre => {
                   return (
                     <p>{genre.name}</p>
                 )
+              } */}
+              </ul>
+              {/* <div className="genreContainer">
+              {
+
               }
               </div> */}
+
               <h4><span className="underline">Cast</span></h4>
               {/* <ul>{this.state.cast.map(person => {
                 return (
                   <li>{person.name}</li>
                 )
               })}</ul> */}
+
               <h4><span className="underline">Trailer</span></h4>
+              {/* <video>
+                <source src={`https://www.youtube.com/watch?v=${this.state.video}`} />
+              </video> */}
+              <div>
+                <a href={`https://www.youtube.com/watch?v=${this.state.video}`}>Watch trailer</a>
+              </div>
+
               <h4><span className="underline">Rent</span></h4>
             </div>
           </div>
         </div>
-      </section>
+      </section >
     );
   }
 }
