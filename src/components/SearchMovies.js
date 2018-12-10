@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import firebase, { auth, provider } from "../firebase";
-import { Route, Link, withRouter } from "react-router-dom";
+import firebase from "../firebase";
+import { withRouter } from "react-router-dom";
 import axios from "axios";
 import RenderMovies from "./Movies";
 
@@ -19,7 +19,7 @@ class SearchMovies extends Component {
   componentDidMount() {
     this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
     this.populateGroupMoviesDBRef.on("value", snapshot => {
-      Object.entries(snapshot.val()).map(group => {
+      Object.entries(snapshot.val()).forEach(group => {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.firebaseKey = group[0];
           this.props.getMovieArray(group[1].movies);

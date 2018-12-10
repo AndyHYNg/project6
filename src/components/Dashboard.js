@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import firebase, { auth, provider } from "../firebase";
-import { Route, Link } from "react-router-dom";
+import firebase from "../firebase";
 import swal from "sweetalert";
 import DashboardGroup from "./DashboardGroup";
 
@@ -166,14 +165,19 @@ class Dashboard extends Component {
           <div className="wrapper headerContent">
             <p>Welcome</p>
             <h2 className="userName">
-              <span className="underline">{this.props.userState.displayName}</span>
+              <span className="underline">
+                {this.props.userState.displayName}
+              </span>
             </h2>
             <p>Your personal movie dashboard</p>
           </div>
         </header>
         <div className="wrapper clearfix">
           {/* Component render for all the user's groups  */}
-          <DashboardGroup removeGroup={this.props.removeGroup} groups={this.props.joinedGroups} />
+          <DashboardGroup
+            removeGroup={this.props.removeGroup}
+            groups={this.props.joinedGroups}
+          />
           {/* MOAR NOTE: upon removing a group, we only want to remove the user who chose to remove from their dashboard, need to test once the group has no members */}
           <button onClick={this.createRoom} className="dashboardOption">
             <h3>Add Group</h3>
@@ -187,7 +191,7 @@ class Dashboard extends Component {
             Logout
           </button>
         </div>
-      </section >
+      </section>
     );
   }
 }

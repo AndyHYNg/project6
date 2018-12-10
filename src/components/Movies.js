@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Link, withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 class RenderMovies extends Component {
   render() {
