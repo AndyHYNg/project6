@@ -173,7 +173,7 @@ class Dashboard extends Component {
         </header>
         <div className="wrapper clearfix">
           {/* Component render for all the user's groups  */}
-          <DashboardGroup groups={this.props.joinedGroups} />
+          <DashboardGroup removeGroup={this.props.removeGroup} groups={this.props.joinedGroups} />
           {/* MOAR NOTE: upon removing a group, we only want to remove the user who chose to remove from their dashboard, need to test once the group has no members */}
           <button onClick={this.createRoom} className="dashboardOption">
             <h3>Add Group</h3>

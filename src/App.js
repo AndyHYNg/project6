@@ -41,6 +41,14 @@ class App extends Component {
         this.setState({ user });
       }
     });
+    // if (this.state.user) {
+    //   this.populateGroupDBRef = firebase
+    //     .database()
+    //     .ref(`uid/${this.state.uid}/groups`);
+    //   this.populateGroupDBRef.on("value", snapshot => {
+    //     this.getJoinedGroups(snapshot.val());
+    //   });
+    // }
     // this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
     // this.populateGroupMoviesDBRef.on("value", snapshot => {
     //   console.log(this.props.match.params.group_id);
@@ -51,6 +59,36 @@ class App extends Component {
     //   });
     // });
   };
+
+  removeGroup = (groupObject) => {
+    const currentUserGroupID = groupObject[0];
+    console.log(currentUserGroupID);
+    this.specificGroup = firebase
+      .database()
+      .ref(`userGroups/`);
+    this.specificGroup.once("value", snapshot => {
+      console.log(snapshot.val());
+      const groupsDB = snapshot.val();
+      // console.log("movieDB", movieDB);
+      //movie is the firebase key consisting of that specific movie object in firebase
+      for (let group in groupsDB) {
+        console.log(group)
+        if (groupObject[1].groupID === groupsDB[group].groupID) {
+          console.log('you found me!', group)
+          this.removeSpecificGroupDBRef = firebase.database().ref(`userGroups/${group}`);
+          this.removeSpecificGroupDBRef.remove();
+          this.removeSpecificUserGroupDBRef = firebase.database().ref(`uid/${this.state.user.uid}/groups/${currentUserGroupID}`);
+          this.removeSpecificUserGroupDBRef.remove();
+          this.populateGroupDBRef = firebase
+            .database()
+            .ref(`uid/${this.state.uid}/groups`);
+          this.populateGroupDBRef.on("value", snapshot => {
+            this.getJoinedGroups(snapshot.val());
+          });
+        }
+      }
+    })
+  }
 
   getGroupFirebaseKey = (firebaseKey) => {
     this.setState({
@@ -230,6 +268,7 @@ class App extends Component {
                     userState={this.state.user}
                     joinedGroups={this.state.joinedGroups}
                     getJoinedGroups={this.getJoinedGroups}
+                    removeGroup={this.removeGroup}
                   />
                 )}
               />

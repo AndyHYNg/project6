@@ -44,44 +44,6 @@ class SearchMovies extends Component {
     }
   }
 
-  // this handle click manages firebase db event listeners
-  // handleClick = e => {
-  //   // console.log(e.target.value);
-  //   if (e.target.value === "favourite") {
-
-  //   }
-  // };
-
-  // handleChange = e => {
-  //   if (e.target.value === "All") {
-  //     this.setState({
-  //       currGroupMovies: this.state.currGroupMoviesCollection
-  //     })
-  //   } else {
-  //     let matchedGenresMovieArray = [];
-  //     this.state.currGroupMoviesCollection.forEach(movies => {
-  //       // console.log(movies);
-  //       for (let movie in movies) {
-  //         if (movie === "id") {
-  //           // console.log(movies[movie]);
-  //           const idArray = movies[movie];
-  //           // console.log(test);
-  //           idArray.forEach(id => {
-  //             // console.log(genre.name);
-  //             if (id === movieObject.id) {
-  //               // matchedGenresMovieArray.push(movies);
-  //               console.log(true);
-  //             }
-  //           })
-  //         }
-  //       }
-  //     })
-  //     this.setState({
-  //       currGroupMovies: matchedGenresMovieArray
-  //     })
-  //   }
-  // }
-
   favouriteMovie = movieObject => {
     let foundDuplicate = false;
     this.specificGroup = firebase
@@ -127,7 +89,6 @@ class SearchMovies extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    // console.log('handleSubmit');
     // clears the search term and THEN use a callback function to get the movies from the API
     this.setState(
       {
