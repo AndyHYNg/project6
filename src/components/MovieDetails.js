@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import firebase, { auth, provider } from "../firebase";
 import MovieGenres from '../components/MovieGenres';
 import MovieCast from '../components/MovieCast';
@@ -103,6 +103,10 @@ class MovieDetails extends Component {
               <span className="underline">{this.state.movie.title}</span>
             </h2>
             <h3>{this.state.movie.tagline}</h3>
+            <button onClick={this.props.history.goBack} className="backButton">
+              Go back
+              </button>
+
           </header>
         </div>
         <div className="movieContent">
@@ -135,7 +139,7 @@ class MovieDetails extends Component {
 
             {(this.state.video.length === undefined) ? (
               <div className="hello">
-                <p>nothing to see here</p>
+                <p></p>
               </div>
             ) : (
 
