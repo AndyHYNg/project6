@@ -95,6 +95,13 @@ class App extends Component {
     });
   };
 
+  updateMovieArray = (moviesObjectArray) => {
+    this.setState({
+      currGroupMovies: moviesObjectArray,
+      currGroupMoviesCollection: moviesObjectArray
+    });
+  }
+
   getMovieArray = currGroupMoviesFromDB => {
     const movieArray = Object.entries(currGroupMoviesFromDB || {}).map(
       movie => {
@@ -228,7 +235,7 @@ class App extends Component {
                     .database()
                     .ref(
                       `userGroups/${
-                        this.state.groupFirebaseKey
+                      this.state.groupFirebaseKey
                       }/movies/${movieNode}`
                     );
                   this.removeSpecificMovieDBRef.remove();
@@ -253,12 +260,12 @@ class App extends Component {
               this.state.user ? (
                 <Redirect to="/dashboard" />
               ) : (
-                <Login
-                  logIn={this.logIn}
-                  logInGuest={this.logInGuest}
-                  userState={this.state.user}
-                />
-              )
+                  <Login
+                    logIn={this.logIn}
+                    logInGuest={this.logInGuest}
+                    userState={this.state.user}
+                  />
+                )
             }
           />
 
@@ -275,8 +282,8 @@ class App extends Component {
                   removeGroup={this.removeGroup}
                 />
               ) : (
-                <Redirect to="/" />
-              )
+                  <Redirect to="/" />
+                )
             }
           />
 
@@ -292,8 +299,8 @@ class App extends Component {
                   }
                 />
               ) : (
-                <Redirect to="/" />
-              )
+                  <Redirect to="/" />
+                )
             }
           />
 
@@ -310,10 +317,11 @@ class App extends Component {
                   handleChange={this.handleChange}
                   removeMovie={this.removeMovie}
                   getGroupFirebaseKey={this.getGroupFirebaseKey}
+                  updateMovieArray={this.updateMovieArray}
                 />
               ) : (
-                <Redirect to="/" />
-              )
+                  <Redirect to="/" />
+                )
             }
           />
           <Route
@@ -323,8 +331,8 @@ class App extends Component {
               this.state.user ? (
                 <MovieDetails currGroupMovies={this.state.currGroupMovies} />
               ) : (
-                <Redirect to="/" />
-              )
+                  <Redirect to="/" />
+                )
             }
           />
         </Switch>
