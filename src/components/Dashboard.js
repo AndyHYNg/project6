@@ -124,6 +124,14 @@ class Dashboard extends Component {
       this.populateGroupDBRef.once("value", snapshot => {
         this.props.getJoinedGroups(snapshot.val());
       });
+
+      swal(
+        "Group created!",
+        `You have created a new group: ${value}`,
+        "success"
+      );
+    } else if (value === "") {
+      swal("Error 1001", `Invalid group name, please try again.`, "error");
     }
   };
 
@@ -219,13 +227,13 @@ class Dashboard extends Component {
           });
         }
       });
-      if (!foundRoom) {
-        swal(
-          "Error 8999",
-          "Cannot find group - the group does not exist.",
-          "error"
-        );
-      }
+      // if (!foundRoom) {
+      //   swal(
+      //     "Error 8999",
+      //     "Cannot find group - the group does not exist.",
+      //     "error"
+      //   );
+      // }
     }
 
     // this.joinSpecificRoomDBRef = firebase.database().ref(`userGroups/`)
@@ -248,9 +256,15 @@ class Dashboard extends Component {
               </span>
             </h2>
             <p>Your personal movie dashboard</p>
+            <p>
+              Create a new group & invite your friends to build your favourite
+              movies collection
+            </p>
+            <p>Looking to join an existing group? Enter the group ID</p>
           </div>
         </header>
         <div className="wrapper clearfix">
+          <h3>Your groups</h3>
           {/* Component render for all the user's groups  */}
           <DashboardGroup
             removeGroup={this.props.removeGroup}
@@ -261,10 +275,12 @@ class Dashboard extends Component {
             <h3>Add Group</h3>
             <i className="fas fa-plus" />
           </button>
-          <button onClick={this.joinRoom} className="dashboardButton">
-            <h3>Join Group</h3>
-            <i className="fas fa-plus" />
-          </button>
+          {!this.props.userState.isAnonymous ? (
+            <button onClick={this.joinRoom} className="dashboardButton">
+              <h3>Join Group</h3>
+              <i className="fas fa-plus" />
+            </button>
+          ) : null}
         </div>
       </section>
     );
