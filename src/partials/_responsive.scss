@@ -4,8 +4,8 @@
     h2.userName {
         font-size: 8rem;
     }
-    // DASHBOARD OPTION
-   .dashboardOption {
+    // DASHBOARD LINK
+   .dashboardLink {
         width: calc(50% - 40px);
         margin: 20px;
    }
@@ -53,6 +53,7 @@
     .additionalInfo {
         width: 100%;
         margin: 0;
+        padding: 0 25px;
     }
 
     .poster {
@@ -82,9 +83,9 @@
         float: left;
     }
 
-    .trailerVideo {
-        width: auto;
-        height: 350px;
+    .dashboardButton {
+        width: calc(50% - 20px);
+        margin: 10px;
     }
 }
 
@@ -97,20 +98,32 @@
             height: 450px;
         }
     }
+
+    .trailer {
+        height: 450px;
+    }
+
+    .dashboardLink {
+        width: 100%;
+        margin: 20px 0;
+    }
+
+    .dashboardButton {
+        width: 100%;
+        margin: 20px 0;
+    }
 }
 
 @media screen and (max-width: 600px) {
+    h2 {
+        font-size: 7rem;
+    }
    h2.userName {
        font-size: 7rem;
    }
 
     .login button {
         margin: 25px;
-    }
-
-    .dashboardOption {
-        width: 100%;
-        margin: 20px 0;
     }
 
     // SEARCH INPUTS
@@ -149,5 +162,13 @@
     
     .dashboardContainer {
         margin-top: 50px;
+    }
+
+    .additionalInfo p {
+        width: 95%;
+    }
+
+    .trailer {
+        height: 400px;
     }
 }

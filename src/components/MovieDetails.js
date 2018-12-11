@@ -142,7 +142,7 @@ class MovieDetails extends Component {
                 <div className="trailerContainer">
                   <h4><span className="underline">Trailer</span></h4>
                   <div className="trailer">
-                    <ReactPlayer className="trailerVideo" url={`https://www.youtube.com/watch?v=${this.state.video}`} />
+                    <ReactPlayer className="trailerVideo" width='100%' height='100%' url={`https://www.youtube.com/watch?v=${this.state.video}`} />
                   </div>
                 </div>
               )
