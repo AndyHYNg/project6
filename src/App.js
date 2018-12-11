@@ -134,13 +134,13 @@ class App extends Component {
           // remove the specific user from the userGroup's group db
 
           // find the user in the userGroup's group db (get firebase key pointing to the user in the usergroup's group)
-          const uidUserObjectArray = Object.entries(
-            groupsDB[group].users
-          ).filter(user => {
-            return this.state.user.uid === Object.keys(user[1])[0];
-          });
+          const uidUserObjectArray =
+            Object.entries(groupsDB[group].users).filter(user => {
+              return this.state.user.uid === Object.keys(user[1])[0];
+            }) || [];
 
           // remove user from the userGroup's group db
+          // console.log(uidUserObjectArray[0]);
           this.removeUserFromGroupDBRef = firebase
             .database()
             .ref(`userGroups/${group}/users/${uidUserObjectArray[0][0]}`);
@@ -221,7 +221,7 @@ class App extends Component {
                     .database()
                     .ref(
                       `userGroups/${
-                      this.state.groupFirebaseKey
+                        this.state.groupFirebaseKey
                       }/movies/${movieNode}`
                     );
                   this.removeSpecificMovieDBRef.remove();
@@ -246,12 +246,12 @@ class App extends Component {
               this.state.user ? (
                 <Redirect to="/dashboard" />
               ) : (
-                  <Login
-                    logIn={this.logIn}
-                    logInGuest={this.logInGuest}
-                    userState={this.state.user}
-                  />
-                )
+                <Login
+                  logIn={this.logIn}
+                  logInGuest={this.logInGuest}
+                  userState={this.state.user}
+                />
+              )
             }
           />
 
@@ -268,8 +268,8 @@ class App extends Component {
                   removeGroup={this.removeGroup}
                 />
               ) : (
-                  <Redirect to="/" />
-                )
+                <Redirect to="/" />
+              )
             }
           />
 
@@ -285,8 +285,8 @@ class App extends Component {
                   }
                 />
               ) : (
-                  <Redirect to="/" />
-                )
+                <Redirect to="/" />
+              )
             }
           />
 
@@ -305,8 +305,8 @@ class App extends Component {
                   getGroupFirebaseKey={this.getGroupFirebaseKey}
                 />
               ) : (
-                  <Redirect to="/" />
-                )
+                <Redirect to="/" />
+              )
             }
           />
           <Route
@@ -316,8 +316,8 @@ class App extends Component {
               this.state.user ? (
                 <MovieDetails currGroupMovies={this.state.currGroupMovies} />
               ) : (
-                  <Redirect to="/" />
-                )
+                <Redirect to="/" />
+              )
             }
           />
         </Switch>
