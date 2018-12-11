@@ -147,8 +147,8 @@ class Dashboard extends Component {
     });
 
     if (this.roomID !== null && this.roomID !== "") {
+      let foundRoom = false;
       this.groupFirebaseKey = "";
-
       this.joinUserGroupDBRef = firebase.database().ref(`/userGroups/`);
 
       // we use .once to read the snapshot data once, otherwise it will result in infinite loop for the for...in + if statement below
@@ -157,36 +157,75 @@ class Dashboard extends Component {
         const groupDB = snapshot.val();
         for (let group in groupDB) {
           if (this.roomID === groupDB[group].groupID) {
-            this.joinSpecificGroupDBRef = firebase
-              .database()
-              .ref(`/userGroups/${group}/users/`);
-            const joinUserObject = {};
-            joinUserObject[this.props.userState.uid] =
-              this.props.userState.displayName || this.props.guestName;
-            this.joinSpecificGroupDBRef.push(joinUserObject);
-            this.joinSpecificGroupDBRef.off();
+            foundRoom = true;
+            if (
+              (groupDB[group].isGuestRoom &&
+                this.props.userState.isAnonymous) ||
+              (!groupDB[group].isGuestRoom && !this.props.userState.isAnonymous)
+            ) {
+              this.joinSpecificGroupDBRef = firebase
+                .database()
+                .ref(`/userGroups/${group}/users/`);
+              const joinUserObject = {};
+              joinUserObject[this.props.userState.uid] =
+                this.props.userState.displayName || this.props.guestName;
+              this.joinSpecificGroupDBRef.push(joinUserObject);
+              this.joinSpecificGroupDBRef.off();
 
-            this.userDBRef = firebase
-              .database()
-              .ref(`uid/${this.props.userState.uid}/groups/`);
+              this.userDBRef = firebase
+                .database()
+                .ref(`uid/${this.props.userState.uid}/groups/`);
 
-            const newGroupObject = {
-              name: groupDB[group].name,
-              groupID: this.roomID
-            };
+              const newGroupObject = {
+                name: groupDB[group].name,
+                groupID: this.roomID
+              };
 
-            this.userDBRef.push(newGroupObject);
-            this.userDBRef.off();
+              this.userDBRef.push(newGroupObject);
+              this.userDBRef.off();
+            } else {
+              swal(
+                "Error 9000",
+                "You do not have the privileges to join the group.",
+                "error"
+              );
+            }
           }
         }
-        // allows users to join multiple groups at the same time without having to refresh the page`
-        this.populateGroupDBRef = firebase
-          .database()
-          .ref(`uid/${this.props.userState.uid}/groups`);
-        this.populateGroupDBRef.once("value", snapshot => {
-          this.props.getJoinedGroups(snapshot.val());
-        });
+        // if user logged in and is not a guest
+        if (this.props.userState && !this.props.userState.isAnonymous) {
+          this.populateGroupDBRef = firebase
+            .database()
+            .ref(`uid/${this.props.userState.uid}/groups`);
+          this.populateGroupDBRef.on("value", snapshot => {
+            this.props.getJoinedGroups(snapshot.val());
+          });
+        }
+        // if user logged is a guest
+        else if (this.props.userState.isAnonymous) {
+          // because each guest has a uid on each login, we grab all the group DB refs and build a new Object containing all guest DBs from the snapshot to parse it through this.props.getJoinedGroups
+          this.rawGroupDBRef = firebase.database().ref(`userGroups`);
+          this.rawGroupDBRef.on("value", rawSnapshot => {
+            const rawGroupDB = rawSnapshot.val();
+            const newGuestGroupDBRef = Object.entries(rawGroupDB)
+              .filter(groupDB => {
+                return groupDB[1].isGuestRoom;
+              })
+              .reduce((newObj, firebaseKey) => {
+                newObj[firebaseKey[0]] = rawGroupDB[firebaseKey[0]];
+                return newObj;
+              }, {});
+            this.props.getJoinedGroups(newGuestGroupDBRef);
+          });
+        }
       });
+      if (!foundRoom) {
+        swal(
+          "Error 8999",
+          "Cannot find group - the group does not exist.",
+          "error"
+        );
+      }
     }
 
     // this.joinSpecificRoomDBRef = firebase.database().ref(`userGroups/`)
