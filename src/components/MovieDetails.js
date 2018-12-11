@@ -116,14 +116,21 @@ class MovieDetails extends Component {
               />
             </div>
             <div className="additionalInfo">
-              <h4><span className="underline">Description</span></h4>
-              <p>{this.state.movie.overview}</p>
+              <div className="description">
+                <h4><span className="underline">Description</span></h4>
+                <p>{this.state.movie.overview}</p>
+              </div>
 
-              <h4><span className="underline">Genres</span></h4>
-              <MovieGenres movie={this.state.movie} />
+              <div className="cast">
+                <h4><span className="underline">Cast</span></h4>
+                <MovieCast cast={this.state.cast} />
+              </div>
 
-              <h4><span className="underline">Cast</span></h4>
-              <MovieCast cast={this.state.cast} />
+              <div className="genres">
+                <h4><span className="underline">Genres</span></h4>
+                <MovieGenres movie={this.state.movie} />
+              </div>
+
             </div>
 
             {!this.state.video ? (
@@ -135,8 +142,8 @@ class MovieDetails extends Component {
 
                 <div className="trailerContainer">
                   <h4><span className="underline">Trailer</span></h4>
-                  <div className="trailer">
-                    <ReactPlayer className="trailerVideo" url={`https://www.youtube.com/watch?v=${this.state.video}`} />
+                  <div id="trailer">
+                    <ReactPlayer className="trailerVideo" url={`https://www.youtube.com/watch?v=${this.state.video}`} style={{ width: "auto", height: "350px" }} />
                   </div>
                 </div>
               )
