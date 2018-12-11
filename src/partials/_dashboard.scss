@@ -17,10 +17,9 @@
 .dashboardLink {
     position: relative;
     width: calc(33.33% - 40px);
-    // border: 2px solid red;
+    margin: 20px;
     float: left;
-    margin: 20px 40px 20px 0;
-    // padding: 20px;
+    
 }
 
 .dashboardOption, .dashboardButton {
@@ -44,20 +43,28 @@
     padding-top: 100px;
 }
 
-.dashboardOption:hover, .dashboardButton:hover {
+.dashboardOption:hover {
     border-color: $mainBlue;
 }
 
+.dashboardButton:hover {
+    border-color: $yellow;
+}
+
 .dashboardButton {
-    min-height: 200px;
-    width: calc(100% - 40px);
+    width: calc(50% - 40px);
+    min-height: 250px;
     border: 4px solid white;
     padding: 20px;
-    margin: 20px 0;
+    margin: 20px;
     transition: 0.2s all;
-    color: black;
+    color: white;
     text-align: center;
     z-index: 10;
+    background: $mainBlue;
+    h3 {
+        color: white;
+    }
 }
 
 .backButton {
