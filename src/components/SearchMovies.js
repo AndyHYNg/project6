@@ -3,6 +3,7 @@ import firebase from "../firebase";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import RenderMovies from "./Movies";
+import { Link } from "react-router-dom";
 
 class SearchMovies extends Component {
   constructor() {
@@ -169,6 +170,9 @@ class SearchMovies extends Component {
             <h2>
               <span className="underline">Movies</span>
             </h2>
+          </div>
+          <div className="backButton">
+            Return to group
           </div>
         </header>
         {/* Header changes end */}

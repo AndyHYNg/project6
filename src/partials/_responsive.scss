@@ -20,6 +20,72 @@
             object-fit: cover;
         }
     }
+    // MOVIE DETAILS
+    .additionalInfo {
+        width: calc(50% - 40px);
+        margin: 20px;
+        float: left;
+    }
+    .poster {
+        width: calc(50% - 40px);
+        margin: 20px;
+        float: left;
+        img {
+            height: 500px;
+        }
+    }
+}
+
+@media screen and (max-width: 850px) {
+    // SEARCH MOVIES
+    ul {
+        padding-left: 20px;
+    }
+
+    .movieContent .movieContentContainer {
+        padding: 0;
+    }
+
+    .movieContent {
+        margin: 50px 0;
+    }
+
+    .additionalInfo {
+        width: 100%;
+        margin: 0;
+    }
+
+    .poster {
+        width: 100%;
+        margin: 0 0 25px 0;
+        img {
+            height: 450px;
+            margin: 25px auto;
+        }
+    }
+
+    .description {
+        width: 100%;
+        margin: 10px;
+        float: left;
+    }
+
+    .cast {
+        width: calc(70% - 20px);
+        margin: 10px;
+        float: left;
+    }
+
+    .genres {
+        width: calc(30% - 20px);
+        margin: 10px;
+        float: left;
+    }
+
+    .trailerVideo {
+        width: auto;
+        height: 350px;
+    }
 }
 
 @media screen and (max-width: 750px) {
@@ -41,15 +107,18 @@
     .login button {
         margin: 25px;
     }
+
     .dashboardOption {
         width: 100%;
         margin: 20px 0;
     }
+
     // SEARCH INPUTS
     .searchForm input[type="submit"] {
         width: 100%;
         margin: 10px 0;
     }
+
     .searchForm input[type="text"] {
         width: 100%;
     }
@@ -61,15 +130,23 @@
             height: 550px;
         }
     }
+
+    // SEARCH MOVIES
+    .cast,
+    .genres {
+        width: 100%;
+    }
 }
 
 @media screen and (min-width: 320px) and (max-width: 600px) {
     h1{
         font-size: 6rem;
     }
+
     .pageHeader {
         padding-bottom: 0;
     }
+    
     .dashboardContainer {
         margin-top: 50px;
     }
