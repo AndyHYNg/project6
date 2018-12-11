@@ -174,9 +174,11 @@ class SearchMovies extends Component {
               <span className="underline">Movies</span>
             </h2>
           </div>
-          <div className="backButton">
-            Return to group
-          </div>
+          <Link to={`/group/${this.props.match.params.group_id}`}>
+            <div className="backButton">
+              Return to group
+            </div>
+          </Link>
         </header>
         {/* Header changes end */}
         {/* SF SAT pu form in section w wrapper div */}

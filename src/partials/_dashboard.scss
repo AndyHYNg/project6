@@ -43,14 +43,27 @@
     padding-top: 100px;
 }
 
-.dashboardOption:hover {
-    border-color: $mainBlue;
+.dashboardLink:focus {
+    border: purple 2px solid;
 }
 
-.dashboardButton:hover {
-    border-color: $yellow;
+// Styles for delete buttons on dasboardOptions div
+.removeMovie {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  z-index: 100;
+  background: none;
+  color: $mainBlue;
+  border: none;
+  font-size: 2.5rem;
 }
 
+.removeMovie:focus {
+    color: $yellow;
+}
+
+// Styles for add/join group buttons
 .dashboardButton {
     width: calc(50% - 40px);
     min-height: 250px;
@@ -67,6 +80,19 @@
     }
 }
 
+.dashboardOption:hover {
+    border-color: $mainBlue;
+}
+
+.dashboardButton:hover {
+    border-color: $yellow;
+}
+
+.dashboardButton:focus {
+    border-color: $yellow;
+}
+
+//styles for back buttons in page headers
 .backButton {
     clear: both;
     background: none;
@@ -82,17 +108,10 @@
     cursor: pointer;
 }
 
-.backButton:hover {
+.backButton:hover, .backButton:focus {
     border-color: $yellow;
 }
 
-.removeMovie {
-  position: absolute;
-  top: 10px;
-  right: 0;
-  z-index: 100;
-  background: none;
-  color: $mainBlue;
-  border: none;
-  font-size: 2.5rem;
-}
+// .backButton:focus {
+//     border-color: $yellow;
+// }
