@@ -24,7 +24,8 @@
     padding: 20px;
     transition: 0.2s all;
     color: black;
-    // transform: rotate(25deg);
+    text-align: center;
+    z-index: 10;
     h3 {
         border-bottom: 4px solid $yellow;
         margin-bottom: 20px;
@@ -47,12 +48,6 @@
     color: white;
 }
 
-.test {
-    display: inline-block;
-    margin-right: 0;
-    float: left;
-}
-
 .logOutButton {
     clear: both;
     background: none;
@@ -68,4 +63,15 @@
 
 .logOutButton:hover {
     border-color: $yellow;
+}
+
+.removeMovie {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  z-index: 100;
+  background: none;
+  color: white;
+  border: none;
+  font-size: 2.5rem;
 }
