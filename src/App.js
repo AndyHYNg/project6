@@ -20,11 +20,14 @@ import "./App.scss";
 // METHODS
 import firebase, { auth, provider } from "./firebase";
 
+const chance = require("chance").Chance();
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
       user: null,
+      guestName: null,
       joinedGroups: {},
       currGroup: {},
       currGroupMovies: [],
@@ -38,13 +41,19 @@ class App extends Component {
     auth.onAuthStateChanged(user => {
       if (user) {
         this.setState({ user });
+        if (user.isAnonymous) {
+          this.setState({ guestName: "Wild " + chance.animal() });
+        }
       }
     });
   };
 
   logInGuest = () => {
-    this.setState({
-      user: "guest"
+    auth.signInAnonymously().then(result => {
+      this.setState({
+        user: result.user,
+        guestName: "Wild " + chance.animal()
+      });
     });
   };
 
@@ -251,6 +260,7 @@ class App extends Component {
                 <Dashboard
                   logOut={this.logOut}
                   userState={this.state.user}
+                  guestName={this.state.guestName}
                   joinedGroups={this.state.joinedGroups}
                   getJoinedGroups={this.getJoinedGroups}
                   removeGroup={this.removeGroup}

@@ -17,12 +17,30 @@ class Dashboard extends Component {
 
   // populates a snapshot of the logged in user's group db
   componentDidMount() {
-    if (this.props.userState) {
+    // if user logged in and is not a guest
+    if (this.props.userState && !this.props.userState.isAnonymous) {
       this.populateGroupDBRef = firebase
         .database()
         .ref(`uid/${this.props.userState.uid}/groups`);
       this.populateGroupDBRef.on("value", snapshot => {
         this.props.getJoinedGroups(snapshot.val());
+      });
+    }
+    // if user logged is a guest
+    else if (this.props.userState.isAnonymous) {
+      // because each guest has a uid on each login, we grab all the group DB refs and build a new Object containing all guest DBs from the snapshot to parse it through this.props.getJoinedGroups
+      this.rawGroupDBRef = firebase.database().ref(`userGroups`);
+      this.rawGroupDBRef.on("value", rawSnapshot => {
+        const rawGroupDB = rawSnapshot.val();
+        const newGuestGroupDBRef = Object.entries(rawGroupDB)
+          .filter(groupDB => {
+            return groupDB[1].isGuestRoom;
+          })
+          .reduce((newObj, firebaseKey) => {
+            newObj[firebaseKey[0]] = rawGroupDB[firebaseKey[0]];
+            return newObj;
+          }, {});
+        this.props.getJoinedGroups(newGuestGroupDBRef);
       });
     }
   }
@@ -79,8 +97,13 @@ class Dashboard extends Component {
         name: value,
         movies: [],
         users: {},
+        isGuestRoom: false,
         groupID: newKey
       };
+
+      if (this.props.userState.displayName === null) {
+        newUserGroupObject.isGuestRoom = true;
+      }
 
       this.userGroupDBRef = firebase.database().ref(`userGroups/`);
       const userGroupDBKey = this.userGroupDBRef.push(newUserGroupObject).key;
@@ -90,9 +113,8 @@ class Dashboard extends Component {
         .database()
         .ref(`userGroups/${userGroupDBKey}/users`);
       const joinUserObject = {};
-      joinUserObject[
-        this.props.userState.uid
-      ] = this.props.userState.displayName;
+      joinUserObject[this.props.userState.uid] =
+        this.props.userState.displayName || this.props.guestName;
       this.specificGroupDBRef.push(joinUserObject);
       this.specificGroupDBRef.off();
 
@@ -108,7 +130,8 @@ class Dashboard extends Component {
   // for refactoring purposes later on
   joinUserInfotoGroupDB = firebaseDBRef => {
     const joinUserObject = {};
-    joinUserObject[this.props.userState.uid] = this.props.userState.displayName;
+    joinUserObject[this.props.userState.uid] =
+      this.props.userState.displayName || this.props.guestName;
     firebaseDBRef.push(joinUserObject);
   };
 
@@ -138,9 +161,8 @@ class Dashboard extends Component {
               .database()
               .ref(`/userGroups/${group}/users/`);
             const joinUserObject = {};
-            joinUserObject[
-              this.props.userState.uid
-            ] = this.props.userState.displayName;
+            joinUserObject[this.props.userState.uid] =
+              this.props.userState.displayName || this.props.guestName;
             this.joinSpecificGroupDBRef.push(joinUserObject);
             this.joinSpecificGroupDBRef.off();
 
@@ -183,7 +205,7 @@ class Dashboard extends Component {
             <p>Welcome</p>
             <h2 className="userName">
               <span className="underline">
-                {this.props.userState.displayName}
+                {this.props.userState.displayName || this.props.guestName}
               </span>
             </h2>
             <p>Your personal movie dashboard</p>
