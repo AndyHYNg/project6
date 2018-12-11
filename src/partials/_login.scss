@@ -18,3 +18,7 @@
         position: relative;
     }
 }
+
+.login button:focus {
+    color: $yellow;
+}

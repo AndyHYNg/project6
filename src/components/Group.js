@@ -65,15 +65,15 @@ class Group extends Component {
             {/* SF SAT moved link to header, added container and p class */}
             <Link to={`/group/${this.props.match.params.group_id}/search`}>
               <div className="searchLink clearfix">
-                <i className="fas fa-search" />
-                <p>Search for movies to add</p>
+                <i className="fas fa-search" aria-hidden="true" />
+                <p>Search for movies to add to this group</p>
               </div>
             </Link>
-            <i className="fas fa-angle-double-down"></i>
+            <i className="fas fa-angle-double-down" aria-label="Scroll down."></i>
             <Link to={`/dashboard`}>
-              <div className="backButton">
+              <button className="backButton">
                 Return to dashboard
-              </div>
+              </button>
             </Link>
           </div>
         </header>

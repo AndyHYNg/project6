@@ -175,9 +175,9 @@ class SearchMovies extends Component {
             </h2>
           </div>
           <Link to={`/group/${this.props.match.params.group_id}`}>
-            <div className="backButton">
+            <button className="backButton">
               Return to group
-            </div>
+            </button>
           </Link>
         </header>
         {/* Header changes end */}

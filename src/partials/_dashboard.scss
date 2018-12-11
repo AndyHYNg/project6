@@ -43,10 +43,6 @@
     padding-top: 100px;
 }
 
-.dashboardLink:focus {
-    border: purple 2px solid;
-}
-
 // Styles for delete buttons on dasboardOptions div
 .removeMovie {
   position: absolute;
@@ -108,10 +104,10 @@
     cursor: pointer;
 }
 
-.backButton:hover, .backButton:focus {
+.backButton:hover {
     border-color: $yellow;
 }
 
-// .backButton:focus {
-//     border-color: $yellow;
-// }
+.backButton:focus {
+    border-color: $yellow;
+}

@@ -21,6 +21,9 @@
     padding: 10px 20px;
     border: 2px solid $mainBlue;
     font-size: 2.5rem;
+    &:focus {
+        border-color: $yellow;
+    }
 }
 
 .searchForm input[type=submit] {
@@ -33,6 +36,8 @@
     transition: 0.2s all;
     &:hover {
         background: $yellow;
-        // border-color: $mainBlue;
+    }
+    &:focus {
+        background: $yellow;
     }
 }

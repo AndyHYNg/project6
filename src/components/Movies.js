@@ -31,7 +31,7 @@ class RenderMovies extends Component {
                       onClick={() => this.props.favouriteMovie(movie)}
                       className="buttonFavourite"
                     >
-                      <i className="fas fa-star" />
+                      <i className="fas fa-star" aria-label="Save movie to favourites." />
                     </button>
                   </div>
                 ) : (
@@ -45,11 +45,11 @@ class RenderMovies extends Component {
                     </button> */}
                       <div className="runningCountContainer">
                         <p>
-                          {movie.count} <i className="fas fa-thumbs-up" />
+                          {movie.count} <i className="fas fa-thumbs-up" aria-label="Number of people who liked this movie." />
                         </p>
                       </div>
                       <button onClick={() => this.props.removeMovie(movie)}>
-                        <i className="far fa-times-circle" />
+                        <i className="far fa-times-circle" aria-label="Delete this movie from group." />
                       </button>
                     </div>
                   )}
