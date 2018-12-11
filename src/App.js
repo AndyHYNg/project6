@@ -111,6 +111,8 @@ class App extends Component {
     // this is the firebaseKey pointing the group object in the user's node in firebase
     const currentUserGroupID = groupObject[0];
 
+    this.groupDbUserCount = [];
+
     // open up the group node consisting ALL of the user groups in firebase
     this.specificGroup = firebase.database().ref(`userGroups/`);
     this.specificGroup.once("value", snapshot => {
@@ -125,8 +127,12 @@ class App extends Component {
             .database()
             .ref(`userGroups/${group}`);
           this.removeSpecificGroupDBRef.once("value", groupSnapshot => {
+            this.groupDbUserCount = Object.keys(
+              groupSnapshot.val().users || {}
+            );
+
             // if you are the only one in the group, completely delete the group node (kill it with fire)
-            if (Object.keys(groupSnapshot.val().users).length === 1) {
+            if (this.groupDbUserCount.length === 0) {
               this.removeSpecificGroupDBRef.remove();
             }
           });
@@ -141,6 +147,7 @@ class App extends Component {
 
           // remove user from the userGroup's group db
           // console.log(uidUserObjectArray[0]);
+
           this.removeUserFromGroupDBRef = firebase
             .database()
             .ref(`userGroups/${group}/users/${uidUserObjectArray[0][0]}`);
