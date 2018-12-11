@@ -16,6 +16,11 @@ class Group extends Component {
           this.props.getGroupFirebaseKey(group[0]);
         }
       });
+      let currentSortArray = this.props.currGroupMovies;
+      currentSortArray.sort((a, b) => {
+        return b.count - a.count;
+      });
+      this.props.updateMovieArray(currentSortArray);
     });
   }
 
@@ -62,14 +67,15 @@ class Group extends Component {
             <p>{this.props.match.params.group_id}</p>
             <h3 className="groupDetails">Group Members:</h3>
             {this.renderGroupMembers(this.props.currGroup.users)}
-            {/* SF SAT moved link to header, added container and p class */}
             <Link to={`/group/${this.props.match.params.group_id}/search`}>
               <div className="searchLink clearfix">
                 <i className="fas fa-search" aria-hidden="true" />
                 <p>Search for movies to add to this group</p>
               </div>
             </Link>
-            <i className="fas fa-angle-double-down" aria-label="Scroll down."></i>
+            {(this.props.currGroupMovies.length !== 0) ? (
+              <i className="fas fa-angle-double-down" aria-label="Scroll down."></i>
+            ) : null}
             <Link to={`/dashboard`}>
               <button className="backButton">
                 Return to dashboard
@@ -77,52 +83,12 @@ class Group extends Component {
             </Link>
           </div>
         </header>
-        <section>
-          <div className="formContainer">
-            <div className="wrapper genreSelector">
-              <form action="" onChange={this.props.handleChange}>
-                <select name="movieGenre" id="genres">
-                  <option value="All">All</option>
-                  <option value="Action">Action</option>
-                  <option value="Adventure">Adventure</option>
-                  <option value="Animation">Animation</option>
-                  <option value="Comedy">Comedy</option>
-                  <option value="Crime">Crime</option>
-                  <option value="Documentary">Documentary</option>
-                  <option value="Drama">Drama</option>
-                  <option value="Family">Family</option>
-                  <option value="Fantasy">Fantasy</option>
-                  <option value="History">History</option>
-                  <option value="Horror">Horror</option>
-                  <option value="Music">Music</option>
-                  <option value="Mystery">Mystery</option>
-                  <option value="Romance">Romance</option>
-                  <option value="Science Fiction">Science Fiction</option>
-                  <option value="TV Movie">TV Movie</option>
-                  <option value="Thriller">Thriller</option>
-                  <option value="War">War</option>
-                  <option value="Western">Western</option>
-                </select>
-              </form>
-            </div>
-            <div className="sortByCount">
-              <form action="" onChange={this.sortMovies}>
-                <label htmlFor="sort" className="visuallyHidden">Sort by highest or lowest movie count</label>
-                <select name="movieLikeCount" id="count">
-                  <option value="highestCount">Most Popular</option>
-                  <option value="lowestCount">Least Popular</option>
-                </select>
-              </form>
-            </div>
-          </div>
-        </section>
         <RenderMovies
           movies={this.props.currGroupMovies}
           removeMovie={this.props.removeMovie}
+          handleChange={this.props.handleChange}
+          sortMovies={this.sortMovies}
         />
-        {/* <Link to={`/group/${this.props.match.params.group_id}/search`}>
-          <i className="fas fa-search" />
-        </Link> */}
       </div>
     );
   }

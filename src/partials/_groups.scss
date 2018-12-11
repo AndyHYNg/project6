@@ -5,3 +5,18 @@
 .groupDetails:nth-of-type(2) {
   margin-top: 15px;
 }
+
+.formContainer {
+  padding: 25px 0;
+}
+
+.genreSelector,
+.sortByCount {
+  float: right;
+  margin-left: 10px;
+}
+
+select {
+  padding: 10px 20px;
+  border-radius: none;
+}
