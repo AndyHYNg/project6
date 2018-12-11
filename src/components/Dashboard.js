@@ -176,7 +176,7 @@ class Dashboard extends Component {
     return (
       <section className="dashboard">
         <header className="pageHeader">
-          <button onClick={this.props.logOut} className="logOutButton">
+          <button onClick={this.props.logOut} className="backButton">
             Logout
           </button>
           <div className="wrapper headerContent">
@@ -196,11 +196,11 @@ class Dashboard extends Component {
             groups={this.props.joinedGroups}
           />
           {/* MOAR NOTE: upon removing a group, we only want to remove the user who chose to remove from their dashboard, need to test once the group has no members */}
-          <button onClick={this.createRoom} className="dashboardOption">
+          <button onClick={this.createRoom} className="dashboardButton">
             <h3>Add Group</h3>
             <i className="fas fa-plus" />
           </button>
-          <button onClick={this.joinRoom} className="dashboardOption">
+          <button onClick={this.joinRoom} className="dashboardButton">
             <h3>Join Group</h3>
             <i className="fas fa-plus" />
           </button>
