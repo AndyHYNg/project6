@@ -11,7 +11,6 @@
 
 .dashboardContainer {
     width: 100%;
-    margin-top: 100px;
 }
 
 .dashboardLink {
@@ -40,7 +39,20 @@
 }
 
 .dashboardOption h3 {
-    padding-top: 100px;
+    padding-top: 60px;
+}
+
+.instructions {
+    margin-top: 50px;
+    li {
+        margin: 10px 0;
+    }
+}
+
+.dashboardGroupContainer h3 {
+    text-align: center;
+    margin: 35px 0 25px 0;
+    font-size: 3rem;
 }
 
 // Styles for delete buttons on dasboardOptions div

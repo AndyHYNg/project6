@@ -256,15 +256,17 @@ class Dashboard extends Component {
               </span>
             </h2>
             <p>Your personal movie dashboard</p>
-            <p>
-              Create a new group & invite your friends to build your favourite
-              movies collection
-            </p>
-            <p>Looking to join an existing group? Enter the group ID</p>
+            <div className="instructions">
+              <ul>
+                <li>Create a new group & invite your friends to build your favourite
+                movies collection</li>
+                <li>Looking to join an existing group? Enter the group ID</li>
+              </ul>
+            </div>
           </div>
         </header>
-        <div className="wrapper clearfix">
-          <h3>Your groups</h3>
+        <div className="wrapper clearfix dashboardGroupContainer">
+          <h3><span className="underline">Your groups</span></h3>
           {/* Component render for all the user's groups  */}
           <DashboardGroup
             removeGroup={this.props.removeGroup}
