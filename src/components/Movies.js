@@ -8,11 +8,20 @@ class RenderMovies extends Component {
         {
           (!this.props.match.path.endsWith("search") && this.props.movies.length !== 0) ?
             (
-              <div className="wrapper formContainer">
+              <div className="wrapper formContainer clearfix">
+                <div className="sortByCount">
+                  <form action="" onChange={this.props.sortMovies}>
+                    <label htmlFor="sort" className="visuallyHidden">Sort by highest or lowest movie count</label>
+                    <select name="movieLikeCount" id="count">
+                      <option value="highestCount" defaultValue={true}>Most Popular</option>
+                      <option value="lowestCount">Least Popular</option>
+                    </select>
+                  </form>
+                </div>
                 <div className="genreSelector">
                   <form action="" onChange={this.props.handleChange}>
                     <select name="movieGenre" id="genres">
-                      <option value="All">All</option>
+                      <option value="All" defaultValue={true}>All</option>
                       <option value="Action">Action</option>
                       <option value="Adventure">Adventure</option>
                       <option value="Animation">Animation</option>
@@ -32,15 +41,6 @@ class RenderMovies extends Component {
                       <option value="Thriller">Thriller</option>
                       <option value="War">War</option>
                       <option value="Western">Western</option>
-                    </select>
-                  </form>
-                </div>
-                <div className="sortByCount">
-                  <form action="" onChange={this.props.sortMovies}>
-                    <label htmlFor="sort" className="visuallyHidden">Sort by highest or lowest movie count</label>
-                    <select name="movieLikeCount" id="count">
-                      <option value="highestCount">Most Popular</option>
-                      <option value="lowestCount">Least Popular</option>
                     </select>
                   </form>
                 </div>

@@ -318,6 +318,7 @@ class App extends Component {
                   handleChange={this.handleChange}
                   removeMovie={this.removeMovie}
                   getGroupFirebaseKey={this.getGroupFirebaseKey}
+                  updateMovieArray={this.updateMovieArray}
                 />
               ) : (
                   <Redirect to="/" />

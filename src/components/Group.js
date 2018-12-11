@@ -16,6 +16,11 @@ class Group extends Component {
           this.props.getGroupFirebaseKey(group[0]);
         }
       });
+      let currentSortArray = this.props.currGroupMovies;
+      currentSortArray.sort((a, b) => {
+        return b.count - a.count;
+      });
+      this.props.updateMovieArray(currentSortArray);
     });
   }
 
