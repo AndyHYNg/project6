@@ -19,6 +19,7 @@ import "./App.scss";
 
 // METHODS
 import firebase, { auth, provider } from "./firebase";
+import swal from "sweetalert";
 
 const chance = require("chance").Chance();
 
@@ -196,6 +197,7 @@ class App extends Component {
 
   // remove movie method
   removeMovie = movieObject => {
+    swal(`Movie removed from your group favourites!`, { icon: "success" });
     // open current group's movies from firebase db
     this.groupDBMovies = firebase
       .database()
@@ -219,7 +221,7 @@ class App extends Component {
                     .database()
                     .ref(
                       `userGroups/${
-                        this.state.groupFirebaseKey
+                      this.state.groupFirebaseKey
                       }/movies/${movieNode}`
                     );
                   this.removeSpecificMovieDBRef.remove();
@@ -244,12 +246,12 @@ class App extends Component {
               this.state.user ? (
                 <Redirect to="/dashboard" />
               ) : (
-                <Login
-                  logIn={this.logIn}
-                  logInGuest={this.logInGuest}
-                  userState={this.state.user}
-                />
-              )
+                  <Login
+                    logIn={this.logIn}
+                    logInGuest={this.logInGuest}
+                    userState={this.state.user}
+                  />
+                )
             }
           />
 
@@ -266,8 +268,8 @@ class App extends Component {
                   removeGroup={this.removeGroup}
                 />
               ) : (
-                <Redirect to="/" />
-              )
+                  <Redirect to="/" />
+                )
             }
           />
 
@@ -283,8 +285,8 @@ class App extends Component {
                   }
                 />
               ) : (
-                <Redirect to="/" />
-              )
+                  <Redirect to="/" />
+                )
             }
           />
 
@@ -303,8 +305,8 @@ class App extends Component {
                   getGroupFirebaseKey={this.getGroupFirebaseKey}
                 />
               ) : (
-                <Redirect to="/" />
-              )
+                  <Redirect to="/" />
+                )
             }
           />
           <Route
@@ -314,8 +316,8 @@ class App extends Component {
               this.state.user ? (
                 <MovieDetails currGroupMovies={this.state.currGroupMovies} />
               ) : (
-                <Redirect to="/" />
-              )
+                  <Redirect to="/" />
+                )
             }
           />
         </Switch>

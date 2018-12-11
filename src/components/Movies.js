@@ -13,49 +13,47 @@ class RenderMovies extends Component {
                   <Link
                     to={`/group/${this.props.match.params.group_id}/movie/${
                       movie.id
-                    }`}
+                      }`}
                   >
                     <img
                       src={`http://image.tmdb.org/t/p/w500/${
                         movie.poster_path
-                      }`}
+                        }`}
                       alt={movie.overview}
                     />
                   </Link>
                 </div>
                 {this.props.match.path.endsWith("search") ? (
                   // if the url path ends with "search", render the favourite/watchlist buttons
-                  <div className="buttonContainer">
+                  <div className="favButtonContainer">
                     <button
                       value="favourite"
                       onClick={() => this.props.favouriteMovie(movie)}
+                      className="buttonFavourite"
                     >
                       <i className="fas fa-star" />
                     </button>
-                    <button value="watchlist">
-                      <i className="fas fa-eye" />
-                    </button>
                   </div>
                 ) : (
-                  // otherwise, render the remove movie button
-                  <div className="buttonContainer">
-                    {/* <button
+                    // otherwise, render the remove movie button
+                    <div className="buttonContainer">
+                      {/* <button
                       value="favourite"
                       onClick={() => this.props.favouriteMovie(movie)}
                     >
                       <i className="fas fa-star" />
                     </button> */}
-                    <div className="runningCountContainer">
-                      <p>
-                        {movie.count} <i className="fas fa-thumbs-up" />
-                      </p>
+                      <div className="runningCountContainer">
+                        <p>
+                          {movie.count} <i className="fas fa-thumbs-up" />
+                        </p>
+                      </div>
+                      <button onClick={() => this.props.removeMovie(movie)}>
+                        {console.log(movie.count)}
+                        <i className="far fa-times-circle" />
+                      </button>
                     </div>
-                    <button onClick={() => this.props.removeMovie(movie)}>
-                      {console.log(movie.count)}
-                      <i className="far fa-times-circle" />
-                    </button>
-                  </div>
-                )}
+                  )}
               </div>
             );
           })}
