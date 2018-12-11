@@ -3,6 +3,7 @@ import firebase from "../firebase";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import RenderMovies from "./Movies";
+import swal from "sweetalert";
 import { Link } from "react-router-dom";
 
 class SearchMovies extends Component {
@@ -45,6 +46,8 @@ class SearchMovies extends Component {
   }
 
   favouriteMovie = movieObject => {
+    swal(`Movie saved to your group favourites!`, { icon: "success" });
+
     let foundDuplicate = false;
     this.specificGroup = firebase
       .database()
