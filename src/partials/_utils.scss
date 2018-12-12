@@ -31,6 +31,7 @@ body {
     font-size: 1.6rem;
     @include bodyText;
     background: $grey;
+    min-width: 320px;
 }
 
 .wrapper {
@@ -78,6 +79,10 @@ h3 {
             animation: bounce 3s infinite;
         }
     }
+}
+
+.pageHeaderFull {
+    height: 100vh;
 }
 
 .underline {
