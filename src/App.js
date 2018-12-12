@@ -34,6 +34,7 @@ class App extends Component {
       currGroupMovies: [],
       currGroupMoviesCollection: [],
       currGroupFilteredMovies: [],
+      searchResultMoviesCollection: [],
       groupFirebaseKey: ""
     };
   }
@@ -179,6 +180,33 @@ class App extends Component {
             this.getJoinedGroups(snapshot.val());
           });
         }
+
+        // // if user logged in and is not a guest
+        // if (this.state.user && !this.state.user.isAnonymous) {
+        //   this.populateGroupDBRef = firebase
+        //     .database()
+        //     .ref(`uid/${this.state.user.uid}/groups`);
+        //   this.populateGroupDBRef.once("value", snapshot => {
+        //     this.getJoinedGroups(snapshot.val());
+        //   });
+        // }
+        // // if user logged is a guest
+        // else if (this.state.user.isAnonymous) {
+        //   // because each guest has a uid on each login, we grab all the group DB refs and build a new Object containing all guest DBs from the snapshot to parse it through this.props.getJoinedGroups
+        //   this.rawGroupDBRef = firebase.database().ref(`userGroups`);
+        //   this.rawGroupDBRef.once("value", rawSnapshot => {
+        //     const rawGroupDB = rawSnapshot.val();
+        //     const newGuestGroupDBRef = Object.entries(rawGroupDB)
+        //       .filter(groupDB => {
+        //         return groupDB[1].isGuestRoom;
+        //       })
+        //       .reduce((newObj, firebaseKey) => {
+        //         newObj[firebaseKey[0]] = rawGroupDB[firebaseKey[0]];
+        //         return newObj;
+        //       }, {});
+        //     this.getJoinedGroups(newGuestGroupDBRef);
+        //   });
+        // }
       }
     });
   };
@@ -249,9 +277,13 @@ class App extends Component {
                 }
               }
             });
+            this.groupDBMovies.off();
           }
         }
       }
+    });
+    this.groupDBMovies.once("value", snapshot => {
+      this.getMovieArray(snapshot.val());
     });
   };
 
