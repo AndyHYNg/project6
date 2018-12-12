@@ -97,6 +97,12 @@ class App extends Component {
     });
   };
 
+  getSearchResults = searchResultsArray => {
+    this.setState({
+      searchResultMoviesCollection: searchResultsArray
+    });
+  };
+
   updateMovieArray = moviesObjectArray => {
     this.setState({
       currGroupMovies: moviesObjectArray,
@@ -337,6 +343,10 @@ class App extends Component {
                   currGroupMoviesCollection={
                     this.state.currGroupMoviesCollection
                   }
+                  searchResultMoviesCollection={
+                    this.state.searchResultMoviesCollection
+                  }
+                  getSearchResults={this.getSearchResults}
                 />
               ) : (
                 <Redirect to="/" />

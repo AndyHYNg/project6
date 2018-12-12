@@ -29,6 +29,9 @@ class SearchMovies extends Component {
         }
       });
     });
+    this.setState({
+      movies: this.props.searchResultMoviesCollection
+    });
   }
 
   componentWillUnmount() {
@@ -165,6 +168,7 @@ class SearchMovies extends Component {
           const movieIdArray = this.state.movies;
           const thisMovie = results.data;
           movieIdArray.push(thisMovie);
+          this.props.getSearchResults(movieIdArray);
           this.setState({
             movies: movieIdArray
           });
