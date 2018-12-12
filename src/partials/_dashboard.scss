@@ -1,5 +1,4 @@
 .dashboard {
-    height: 100%;
     background: $grey;
     position: relative;
 }
@@ -17,11 +16,11 @@
     position: relative;
     width: calc(33.33% - 40px);
     margin: 20px;
-    float: left;
-    
+    float: left; 
 }
 
-.dashboardOption, .dashboardButton {
+.dashboardOption, 
+.dashboardButton {
     width: 100%;
     min-height: 300px;
     border: 4px solid white;
@@ -92,34 +91,7 @@
     border-color: $mainBlue;
 }
 
-.dashboardButton:hover {
-    border-color: $yellow;
-}
-
+.dashboardButton:hover, 
 .dashboardButton:focus {
-    border-color: $yellow;
-}
-
-//styles for back buttons in page headers
-.backButton {
-    clear: both;
-    background: none;
-    color: white;
-    border: 4px solid white;
-    padding: 10px;
-    text-transform: uppercase;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    transition: 0.2s all;
-    @include headingText(2rem);
-    cursor: pointer;
-}
-
-.backButton:hover {
-    border-color: $yellow;
-}
-
-.backButton:focus {
     border-color: $yellow;
 }

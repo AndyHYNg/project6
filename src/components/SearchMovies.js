@@ -6,6 +6,8 @@ import RenderMovies from "./Movies";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
 
+const scrollToElement = require('scroll-to-element');
+
 class SearchMovies extends Component {
   constructor() {
     super();
@@ -95,6 +97,10 @@ class SearchMovies extends Component {
   };
 
   handleSubmit = e => {
+    scrollToElement('.movieCard', {
+      offset: -99,
+      duration: 700
+    });
     e.preventDefault();
     // clears the search term and THEN use a callback function to get the movies from the API
     this.setState(
@@ -107,6 +113,7 @@ class SearchMovies extends Component {
         this.getMovies(e);
       }
     );
+
   };
 
   getMovies = () => {
@@ -200,7 +207,7 @@ class SearchMovies extends Component {
             </form>
           </div>
         </section>
-
+        <div className='scrollTop'></div>
         <RenderMovies
           // handleClick={this.handleClick}
           favouriteMovie={this.favouriteMovie}

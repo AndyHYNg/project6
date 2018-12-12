@@ -64,8 +64,12 @@ class RenderMovies extends Component {
                         }`}
                       alt={movie.overview}
                     />
+                    <div className="movieTitleOverlay">
+                      <h3>{movie.title}</h3>
+                    </div>
                   </Link>
                 </div>
+
                 {this.props.match.path.endsWith("search") ? (
                   // if the url path ends with "search", render the favourite/watchlist buttons
                   <div className="favButtonContainer">
