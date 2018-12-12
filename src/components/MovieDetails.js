@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { withRouter, Link } from "react-router-dom";
-import firebase, { auth, provider } from "../firebase";
-import MovieGenres from '../components/MovieGenres';
-import MovieCast from '../components/MovieCast';
-import ReactPlayer from 'react-player';
+import { withRouter } from "react-router-dom";
+import firebase from "../firebase";
+import MovieGenres from "../components/MovieGenres";
+import MovieCast from "../components/MovieCast";
+import ReactPlayer from "react-player";
+import { callbackify } from "util";
 
 class MovieDetails extends Component {
   // create a state to hold the response from the API
@@ -18,19 +19,16 @@ class MovieDetails extends Component {
   }
 
   componentDidMount() {
-    // get the information from the API using whatever is in the URL
-    // you can go into the React dev tools and see the
     axios({
       url: `https://api.themoviedb.org/3/movie/${
         this.props.match.params.movie_id
-        }`,
+      }`,
       params: {
         api_key: `f012df5d63927931e82fe659a8aaa3ac`,
-        language: `en-US`,
+        language: `en-US`
       }
     }).then(response => {
       const results = response.data;
-      // console.log(results);
       // save the API data in state
       this.setState({ movie: results });
     });
@@ -39,22 +37,27 @@ class MovieDetails extends Component {
     axios({
       url: `https://api.themoviedb.org/3/movie/${
         this.props.match.params.movie_id
-        }/videos`,
+      }/videos`,
       params: {
         api_key: `f012df5d63927931e82fe659a8aaa3ac`,
-        language: `en-US`,
+        language: `en-US`
       }
     }).then(response => {
-      const videoResponse = response.data.results[0].key;
-      // console.log(videoResponse);
-      this.setState({ video: videoResponse });
+      // if no URL key exists from this axios call, set to empty string before putting to state
+      if (response.data.results[0].key === undefined) {
+        const videoResponse = "";
+        this.setState({ video: videoResponse });
+      } else {
+        const videoResponse = response.data.results[0].key;
+        this.setState({ video: videoResponse });
+      }
     });
 
     // Axios call to get movie cast
     axios({
       url: `https://api.themoviedb.org/3/movie/${
         this.props.match.params.movie_id
-        }/credits`,
+      }/credits`,
       params: {
         api_key: `f012df5d63927931e82fe659a8aaa3ac`
       }
@@ -74,10 +77,6 @@ class MovieDetails extends Component {
   }
 
   componentWillUnmount() {
-    // this is called when a component leaves the page
-    // in our single page app with one component, it will never be called
-    // if we were rerouting to a different view, it would be called when the route changed.
-
     // turn off all dbRefs called in this component after any sort of re-routing
     if (this.populateGroupMoviesDBRef) {
       this.populateGroupMoviesDBRef.off();
@@ -105,8 +104,7 @@ class MovieDetails extends Component {
             <h3>{this.state.movie.tagline}</h3>
             <button onClick={this.props.history.goBack} className="backButton">
               Go back
-              </button>
-
+            </button>
           </header>
         </div>
         <div className="movieContent">
@@ -115,58 +113,52 @@ class MovieDetails extends Component {
               <img
                 src={`http://image.tmdb.org/t/p/w500/${
                   this.state.movie.poster_path
-                  }`}
+                }`}
                 alt=""
               />
             </div>
             <div className="additionalInfo">
               <div className="description">
-                <h4><span className="underline">Description</span></h4>
+                <h4>
+                  <span className="underline">Description</span>
+                </h4>
                 <p>{this.state.movie.overview}</p>
               </div>
 
               <div className="cast">
-                <h4><span className="underline">Cast</span></h4>
+                <h4>
+                  <span className="underline">Cast</span>
+                </h4>
                 <MovieCast cast={this.state.cast} />
               </div>
 
               <div className="genres">
-                <h4><span className="underline">Genres</span></h4>
+                <h4>
+                  <span className="underline">Genres</span>
+                </h4>
                 <MovieGenres movie={this.state.movie} />
               </div>
-
             </div>
 
-            {(this.state.video.length === undefined) ? (
-              <div className="hello">
-                <p></p>
-              </div>
-            ) : (
-
-                <div className="trailerContainer">
-                  <h4><span className="underline">Trailer</span></h4>
-                  <div className="trailer">
-                    <ReactPlayer className="trailerVideo" width='100%' height='100%' url={`https://www.youtube.com/watch?v=${this.state.video}`} />
-                  </div>
+            {/* render ReactPlayer component if the movie has a trailer URL */}
+            {this.state.video.length === undefined ? null : (
+              <div className="trailerContainer">
+                <h4>
+                  <span className="underline">Trailer</span>
+                </h4>
+                <div className="trailer">
+                  <ReactPlayer
+                    className="trailerVideo"
+                    width="100%"
+                    height="100%"
+                    url={`https://www.youtube.com/watch?v=${this.state.video}`}
+                  />
                 </div>
-              )
-            }
-
-
-
-
-            {/* <div className="trailerContainer">
-              <h4><span className="underline">Trailer</span></h4>
-              <div className="trailer">
-                  <ReactPlayer className="trailerVideo" url={`https://www.youtube.com/watch?v=${this.state.video}`} />
               </div>
-            </div> */}
+            )}
           </div>
-
-          {/* <h4><span className="underline">Rent</span></h4> */}
         </div>
-        {/* </div> */}
-      </section >
+      </section>
     );
   }
 }

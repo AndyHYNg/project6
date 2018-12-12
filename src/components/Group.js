@@ -11,11 +11,12 @@ class Group extends Component {
       Object.entries(snapshot.val()).forEach(group => {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.props.getCurrGroup(group[1]);
-          // this.props.getMovieCollectionArray(group[1].movies);
           this.props.getMovieArray(group[1].movies);
           this.props.getGroupFirebaseKey(group[0]);
         }
       });
+
+      // by default, the movies are sorted from most popular to least
       let currentSortArray = this.props.currGroupMovies;
       currentSortArray.sort((a, b) => {
         return b.count - a.count;
@@ -31,6 +32,7 @@ class Group extends Component {
     }
   }
 
+  // method to show all group members in a logged in user's group
   renderGroupMembers = usersObject => {
     const usersArray = Object.entries(usersObject || {}).map(user => {
       return Object.values(user[1]);
@@ -39,6 +41,7 @@ class Group extends Component {
     return <p>{flattenArray.join(", ")}</p>;
   };
 
+  // sort movies based on dropdown selection
   sortMovies = e => {
     let currentSortArray = this.props.currGroupMovies;
     if (e.target.value === "highestCount") {

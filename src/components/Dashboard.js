@@ -22,7 +22,7 @@ class Dashboard extends Component {
       // because each guest has a uid on each login, we grab all the group DB refs and build a new Object containing all guest DBs from the snapshot to parse it through this.props.getJoinedGroups
       this.rawGroupDBRef = firebase.database().ref(`userGroups`);
       this.rawGroupDBRef.on("value", rawSnapshot => {
-        const rawGroupDB = rawSnapshot.val();
+        const rawGroupDB = rawSnapshot.val() || {};
         const newGuestGroupDBRef = Object.entries(rawGroupDB)
           .filter(groupDB => {
             return groupDB[1].isGuestRoom;

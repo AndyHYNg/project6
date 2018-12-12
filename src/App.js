@@ -41,11 +41,12 @@ class App extends Component {
 
   componentDidMount = () => {
     auth.onAuthStateChanged(user => {
-      if (user) {
+      if (user && !user.isAnonymous) {
         this.setState({ user });
-        if (user.isAnonymous) {
-          this.setState({ guestName: "Wild " + chance.animal() });
-        }
+        // Because of conflicting firebase db issues on AuthState for guest users, guests will not have persist login to deliver a better user experience
+        // if (user.isAnonymous) {
+        //   this.setState({ guestName: "Wild " + chance.animal() });
+        // }
       }
     });
   };

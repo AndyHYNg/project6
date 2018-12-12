@@ -6,7 +6,7 @@ import RenderMovies from "./Movies";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
 
-const scrollToElement = require('scroll-to-element');
+const scrollToElement = require("scroll-to-element");
 
 class SearchMovies extends Component {
   constructor() {
@@ -15,7 +15,6 @@ class SearchMovies extends Component {
       movies: [],
       searchTerm: "",
       searchParam: ""
-      // genreId: []
     };
   }
 
@@ -27,26 +26,27 @@ class SearchMovies extends Component {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.firebaseKey = group[0];
           this.props.getMovieArray(group[1].movies);
-          // this.props.getCurrGroup(group[1]);
         }
       });
     });
   }
 
   componentWillUnmount() {
-    // this is called when a component leaves the page
-    // in our single page app with one component, it will never be called
-    // if we were rerouting to a different view, it would be called when the route changed.
-
     // turn off all dbRefs called in this component after any sort of re-routing
     if (this.populateGroupMoviesDBRef) {
       this.populateGroupMoviesDBRef.off();
     }
+
     if (this.specificGroup) {
       this.specificGroup.off();
     }
+
+    if (this.countSpecificMovieDBRef) {
+      this.countSpecificMovieDBRef.off();
+    }
   }
 
+  // adds the selected movie to the shared group for others to see
   favouriteMovie = movieObject => {
     swal(`Movie saved to your group favourites!`, { icon: "success" });
 
@@ -83,6 +83,8 @@ class SearchMovies extends Component {
         }
       }
     });
+
+    // if the movie in the group does not exist upon marking as favourite, set the count to 1
     if (foundDuplicate === false) {
       let newMovieObject = movieObject;
       newMovieObject.count = 1;
@@ -97,7 +99,7 @@ class SearchMovies extends Component {
   };
 
   handleSubmit = e => {
-    scrollToElement('.movieCard', {
+    scrollToElement(".movieCard", {
       offset: -99,
       duration: 700
     });
@@ -113,7 +115,6 @@ class SearchMovies extends Component {
         this.getMovies(e);
       }
     );
-
   };
 
   getMovies = () => {
@@ -127,6 +128,7 @@ class SearchMovies extends Component {
         }
       })
       .then(res => {
+        // filter results that don't have a poster URL and movie genres
         const filteredResults = res.data.results.filter(
           movie => movie.poster_path !== null && movie.genre_ids !== []
         );
@@ -136,7 +138,6 @@ class SearchMovies extends Component {
         return idArray;
       })
       .then(idArray => {
-        // console.log(idArray);
         this.getMovieId(idArray);
       });
   };
@@ -150,8 +151,8 @@ class SearchMovies extends Component {
     });
   };
 
+  // get the movie id of the assocated movie results via another API endpoint (credits to Ana Maljkovic)
   getMovieId = array => {
-    // Working version (not great)
     array.forEach(movie => {
       axios
         .get(`https://api.themoviedb.org/3/movie/${movie.id}`, {
@@ -174,7 +175,6 @@ class SearchMovies extends Component {
   render() {
     return (
       <div>
-        {/* SF SAT changes start here */}
         <header className="pageHeader">
           <div className="wrapper headerContent">
             <h2>
@@ -182,13 +182,9 @@ class SearchMovies extends Component {
             </h2>
           </div>
           <Link to={`/group/${this.props.match.params.group_id}`}>
-            <button className="backButton">
-              Return to group
-            </button>
+            <button className="backButton">Return to group</button>
           </Link>
         </header>
-        {/* Header changes end */}
-        {/* SF SAT pu form in section w wrapper div */}
         <section className="searchBar">
           <div className="wrapper searchContainer">
             <form
@@ -207,9 +203,8 @@ class SearchMovies extends Component {
             </form>
           </div>
         </section>
-        <div className='scrollTop'></div>
+        <div className="scrollTop" />
         <RenderMovies
-          // handleClick={this.handleClick}
           favouriteMovie={this.favouriteMovie}
           movies={this.state.movies}
         />
@@ -219,48 +214,3 @@ class SearchMovies extends Component {
 }
 
 export default withRouter(SearchMovies);
-
-// getGenre = () => {
-//     axios
-//         .get("https://api.themoviedb.org/3/genre/movie/list", {
-//             params: {
-//                 api_key: "0613920bcfda4651982add49adcb7163",
-//                 language: "en-US"
-//             }
-//         })
-//         .then(res => {
-//             // console.log(res);
-//             const genreId = res.data.genres;
-//             // console.log(res.data.genres);
-//             this.setState({
-//                 genreId
-//             });
-//             // go through each movie and assign it to the variable currentMovie
-//             this.state.movies.forEach(movie => {
-//                 const currentMovie = movie;
-
-//                 // go through the genre array in each movie and assign it to the variable currentGenre
-//                 movie.genre_ids.forEach(genre => {
-//                     // console.log(genre);
-//                     const currentGenre = genre;
-//                     // console.log(currentGenre);
-
-//                     // go through the list of genres from the axios call and check if the id matches the id of the currentGenre
-//                     this.state.genreId.forEach(genre => {
-//                         if (genre.id === currentGenre) {
-//                             // console.log(currentMovie.genre_ids.indexOf(currentGenre));
-
-//                             // go back to the currentMovie object and get the indexOf the matching currentGenre of the list of genres
-//                             const indexOfGenre = currentMovie.genre_ids.indexOf(
-//                                 currentGenre
-//                             );
-//                             //reassign the genre_id number to its matching genre name
-//                             currentMovie.genre_ids[indexOfGenre] = genre.name;
-//                             // console.log(currentMovie);
-//                             // return currentMovie.genre_ids.indexOf(currentGenre);
-//                         }
-//                     });
-//                 });
-//             });
-//         });
-// };
