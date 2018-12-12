@@ -11,11 +11,12 @@ class Group extends Component {
       Object.entries(snapshot.val()).forEach(group => {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.props.getCurrGroup(group[1]);
-          // this.props.getMovieCollectionArray(group[1].movies);
           this.props.getMovieArray(group[1].movies);
           this.props.getGroupFirebaseKey(group[0]);
         }
       });
+
+      // by default, the movies are sorted from most popular to least
       let currentSortArray = this.props.currGroupMovies;
       currentSortArray.sort((a, b) => {
         return b.count - a.count;
@@ -31,6 +32,7 @@ class Group extends Component {
     }
   }
 
+  // method to show all group members in a logged in user's group
   renderGroupMembers = usersObject => {
     const usersArray = Object.entries(usersObject || {}).map(user => {
       return Object.values(user[1]);
@@ -39,7 +41,7 @@ class Group extends Component {
     return <p>{flattenArray.join(", ")}</p>;
   };
 
-
+  // sort movies based on dropdown selection
   sortMovies = e => {
     let currentSortArray = this.props.currGroupMovies;
     if (e.target.value === "highestCount") {
@@ -49,10 +51,10 @@ class Group extends Component {
     } else if (e.target.value === "lowestCount") {
       currentSortArray.sort((a, b) => {
         return a.count - b.count;
-      })
+      });
     }
     this.props.updateMovieArray(currentSortArray);
-  }
+  };
 
   render() {
     return (
@@ -65,21 +67,28 @@ class Group extends Component {
             </h2>
             <h3 className="groupDetails">Group ID:</h3>
             <p>{this.props.match.params.group_id}</p>
-            <h3 className="groupDetails">Group Members:</h3>
-            {this.renderGroupMembers(this.props.currGroup.users)}
+            {/* Render group members list if it the group not a guest group */}
+            {!this.props.userState.isAnonymous ? (
+              <React.Fragment>
+                <h3 className="groupDetails">Group Members:</h3>
+                {this.renderGroupMembers(this.props.currGroup.users)}
+              </React.Fragment>
+            ) : null}
+
             <Link to={`/group/${this.props.match.params.group_id}/search`}>
               <div className="searchLink clearfix">
                 <i className="fas fa-search" aria-hidden="true" />
                 <p>Search for movies to add to this group</p>
               </div>
             </Link>
-            {(this.props.currGroupMovies.length !== 0) ? (
-              <i className="fas fa-angle-double-down" aria-label="Scroll down."></i>
+            {this.props.currGroupMovies.length !== 0 ? (
+              <i
+                className="fas fa-angle-double-down"
+                aria-label="Scroll down."
+              />
             ) : null}
             <Link to={`/dashboard`}>
-              <button className="backButton">
-                Return to dashboard
-              </button>
+              <button className="backButton">Return to dashboard</button>
             </Link>
           </div>
         </header>

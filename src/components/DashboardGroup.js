@@ -9,10 +9,14 @@ class DashboardGroup extends Component {
         {Object.entries(this.props.groups).map(group => {
           return (
             // enclose each dashboard group render with a link that routes to the group page in Group.js
-            <div className="dashboardLink">
+            <div key={group[1].groupID} className="dashboardLink">
               <Link
                 to={`/group/${group[1].groupID}`}
-                style={{ textDecoration: "none", position: "relative", zIndex: "5" }}
+                style={{
+                  textDecoration: "none",
+                  position: "relative",
+                  zIndex: "5"
+                }}
               >
                 <div key={group[1].groupID} className="dashboardOption">
                   <h3>{group[1].name}</h3>
