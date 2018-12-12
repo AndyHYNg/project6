@@ -66,10 +66,10 @@ class MovieDetails extends Component {
       this.setState({ cast: castResults });
     });
 
-    this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
-    this.populateGroupMoviesDBRef.on("value", snapshot => {
+    this.populateGroupMoviesDbRef = firebase.database().ref(`userGroups/`);
+    this.populateGroupMoviesDbRef.on("value", snapshot => {
       Object.entries(snapshot.val()).map(group => {
-        if (group[1].groupID === this.props.match.params.group_id) {
+        if (group[1].groupId === this.props.match.params.group_id) {
           this.firebaseKey = group[0];
         }
       });
@@ -78,8 +78,8 @@ class MovieDetails extends Component {
 
   componentWillUnmount() {
     // turn off all dbRefs called in this component after any sort of re-routing
-    if (this.populateGroupMoviesDBRef) {
-      this.populateGroupMoviesDBRef.off();
+    if (this.populateGroupMoviesDbRef) {
+      this.populateGroupMoviesDbRef.off();
     }
     if (this.specificGroup) {
       this.specificGroup.off();

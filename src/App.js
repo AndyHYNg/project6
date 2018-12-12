@@ -41,12 +41,15 @@ class App extends Component {
 
   componentDidMount = () => {
     auth.onAuthStateChanged(user => {
-      if (user && !user.isAnonymous) {
-        this.setState({ user });
-        // Because of conflicting firebase db issues on AuthState for guest users, guests will not have persist login to deliver a better user experience
-        // if (user.isAnonymous) {
-        //   this.setState({ guestName: "Wild " + chance.animal() });
-        // }
+      if (user) {
+        this.setState({ searchResultMoviesCollection: [] });
+        if (!user.isAnonymous) {
+          this.setState({ user });
+          // Because of conflicting firebase Db issues on AuthState for guest users, guests will not have persist login to deliver a better user experience
+          // if (user.isAnonymous) {
+          //   this.setState({ guestName: "Wild " + chance.animal() });
+          // }
+        }
       }
     });
   };
@@ -85,9 +88,9 @@ class App extends Component {
     });
   };
 
-  getJoinedGroups = dbRefSnapshotValue => {
+  getJoinedGroups = DbRefSnapshotValue => {
     this.setState({
-      joinedGroups: dbRefSnapshotValue || {}
+      joinedGroups: DbRefSnapshotValue || {}
     });
   };
 
@@ -110,8 +113,8 @@ class App extends Component {
     });
   };
 
-  getMovieArray = currGroupMoviesFromDB => {
-    const movieArray = Object.entries(currGroupMoviesFromDB || {}).map(
+  getMovieArray = currGroupMoviesFromDb => {
+    const movieArray = Object.entries(currGroupMoviesFromDb || {}).map(
       movie => {
         return movie[1];
       }
@@ -124,24 +127,24 @@ class App extends Component {
 
   removeGroup = groupObject => {
     // this is the firebaseKey pointing the group object in the user's node in firebase
-    const currentUserGroupID = groupObject[0];
+    const currentUsergroupId = groupObject[0];
 
     this.groupDbUserCount = [];
 
     // open up the group node consisting ALL of the user groups in firebase
     this.specificGroup = firebase.database().ref(`userGroups/`);
     this.specificGroup.once("value", snapshot => {
-      const groupsDB = snapshot.val();
+      const groupsDb = snapshot.val();
 
       // check each group obtained in the snapshot
-      for (let group in groupsDB) {
-        // finding the group matching the groupID
-        if (groupObject[1].groupID === groupsDB[group].groupID) {
+      for (let group in groupsDb) {
+        // finding the group matching the groupId
+        if (groupObject[1].groupId === groupsDb[group].groupId) {
           // open up the specific group node in user groups pointing to the correct group
-          this.removeSpecificGroupDBRef = firebase
+          this.removeSpecificGroupDbRef = firebase
             .database()
             .ref(`userGroups/${group}`);
-          this.removeSpecificGroupDBRef.once("value", groupSnapshot => {
+          this.removeSpecificGroupDbRef.once("value", groupSnapshot => {
             this.groupDbUserCount = Object.keys(
               groupSnapshot.val().users || {}
             );
@@ -151,67 +154,67 @@ class App extends Component {
               this.groupDbUserCount.length === 0 ||
               this.state.user.isAnonymous
             ) {
-              this.removeSpecificGroupDBRef.remove();
+              this.removeSpecificGroupDbRef.remove();
             }
           });
 
-          // remove the specific user from the userGroup's group db (for logged in users only)
+          // remove the specific user from the userGroup's group Db (for logged in users only)
 
           if (!this.state.user.isAnonymous) {
-            // find the user in the userGroup's group db (get firebase key pointing to the user in the usergroup's group)
+            // find the user in the userGroup's group Db (get firebase key pointing to the user in the usergroup's group)
             const uidUserObjectArray =
-              Object.entries(groupsDB[group].users).filter(user => {
+              Object.entries(groupsDb[group].users).filter(user => {
                 return this.state.user.uid === Object.keys(user[1])[0];
               }) || [];
 
-            // remove user from the userGroup's group db
+            // remove user from the userGroup's group Db
             // to test remove group
 
-            this.removeUserFromGroupDBRef = firebase
+            this.removeUserFromGroupDbRef = firebase
               .database()
               .ref(`userGroups/${group}/users/${uidUserObjectArray[0][0]}`);
-            this.removeUserFromGroupDBRef.remove();
+            this.removeUserFromGroupDbRef.remove();
 
             // remove this joined group from the user node's joined groups info
             // only do this for non-guest users
-            this.removeSpecificUserGroupDBRef = firebase
+            this.removeSpecificUserGroupDbRef = firebase
               .database()
-              .ref(`uid/${this.state.user.uid}/groups/${currentUserGroupID}`);
-            this.removeSpecificUserGroupDBRef.remove();
+              .ref(`uid/${this.state.user.uid}/groups/${currentUsergroupId}`);
+            this.removeSpecificUserGroupDbRef.remove();
           }
 
-          this.populateGroupDBRef = firebase
+          this.populateGroupDbRef = firebase
             .database()
             .ref(`uid/${this.state.user.uid}/groups`);
-          this.populateGroupDBRef.on("value", snapshot => {
+          this.populateGroupDbRef.on("value", snapshot => {
             this.getJoinedGroups(snapshot.val());
           });
         }
 
         // // if user logged in and is not a guest
         // if (this.state.user && !this.state.user.isAnonymous) {
-        //   this.populateGroupDBRef = firebase
+        //   this.populateGroupDbRef = firebase
         //     .database()
         //     .ref(`uid/${this.state.user.uid}/groups`);
-        //   this.populateGroupDBRef.once("value", snapshot => {
+        //   this.populateGroupDbRef.once("value", snapshot => {
         //     this.getJoinedGroups(snapshot.val());
         //   });
         // }
         // // if user logged is a guest
         // else if (this.state.user.isAnonymous) {
-        //   // because each guest has a uid on each login, we grab all the group DB refs and build a new Object containing all guest DBs from the snapshot to parse it through this.props.getJoinedGroups
-        //   this.rawGroupDBRef = firebase.database().ref(`userGroups`);
-        //   this.rawGroupDBRef.once("value", rawSnapshot => {
-        //     const rawGroupDB = rawSnapshot.val();
-        //     const newGuestGroupDBRef = Object.entries(rawGroupDB)
-        //       .filter(groupDB => {
-        //         return groupDB[1].isGuestRoom;
+        //   // because each guest has a uid on each login, we grab all the group Db refs and build a new Object containing all guest Dbs from the snapshot to parse it through this.props.getJoinedGroups
+        //   this.rawGroupDbRef = firebase.database().ref(`userGroups`);
+        //   this.rawGroupDbRef.once("value", rawSnapshot => {
+        //     const rawGroupDb = rawSnapshot.val();
+        //     const newGuestGroupDbRef = Object.entries(rawGroupDb)
+        //       .filter(groupDb => {
+        //         return groupDb[1].isGuestRoom;
         //       })
         //       .reduce((newObj, firebaseKey) => {
-        //         newObj[firebaseKey[0]] = rawGroupDB[firebaseKey[0]];
+        //         newObj[firebaseKey[0]] = rawGroupDb[firebaseKey[0]];
         //         return newObj;
         //       }, {});
-        //     this.getJoinedGroups(newGuestGroupDBRef);
+        //     this.getJoinedGroups(newGuestGroupDbRef);
         //   });
         // }
       }
@@ -254,8 +257,8 @@ class App extends Component {
   // remove movie method
   removeMovie = movieObject => {
     swal(`Movie removed from your group favourites!`, { icon: "success" });
-    // open current group's movies from firebase db
-    this.groupDBMovies = firebase
+    // open current group's movies from firebase Db
+    this.groupDbMovies = firebase
       .database()
       .ref(`userGroups/${this.state.groupFirebaseKey}/movies`);
     // check current group's movies from App's state
@@ -266,30 +269,30 @@ class App extends Component {
           const idArray = movies[movie];
           // if the id of the selected movie to be removed is the same as the movie in the App's movie collection state...
           if (idArray === movieObject.id) {
-            // get the snapshot of the group movie's db once and search through all the movies in the firebase db...
-            this.groupDBMovies.once("value", snapshot => {
-              const movieDB = snapshot.val();
+            // get the snapshot of the group movie's Db once and search through all the movies in the firebase Db...
+            this.groupDbMovies.once("value", snapshot => {
+              const movieDb = snapshot.val();
               // movie is the firebase key consisting of that specific movie object in firebase
-              for (let movieNode in movieDB) {
+              for (let movieNode in movieDb) {
                 // if movie id matches, remove the firebase entry of that movie node
-                if (movieObject.id === movieDB[movieNode].id) {
-                  this.removeSpecificMovieDBRef = firebase
+                if (movieObject.id === movieDb[movieNode].id) {
+                  this.removeSpecificMovieDbRef = firebase
                     .database()
                     .ref(
                       `userGroups/${
                         this.state.groupFirebaseKey
                       }/movies/${movieNode}`
                     );
-                  this.removeSpecificMovieDBRef.remove();
+                  this.removeSpecificMovieDbRef.remove();
                 }
               }
             });
-            this.groupDBMovies.off();
+            this.groupDbMovies.off();
           }
         }
       }
     });
-    this.groupDBMovies.once("value", snapshot => {
+    this.groupDbMovies.once("value", snapshot => {
       this.getMovieArray(snapshot.val());
     });
   };

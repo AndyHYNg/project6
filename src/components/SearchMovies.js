@@ -20,8 +20,8 @@ class SearchMovies extends Component {
 
   // this is necessary so we can do a check for running count here
   componentDidMount() {
-    this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
-    this.populateGroupMoviesDBRef.on("value", snapshot => {
+    this.populateGroupMoviesDbRef = firebase.database().ref(`userGroups/`);
+    this.populateGroupMoviesDbRef.on("value", snapshot => {
       Object.entries(snapshot.val()).forEach(group => {
         if (group[1].groupID === this.props.match.params.group_id) {
           this.firebaseKey = group[0];
@@ -35,17 +35,17 @@ class SearchMovies extends Component {
   }
 
   componentWillUnmount() {
-    // turn off all dbRefs called in this component after any sort of re-routing
-    if (this.populateGroupMoviesDBRef) {
-      this.populateGroupMoviesDBRef.off();
+    // turn off all DbRefs called in this component after any sort of re-routing
+    if (this.populateGroupMoviesDbRef) {
+      this.populateGroupMoviesDbRef.off();
     }
 
     if (this.specificGroup) {
       this.specificGroup.off();
     }
 
-    if (this.countSpecificMovieDBRef) {
-      this.countSpecificMovieDBRef.off();
+    if (this.countSpecificMovieDbRef) {
+      this.countSpecificMovieDbRef.off();
     }
   }
 
@@ -65,19 +65,19 @@ class SearchMovies extends Component {
           if (idArray === movieObject.id) {
             console.log(true);
             this.specificGroup.once("value", snapshot => {
-              const movieDB = snapshot.val();
+              const movieDb = snapshot.val();
               //movie is the firebase key consisting of that specific movie object in firebase
-              for (let movie in movieDB) {
-                if (movieObject.id === movieDB[movie].id) {
+              for (let movie in movieDb) {
+                if (movieObject.id === movieDb[movie].id) {
                   foundDuplicate = true;
-                  this.countSpecificMovieDBRef = firebase
+                  this.countSpecificMovieDbRef = firebase
                     .database()
                     .ref(
                       `userGroups/${this.firebaseKey}/movies/${movie}/count`
                     );
-                  this.countSpecificMovieDBRef.once("value", countSnapshot => {
+                  this.countSpecificMovieDbRef.once("value", countSnapshot => {
                     const count = countSnapshot.val();
-                    this.countSpecificMovieDBRef.set(count + 1);
+                    this.countSpecificMovieDbRef.set(count + 1);
                   });
                 }
               }

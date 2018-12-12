@@ -6,60 +6,60 @@ import DashboardGroup from "./DashboardGroup";
 const chance = require("chance").Chance();
 
 class Dashboard extends Component {
-  // populates a snapshot of the logged in user's group db
+  // populates a snapshot of the logged in user's group Db
   componentDidMount() {
     // if user logged in and is not a guest
     if (this.props.userState && !this.props.userState.isAnonymous) {
-      this.populateGroupDBRef = firebase
+      this.populateGroupDbRef = firebase
         .database()
         .ref(`uid/${this.props.userState.uid}/groups`);
-      this.populateGroupDBRef.on("value", snapshot => {
+      this.populateGroupDbRef.on("value", snapshot => {
         this.props.getJoinedGroups(snapshot.val());
       });
     }
     // if user logged is a guest
     else if (this.props.userState.isAnonymous) {
-      // because each guest has a uid on each login, we grab all the group DB refs and build a new Object containing all guest DBs from the snapshot to parse it through this.props.getJoinedGroups
-      this.rawGroupDBRef = firebase.database().ref(`userGroups`);
-      this.rawGroupDBRef.on("value", rawSnapshot => {
-        const rawGroupDB = rawSnapshot.val() || {};
-        const newGuestGroupDBRef = Object.entries(rawGroupDB)
-          .filter(groupDB => {
-            return groupDB[1].isGuestRoom;
+      // because each guest has a uid on each login, we grab all the group Db refs and build a new Object containing all guest Dbs from the snapshot to parse it through this.props.getJoinedGroups
+      this.rawGroupDbRef = firebase.database().ref(`userGroups`);
+      this.rawGroupDbRef.on("value", rawSnapshot => {
+        const rawGroupDb = rawSnapshot.val() || {};
+        const newGuestGroupDbRef = Object.entries(rawGroupDb)
+          .filter(groupDb => {
+            return groupDb[1].isGuestRoom;
           })
           .reduce((newObj, firebaseKey) => {
-            newObj[firebaseKey[0]] = rawGroupDB[firebaseKey[0]];
+            newObj[firebaseKey[0]] = rawGroupDb[firebaseKey[0]];
             return newObj;
           }, {});
-        this.props.getJoinedGroups(newGuestGroupDBRef);
+        this.props.getJoinedGroups(newGuestGroupDbRef);
       });
     }
   }
 
   componentWillUnmount() {
-    // turn off all dbRefs called in this component after any sort of re-routing
-    if (this.populateGroupDBRef) {
-      this.populateGroupDBRef.off();
+    // turn off all DbRefs called in this component after any sort of re-routing
+    if (this.populateGroupDbRef) {
+      this.populateGroupDbRef.off();
     }
 
-    if (this.rawGroupDBRef) {
-      this.rawGroupDBRef.off();
+    if (this.rawGroupDbRef) {
+      this.rawGroupDbRef.off();
     }
 
-    if (this.userDBRef) {
-      this.userDBRef.off();
+    if (this.userDbRef) {
+      this.userDbRef.off();
     }
 
-    if (this.userGroupDBRef) {
-      this.userGroupDBRef.off();
+    if (this.userGroupDbRef) {
+      this.userGroupDbRef.off();
     }
 
-    if (this.specificGroupDBRef) {
-      this.specificGroupDBRef.off();
+    if (this.specificGroupDbRef) {
+      this.specificGroupDbRef.off();
     }
 
-    if (this.joinSpecificGroupDBRef) {
-      this.joinSpecificGroupDBRef.off();
+    if (this.joinSpecificGroupDbRef) {
+      this.joinSpecificGroupDbRef.off();
     }
   }
 
@@ -76,7 +76,7 @@ class Dashboard extends Component {
 
     // if the input text of the sweet alert is NOT empty of null (created by pressing Cancel button)...
     if (value !== null && value !== "") {
-      // creates necessary db nodes (in user's db and usergroup db)
+      // creates necessary Db nodes (in user's Db and usergroup Db)
 
       swal(`Group name: ${value}`);
       const newKey = chance.string({
@@ -84,24 +84,24 @@ class Dashboard extends Component {
         pool: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
       });
 
-      this.userDBRef = firebase
+      this.userDbRef = firebase
         .database()
         .ref(`uid/${this.props.userState.uid}/groups/`);
 
       const newGroupObject = {
         name: value,
-        groupID: newKey
+        groupId: newKey
       };
 
-      this.userDBRef.push(newGroupObject);
-      this.userDBRef.off();
+      this.userDbRef.push(newGroupObject);
+      this.userDbRef.off();
 
       const newUserGroupObject = {
         name: value,
         movies: [],
         users: {},
         isGuestRoom: false,
-        groupID: newKey
+        groupId: newKey
       };
 
       // if user is a guest, mark the room as a guest room
@@ -110,25 +110,25 @@ class Dashboard extends Component {
       }
 
       // pushes the new group information and get the firebase key associated with it
-      this.userGroupDBRef = firebase.database().ref(`userGroups/`);
-      const userGroupDBKey = this.userGroupDBRef.push(newUserGroupObject).key;
-      this.userGroupDBRef.off();
+      this.userGroupDbRef = firebase.database().ref(`userGroups/`);
+      const userGroupDbKey = this.userGroupDbRef.push(newUserGroupObject).key;
+      this.userGroupDbRef.off();
 
       // append's user information to that group's users node
-      this.specificGroupDBRef = firebase
+      this.specificGroupDbRef = firebase
         .database()
-        .ref(`userGroups/${userGroupDBKey}/users`);
+        .ref(`userGroups/${userGroupDbKey}/users`);
       const joinUserObject = {};
       joinUserObject[this.props.userState.uid] =
         this.props.userState.displayName || this.props.guestName;
-      this.specificGroupDBRef.push(joinUserObject);
-      this.specificGroupDBRef.off();
+      this.specificGroupDbRef.push(joinUserObject);
+      this.specificGroupDbRef.off();
 
       // get a snapshot of the joined groups to trigger the re-render
-      this.populateGroupDBRef = firebase
+      this.populateGroupDbRef = firebase
         .database()
         .ref(`uid/${this.props.userState.uid}/groups`);
-      this.populateGroupDBRef.once("value", snapshot => {
+      this.populateGroupDbRef.once("value", snapshot => {
         this.props.getJoinedGroups(snapshot.val());
       });
 
@@ -144,17 +144,17 @@ class Dashboard extends Component {
 
   // below is for refactoring purposes later on
 
-  // joinUserInfotoGroupDB = firebaseDBRef => {
+  // joinUserInfotoGroupDb = firebaseDbRef => {
   //   const joinUserObject = {};
   //   joinUserObject[this.props.userState.uid] =
   //     this.props.userState.displayName || this.props.guestName;
-  //   firebaseDBRef.push(joinUserObject);
+  //   firebaseDbRef.push(joinUserObject);
   // };
 
   joinRoom = async e => {
     // ES7's async, page will wait until user has performed any action by the sweet alert prompt before proceeding
     e.preventDefault();
-    this.roomID = await swal("Type the group name you want to join:", {
+    this.roomId = await swal("Type the group name you want to join:", {
       content: "input",
       buttons: {
         cancel: true,
@@ -165,30 +165,30 @@ class Dashboard extends Component {
     this.foundRoom = false;
 
     // check to see if the roomId provided is not empty
-    if (this.roomID !== null && this.roomID !== "") {
+    if (this.roomId !== null && this.roomId !== "") {
       this.groupFirebaseKey = "";
-      this.joinUserGroupDBRef = firebase.database().ref(`/userGroups/`);
+      this.joinUserGroupDbRef = firebase.database().ref(`/userGroups/`);
 
       // we use .once to read the snapshot data once, otherwise it will result in infinite loop for the for...in + if statement below
-      this.joinUserGroupDBRef.once("value", snapshot => {
-        const groupDB = snapshot.val();
-        for (let group in groupDB) {
-          // if the provided roomID matches the groupID of the group node we're looking in the firebase db...
-          if (this.roomID === groupDB[group].groupID) {
+      this.joinUserGroupDbRef.once("value", snapshot => {
+        const groupDb = snapshot.val();
+        for (let group in groupDb) {
+          // if the provided roomId matches the groupId of the group node we're looking in the firebase Db...
+          if (this.roomId === groupDb[group].groupId) {
             this.foundRoom = true;
             // only do the code below if the group is not a guest room and the logged in user is not a guest
             // append user to the group's user's node and add a reference of the group information to the logged in user's node in firebase
             if (
-              (groupDB[group].isGuestRoom &&
+              (groupDb[group].isGuestRoom &&
                 this.props.userState.isAnonymous) ||
-              (!groupDB[group].isGuestRoom && !this.props.userState.isAnonymous)
+              (!groupDb[group].isGuestRoom && !this.props.userState.isAnonymous)
             ) {
-              this.joinSpecificGroupDBRef = firebase
+              this.joinSpecificGroupDbRef = firebase
                 .database()
                 .ref(`/userGroups/${group}/users/`);
 
               // checking if the user joining is already joined (*insert galaxy brain meme here...*)
-              const groupUsers = Object.values(groupDB[group].users);
+              const groupUsers = Object.values(groupDb[group].users);
               const checkDuplicateUser = groupUsers.filter(user =>
                 Object.keys(user)[0].includes(this.props.userState.uid)
               );
@@ -203,24 +203,24 @@ class Dashboard extends Component {
               const joinUserObject = {};
               joinUserObject[this.props.userState.uid] =
                 this.props.userState.displayName || this.props.guestName;
-              this.joinSpecificGroupDBRef.push(joinUserObject);
-              this.joinSpecificGroupDBRef.off();
+              this.joinSpecificGroupDbRef.push(joinUserObject);
+              this.joinSpecificGroupDbRef.off();
 
-              this.userDBRef = firebase
+              this.userDbRef = firebase
                 .database()
                 .ref(`uid/${this.props.userState.uid}/groups/`);
 
               const newGroupObject = {
-                name: groupDB[group].name,
-                groupID: this.roomID
+                name: groupDb[group].name,
+                groupId: this.roomId
               };
 
-              this.userDBRef.push(newGroupObject);
-              this.userDBRef.off();
+              this.userDbRef.push(newGroupObject);
+              this.userDbRef.off();
 
               return swal(
                 "Group joined!",
-                `You have created a new group: ${groupDB[group].name}`,
+                `You have created a new group: ${groupDb[group].name}`,
                 "success"
               );
             } else {
@@ -236,25 +236,25 @@ class Dashboard extends Component {
 
         // following code below will get a snapshot of the joined groups to re-render the page to reflect the changes above
         if (this.props.userState && !this.props.userState.isAnonymous) {
-          this.populateGroupDBRef = firebase
+          this.populateGroupDbRef = firebase
             .database()
             .ref(`uid/${this.props.userState.uid}/groups`);
-          this.populateGroupDBRef.on("value", snapshot => {
+          this.populateGroupDbRef.on("value", snapshot => {
             this.props.getJoinedGroups(snapshot.val());
           });
         } else if (this.props.userState.isAnonymous) {
-          this.rawGroupDBRef = firebase.database().ref(`userGroups`);
-          this.rawGroupDBRef.on("value", rawSnapshot => {
-            const rawGroupDB = rawSnapshot.val();
-            const newGuestGroupDBRef = Object.entries(rawGroupDB)
-              .filter(groupDB => {
-                return groupDB[1].isGuestRoom;
+          this.rawGroupDbRef = firebase.database().ref(`userGroups`);
+          this.rawGroupDbRef.on("value", rawSnapshot => {
+            const rawGroupDb = rawSnapshot.val();
+            const newGuestGroupDbRef = Object.entries(rawGroupDb)
+              .filter(groupDb => {
+                return groupDb[1].isGuestRoom;
               })
               .reduce((newObj, firebaseKey) => {
-                newObj[firebaseKey[0]] = rawGroupDB[firebaseKey[0]];
+                newObj[firebaseKey[0]] = rawGroupDb[firebaseKey[0]];
                 return newObj;
               }, {});
-            this.props.getJoinedGroups(newGuestGroupDBRef);
+            this.props.getJoinedGroups(newGuestGroupDbRef);
           });
         }
       });
@@ -266,7 +266,7 @@ class Dashboard extends Component {
         );
       }
     }
-    if (this.roomID === "") {
+    if (this.roomId === "") {
       return swal(
         "Please enter a group ID.",
         "Please enter a group ID to join a group.",
