@@ -60,6 +60,7 @@
   border: 4px solid $yellow;
   opacity: 0;
   z-index: -1;
+  hyphens: auto;
 }
 
 .movieCard:hover img {
