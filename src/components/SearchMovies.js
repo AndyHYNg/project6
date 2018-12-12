@@ -6,7 +6,11 @@ import RenderMovies from "./Movies";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
 
+// used to scroll down after a search
 const scrollToElement = require("scroll-to-element");
+
+// SEARCHMOVIES COMPONENT CONTAINS THE FOLLOWING HELPING FUNCTIONS:
+// favouriteMovie, handleChange, handleSubmit, getMovies, movieIdCall, getMovieId
 
 class SearchMovies extends Component {
   constructor() {

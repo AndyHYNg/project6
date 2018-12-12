@@ -3,7 +3,11 @@ import firebase from "../firebase";
 import swal from "sweetalert";
 import DashboardGroup from "./DashboardGroup";
 
+// import chance module to randomly generate a Room Id
 const chance = require("chance").Chance();
+
+// DASHBOARD COMPONENT CONTAINS THE FOLLOWING HELPER FUNCTIONS:
+// createRoom, joinRoom
 
 class Dashboard extends Component {
   // populates a snapshot of the logged in user's group db
@@ -301,10 +305,7 @@ class Dashboard extends Component {
                 ) : null}
               </ul>
             </div>
-            <i
-              className="fas fa-angle-double-down"
-              aria-label="Scroll down."
-            />
+            <i className="fas fa-angle-double-down" aria-label="Scroll down." />
           </div>
         </header>
         <div className="wrapper clearfix dashboardGroupContainer">

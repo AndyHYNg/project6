@@ -4,6 +4,9 @@ import firebase from "../firebase";
 import { Link, withRouter } from "react-router-dom";
 import RenderMovies from "./Movies";
 
+// GROUP COMPONENT CONTAINS THE FOLLOWING HELPER FUNCTIONS:
+// renderGroupMembers, sortMovies
+
 class Group extends Component {
   componentDidMount() {
     this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
@@ -94,6 +97,7 @@ class Group extends Component {
         </header>
         <RenderMovies
           movies={this.props.currGroupMovies}
+          currGroupMoviesCollection={this.props.currGroupMoviesCollection}
           removeMovie={this.props.removeMovie}
           handleChange={this.props.handleChange}
           sortMovies={this.sortMovies}
