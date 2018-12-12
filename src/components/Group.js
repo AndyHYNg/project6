@@ -79,9 +79,10 @@ class Group extends Component {
             ) : null}
 
             <Link to={`/group/${this.props.match.params.group_id}/search`}>
-              <div className="searchLink clearfix">
-                <i className="fas fa-search" aria-hidden="true" />
-                <p>Search for movies to add to this group</p>
+              <div className="searchLink">
+                <div className="searchLinkContainer clearfix">
+                  <p>Search for movies to add to this group</p>
+                </div>
               </div>
             </Link>
             {this.props.currGroupMovies.length !== 0 ? (
