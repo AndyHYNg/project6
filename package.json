@@ -12,6 +12,7 @@
     "react-particles-js": "^2.4.2",
     "react-player": "^1.7.1",
     "react-scripts": "2.1.1",
+    "scroll-to-element": "^2.0.2",
     "sweetalert": "^2.1.2",
     "uuid": "^3.3.2"
   },

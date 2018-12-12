@@ -2,41 +2,7 @@
   background: $grey;
 }
 
-.movieCard {
-  border: 4px solid white;
-  width: calc(33.33% - 40px);
-  margin: 20px;
-  float: left;
-  position: relative;
-  img {
-    display: block;
-    width: 100%;
-    height: 500px;
-    object-fit: cover;
-  }
-}
-
-.buttonContainer button, .favButtonContainer button {
-  width: 50%;
-  padding: 10px 0;
-  background: $mainBlue;
-  border: none;
-  border-top: 4px solid white;
-  color: white;
-  transition: all 0.2s;
-  &:hover {
-    background: $yellow;
-    color: $mainBlue;
-  }
-  &:focus {
-    background: $yellow;
-  }
-}
-
-.favButtonContainer button {
-  width: 100%;
-}
-
+//Search link (in header of individual groups) styles
 .searchLink {
   color: white;
   padding-top: 50px;
@@ -61,6 +27,71 @@
 
 .searchLinkContainer:focus {
   border-color: $yellow;
+}
+
+// Styles for individual movie cards
+.movieCard {
+  border: 4px solid white;
+  width: calc(33.33% - 40px);
+  margin: 20px;
+  float: left;
+  position: relative;
+  transition: 0.2s all;
+  img {
+    display: block;
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    opacity: 1;
+  }
+}
+
+//hover effect on individual movie cards
+.movieTitleOverlay {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  width: 70%;
+  text-align: center;
+  background: $mainBlue;
+  transform: translateX(-50%);
+  color: white;
+  padding: 10px 20px;
+  border: 4px solid $yellow;
+  opacity: 0;
+  z-index: -1;
+}
+
+.movieCard:hover img {
+  opacity: 0.5;
+}
+
+.movieCard:hover .movieTitleOverlay {
+  z-index: 1;
+  opacity: 1;
+}
+
+//button styles at bottom of movie cards
+.buttonContainer button, 
+.favButtonContainer button {
+  width: 50%;
+  padding: 10px 0;
+  background: $mainBlue;
+  border: none;
+  border-top: 4px solid white;
+  color: white;
+  transition: all 0.2s;
+  &:hover {
+    background: $yellow;
+    color: $mainBlue;
+  }
+  &:focus {
+    background: $yellow;
+  }
+}
+
+.favButtonContainer button {
+  width: 100%;
 }
 
 .runningCountContainer {

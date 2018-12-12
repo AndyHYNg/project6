@@ -22,3 +22,11 @@
 .login button:focus {
     color: $yellow;
 }
+
+// Particle JS styles
+.particles {
+  position: absolute;
+  height: 90%;
+  width: 100%;
+  z-index: 1;
+}
