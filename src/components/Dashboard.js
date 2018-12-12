@@ -128,13 +128,29 @@ class Dashboard extends Component {
       this.specificGroupDBRef.push(joinUserObject);
       this.specificGroupDBRef.off();
 
-      // get a snapshot of the joined groups to trigger the re-render
-      this.populateGroupDBRef = firebase
-        .database()
-        .ref(`uid/${this.props.userState.uid}/groups`);
-      this.populateGroupDBRef.once("value", snapshot => {
-        this.props.getJoinedGroups(snapshot.val());
-      });
+      // following code below will get a snapshot of the joined groups to re-render the page to reflect the changes above
+      if (this.props.userState && !this.props.userState.isAnonymous) {
+        this.populateGroupDBRef = firebase
+          .database()
+          .ref(`uid/${this.props.userState.uid}/groups`);
+        this.populateGroupDBRef.on("value", snapshot => {
+          this.props.getJoinedGroups(snapshot.val());
+        });
+      } else if (this.props.userState.isAnonymous) {
+        this.rawGroupDBRef = firebase.database().ref(`userGroups`);
+        this.rawGroupDBRef.on("value", rawSnapshot => {
+          const rawGroupDB = rawSnapshot.val();
+          const newGuestGroupDBRef = Object.entries(rawGroupDB)
+            .filter(groupDB => {
+              return groupDB[1].isGuestRoom;
+            })
+            .reduce((newObj, firebaseKey) => {
+              newObj[firebaseKey[0]] = rawGroupDB[firebaseKey[0]];
+              return newObj;
+            }, {});
+          this.props.getJoinedGroups(newGuestGroupDBRef);
+        });
+      }
 
       swal(
         "Group created!",
