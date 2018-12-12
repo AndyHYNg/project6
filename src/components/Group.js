@@ -6,10 +6,10 @@ import RenderMovies from "./Movies";
 
 class Group extends Component {
   componentDidMount() {
-    this.populateGroupMoviesDbRef = firebase.database().ref(`userGroups/`);
-    this.populateGroupMoviesDbRef.on("value", snapshot => {
+    this.populateGroupMoviesDBRef = firebase.database().ref(`userGroups/`);
+    this.populateGroupMoviesDBRef.on("value", snapshot => {
       Object.entries(snapshot.val()).forEach(group => {
-        if (group[1].groupId === this.props.match.params.group_id) {
+        if (group[1].groupID === this.props.match.params.group_id) {
           this.props.getCurrGroup(group[1]);
           this.props.getMovieArray(group[1].movies);
           this.props.getGroupFirebaseKey(group[0]);
@@ -26,9 +26,9 @@ class Group extends Component {
   }
 
   componentWillUnmount() {
-    // turn off all DbRefs called in this component after any sort of re-routing
-    if (this.populateGroupMoviesDbRef) {
-      this.populateGroupMoviesDbRef.off();
+    // turn off all dbRefs called in this component after any sort of re-routing
+    if (this.populateGroupMoviesDBRef) {
+      this.populateGroupMoviesDBRef.off();
     }
   }
 
