@@ -102,11 +102,11 @@ class SearchMovies extends Component {
   };
 
   handleSubmit = e => {
+    e.preventDefault();
     scrollToElement(".movieCard", {
       offset: -99,
       duration: 700
     });
-    e.preventDefault();
     // clears the search term and THEN use a callback function to get the movies from the API
     this.setState(
       {
