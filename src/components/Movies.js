@@ -7,7 +7,7 @@ class RenderMovies extends Component {
       <section className="movieContainer">
         {// only display dropdown sort/filter when the render is not called by SearchMovies.js
         !this.props.match.path.endsWith("search") &&
-        this.props.movies.length !== 0 ? (
+        this.props.currGroupMoviesCollection.length !== 0 ? (
           <div className="wrapper formContainer clearfix">
             <div className="sortByCount">
               <form action="" onChange={this.props.sortMovies}>

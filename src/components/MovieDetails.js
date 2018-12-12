@@ -5,7 +5,9 @@ import firebase from "../firebase";
 import MovieGenres from "../components/MovieGenres";
 import MovieCast from "../components/MovieCast";
 import ReactPlayer from "react-player";
-import { callbackify } from "util";
+
+// MOVIEDETAILS COMPONENT CONTAINS THE FOLLOWING HELPING FUNCTION:
+// favouriteMovie
 
 class MovieDetails extends Component {
   // create a state to hold the response from the API

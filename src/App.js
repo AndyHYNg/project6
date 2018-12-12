@@ -23,6 +23,9 @@ import swal from "sweetalert";
 
 const chance = require("chance").Chance();
 
+// APP COMPONENT CONTAINS THE FOLLOWING HELPER FUNCTIONS:
+// logInGuest, logIn, logOut, getGroupFirebaseKey, getJoinedGroups, getCurrGroup, getSearchResults, updateMovieArray, getMovieArray, removeGroup, handleChange, removeMovie
+
 class App extends Component {
   constructor() {
     super();
@@ -54,6 +57,7 @@ class App extends Component {
     });
   };
 
+  // Randomly give guests a random name upon login
   logInGuest = () => {
     auth.signInAnonymously().then(result => {
       this.setState({
@@ -113,6 +117,7 @@ class App extends Component {
     });
   };
 
+  // populates the movies obtained from an Axios call and set state
   getMovieArray = currGroupMoviesFromDB => {
     const movieArray = Object.entries(currGroupMoviesFromDB || {}).map(
       movie => {
@@ -183,12 +188,7 @@ class App extends Component {
             this.removeSpecificUserGroupDBRef.remove();
           }
 
-          // this.populateGroupDBRef = firebase
-          //   .database()
-          //   .ref(`uid/${this.state.user.uid}/groups`);
-          // this.populateGroupDBRef.on("value", snapshot => {
-          //   this.getJoinedGroups(snapshot.val());
-          // });
+          // below is required to re-render the changes above
 
           // if user logged in and is not a guest
           if (this.state.user && !this.state.user.isAnonymous) {
@@ -292,6 +292,7 @@ class App extends Component {
         }
       }
     });
+    // get the snapshot of the db and re-render
     this.groupDBMovies.once("value", snapshot => {
       this.getMovieArray(snapshot.val());
     });
@@ -301,6 +302,7 @@ class App extends Component {
     return (
       <Router>
         {/* Switch manages and renders all Routes exclusively */}
+        {/* we need to be very explicit with checking this.state.user for Redirect */}
         <Switch>
           <Route
             exact
@@ -372,6 +374,9 @@ class App extends Component {
                   getGroupFirebaseKey={this.getGroupFirebaseKey}
                   updateMovieArray={this.updateMovieArray}
                   userState={this.state.user}
+                  currGroupMoviesCollection={
+                    this.state.currGroupMoviesCollection
+                  }
                 />
               ) : (
                 <Redirect to="/" />
