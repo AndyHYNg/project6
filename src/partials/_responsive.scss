@@ -149,6 +149,14 @@
     .genres {
         width: 100%;
     }
+
+    .formContainer {
+        width: 85%;
+    }
+    select {
+        width: 200px;
+        float: left;
+    }
 }
 
 @media screen and (min-width: 320px) and (max-width: 600px) {
