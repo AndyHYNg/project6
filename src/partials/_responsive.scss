@@ -164,12 +164,21 @@
         font-size: 6rem;
     }
 
-    .pageHeader {
-        padding-bottom: 0;
+    h2 {
+        font-size: 5rem;
     }
 
-    .pageHeaderGroup {
-        padding-bottom: 50px;
+    .pageHeader {
+        padding-bottom: 0;
+        padding-top: 50px;
+    }
+
+    .headerContent {
+        margin-bottom: 50px;
+    }
+
+    .pageHeaderFull {
+        height: 105vh;
     }
     
     .dashboardContainer {

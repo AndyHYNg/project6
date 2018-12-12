@@ -59,7 +59,7 @@ class Group extends Component {
   render() {
     return (
       <div>
-        <header className="pageHeader pageHeaderGroup">
+        <header className="pageHeader pageHeaderGroup pageHeaderFull">
           <div className="wrapper headerContent clearfix">
             <p>Group</p>
             <h2 className="groupName">

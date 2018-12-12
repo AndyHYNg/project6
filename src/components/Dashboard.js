@@ -278,7 +278,7 @@ class Dashboard extends Component {
   render() {
     return (
       <section className="dashboard">
-        <header className="pageHeader">
+        <header className="pageHeader pageHeaderFull">
           <button onClick={this.props.logOut} className="backButton">
             Logout
           </button>
@@ -301,6 +301,10 @@ class Dashboard extends Component {
                 ) : null}
               </ul>
             </div>
+            <i
+              className="fas fa-angle-double-down"
+              aria-label="Scroll down."
+            />
           </div>
         </header>
         <div className="wrapper clearfix dashboardGroupContainer">
