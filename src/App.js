@@ -139,33 +139,39 @@ class App extends Component {
             );
 
             // if you are the only one in the group, completely delete the group node (kill it with fire)
-            if (this.groupDbUserCount.length === 0) {
+            if (
+              this.groupDbUserCount.length === 0 ||
+              this.state.user.isAnonymous
+            ) {
               this.removeSpecificGroupDBRef.remove();
             }
           });
 
-          // remove the specific user from the userGroup's group db
+          // remove the specific user from the userGroup's group db (for logged in users only)
 
-          // find the user in the userGroup's group db (get firebase key pointing to the user in the usergroup's group)
-          const uidUserObjectArray =
-            Object.entries(groupsDB[group].users).filter(user => {
-              return this.state.user.uid === Object.keys(user[1])[0];
-            }) || [];
+          if (!this.state.user.isAnonymous) {
+            // find the user in the userGroup's group db (get firebase key pointing to the user in the usergroup's group)
+            const uidUserObjectArray =
+              Object.entries(groupsDB[group].users).filter(user => {
+                return this.state.user.uid === Object.keys(user[1])[0];
+              }) || [];
 
-          // remove user from the userGroup's group db
-          // to test remove group
-          console.log(uidUserObjectArray[0]);
+            // remove user from the userGroup's group db
+            // to test remove group
 
-          this.removeUserFromGroupDBRef = firebase
-            .database()
-            .ref(`userGroups/${group}/users/${uidUserObjectArray[0][0]}`);
-          this.removeUserFromGroupDBRef.remove();
+            this.removeUserFromGroupDBRef = firebase
+              .database()
+              .ref(`userGroups/${group}/users/${uidUserObjectArray[0][0]}`);
+            this.removeUserFromGroupDBRef.remove();
 
-          // remove this joined group from the user node's joined groups info
-          this.removeSpecificUserGroupDBRef = firebase
-            .database()
-            .ref(`uid/${this.state.user.uid}/groups/${currentUserGroupID}`);
-          this.removeSpecificUserGroupDBRef.remove();
+            // remove this joined group from the user node's joined groups info
+            // only do this for non-guest users
+            this.removeSpecificUserGroupDBRef = firebase
+              .database()
+              .ref(`uid/${this.state.user.uid}/groups/${currentUserGroupID}`);
+            this.removeSpecificUserGroupDBRef.remove();
+          }
+
           this.populateGroupDBRef = firebase
             .database()
             .ref(`uid/${this.state.user.uid}/groups`);
@@ -236,7 +242,7 @@ class App extends Component {
                     .database()
                     .ref(
                       `userGroups/${
-                      this.state.groupFirebaseKey
+                        this.state.groupFirebaseKey
                       }/movies/${movieNode}`
                     );
                   this.removeSpecificMovieDBRef.remove();
@@ -261,12 +267,12 @@ class App extends Component {
               this.state.user ? (
                 <Redirect to="/dashboard" />
               ) : (
-                  <Login
-                    logIn={this.logIn}
-                    logInGuest={this.logInGuest}
-                    userState={this.state.user}
-                  />
-                )
+                <Login
+                  logIn={this.logIn}
+                  logInGuest={this.logInGuest}
+                  userState={this.state.user}
+                />
+              )
             }
           />
 
@@ -283,8 +289,8 @@ class App extends Component {
                   removeGroup={this.removeGroup}
                 />
               ) : (
-                  <Redirect to="/" />
-                )
+                <Redirect to="/" />
+              )
             }
           />
 
@@ -300,8 +306,8 @@ class App extends Component {
                   }
                 />
               ) : (
-                  <Redirect to="/" />
-                )
+                <Redirect to="/" />
+              )
             }
           />
 
@@ -319,10 +325,11 @@ class App extends Component {
                   removeMovie={this.removeMovie}
                   getGroupFirebaseKey={this.getGroupFirebaseKey}
                   updateMovieArray={this.updateMovieArray}
+                  userState={this.state.user}
                 />
               ) : (
-                  <Redirect to="/" />
-                )
+                <Redirect to="/" />
+              )
             }
           />
           <Route
@@ -332,8 +339,8 @@ class App extends Component {
               this.state.user ? (
                 <MovieDetails currGroupMovies={this.state.currGroupMovies} />
               ) : (
-                  <Redirect to="/" />
-                )
+                <Redirect to="/" />
+              )
             }
           />
         </Switch>

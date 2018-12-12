@@ -39,7 +39,6 @@ class Group extends Component {
     return <p>{flattenArray.join(", ")}</p>;
   };
 
-
   sortMovies = e => {
     let currentSortArray = this.props.currGroupMovies;
     if (e.target.value === "highestCount") {
@@ -49,10 +48,10 @@ class Group extends Component {
     } else if (e.target.value === "lowestCount") {
       currentSortArray.sort((a, b) => {
         return a.count - b.count;
-      })
+      });
     }
     this.props.updateMovieArray(currentSortArray);
-  }
+  };
 
   render() {
     return (
@@ -65,21 +64,28 @@ class Group extends Component {
             </h2>
             <h3 className="groupDetails">Group ID:</h3>
             <p>{this.props.match.params.group_id}</p>
-            <h3 className="groupDetails">Group Members:</h3>
-            {this.renderGroupMembers(this.props.currGroup.users)}
+            {/* Render group members list if it the group not a guest group */}
+            {!this.props.userState.isAnonymous ? (
+              <React.Fragment>
+                <h3 className="groupDetails">Group Members:</h3>
+                {this.renderGroupMembers(this.props.currGroup.users)}
+              </React.Fragment>
+            ) : null}
+
             <Link to={`/group/${this.props.match.params.group_id}/search`}>
               <div className="searchLink clearfix">
                 <i className="fas fa-search" aria-hidden="true" />
                 <p>Search for movies to add to this group</p>
               </div>
             </Link>
-            {(this.props.currGroupMovies.length !== 0) ? (
-              <i className="fas fa-angle-double-down" aria-label="Scroll down."></i>
+            {this.props.currGroupMovies.length !== 0 ? (
+              <i
+                className="fas fa-angle-double-down"
+                aria-label="Scroll down."
+              />
             ) : null}
             <Link to={`/dashboard`}>
-              <button className="backButton">
-                Return to dashboard
-              </button>
+              <button className="backButton">Return to dashboard</button>
             </Link>
           </div>
         </header>
