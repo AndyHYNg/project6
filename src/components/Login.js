@@ -10,20 +10,6 @@ const particleStyle = {
         value_area: 800
       }
     },
-    // shape: {
-    //   image: {
-    //     src: ".../public/film.svg",
-    //     width: 100,
-    //     height: 100
-    //   }
-    // },
-    // line_linked: {
-    //   enable: true,
-    //   distance: 60,
-    //   color: "#ffffff",
-    //   opacity: 0.4,
-    //   width: 2
-    // },
     move: {
       enable: true,
       speed: 1.4,

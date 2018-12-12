@@ -2,9 +2,7 @@
     height: 100vh;
     background: $mainBlue;
     text-align: center;
-    h1 {
-        padding: 200px 0 100px 0;
-    }
+    position: relative;
     button {
         background: none;
         color: white;
@@ -17,6 +15,14 @@
         z-index: 10;
         position: relative;
     }
+}
+
+.loginContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+     transform: translate(-50%,-50%);
+     z-index: 10;
 }
 
 .login button:focus {
