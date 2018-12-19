@@ -278,13 +278,13 @@ class Dashboard extends Component {
           });
         }
       });
-      if (!this.foundRoom) {
-        return swal(
-          "Error 80",
-          "The group you tried to join does not exist.",
-          "error"
-        );
-      }
+      // if (!this.foundRoom) {
+      //   return swal(
+      //     "Error 80",
+      //     "The group you tried to join does not exist.",
+      //     "error"
+      //   );
+      // }
     }
     if (this.roomID === "") {
       return swal(
